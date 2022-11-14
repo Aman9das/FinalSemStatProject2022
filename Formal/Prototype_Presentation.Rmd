@@ -2,7 +2,9 @@
 title: "Prototype Presentation"
 author: Aman Das, Raj Pratap Singh, Shreyansh Mukhopadhyay
 date: "`r Sys.Date()`"
-output: powerpoint_presentation
+output:
+  powerpoint_presentation:
+    reference_doc: template1.pptx
 ---
 
 # In the morning
