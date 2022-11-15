@@ -4,7 +4,7 @@ author: Aman Das, Raj Pratap Singh, Shreyansh Mukhopadhyay
 date: "`r Sys.Date()`"
 output:
   powerpoint_presentation:
-    reference_doc: template1.pptx
+    reference_doc: Templates/template6.pptx   #source: www.free-power-point-templates.com
 ---
 
 # In the morning
