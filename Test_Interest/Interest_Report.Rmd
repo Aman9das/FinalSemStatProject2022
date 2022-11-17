@@ -13,17 +13,23 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 
 ```{r}
-setwd("~/Documents/Indian_Statistical_Institute/Sem_1/Statistical_Methods_1/Projects/Final_Sem/Test")
+setwd(".")
+
+numerise = function(x){
+  x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
+  x <- as.numeric(x)
+  return(x)
+}
 analyse = function(yearname, csv1, csv2){
   d1_raw = read.csv(csv1)
-  d1 = d1_raw[!is.na(d1_raw[, yearname]),][,c("country", yearname)]
+  d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
   d2_raw = read.csv(csv2)
-  d2 = d2_raw[!is.na(d2_raw[, yearname]),][,c("country", yearname)]
+  d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
   d3 = merge(x = d1, y = d2, by = "country")
   head(d3)
   
-  x1 = d3[, paste(yearname, ".x", sep='')]
-  x2 = d3[, paste(yearname, ".y", sep='')]
+  x1 = log(numerise(d3[, paste(yearname, ".x", sep='')]))
+  x2 = numerise(d3[, paste(yearname, ".y", sep='')])
   # 
   # plot(density(x1), main = "Density Graph",
   #      xlim = c(-20, 120), ylim = c(0, 1/12), col = "dark green")
@@ -44,12 +50,6 @@ analyse = function(yearname, csv1, csv2){
 ```{r}
 yearname = "X2009"
 analyse(yearname, "./Data/at_least_basic_water_source_rural_access_percent.csv", "./Data/agriculture_workers_percent_of_employment.csv")
-```
-
-## proportion of Government spending on health vs Life Expectancy
-```{r}
-
-analyse("X2010", "./Data/government_health_spending_of_total_gov_spending_percent.csv", "./Data/life_expectancy_years.csv")
 ```
 
 ## Sugar consumption vs Life Expectancy
@@ -77,4 +77,31 @@ analyse("X2010", "./Data/fisfod_cons_pc.csv", "./Data/at_least_basic_sanitation_
 analyse("X2010", "./Data/at_least_basic_sanitation_overall_access_percent.csv", "./Data/life_expectancy_years.csv")
 ```
 
-## 
+## proportion of Government spending on health vs Life Expectancy
+```{r}
+
+analyse("X2010", "./Data/government_health_spending_of_total_gov_spending_percent.csv", "./Data/life_expectancy_years.csv")
+```
+
+## proportion of Government spending on health vs Sanitation
+```{r}
+
+analyse("X2010", "./Data/government_health_spending_of_total_gov_spending_percent.csv", "./Data/at_least_basic_sanitation_overall_access_percent.csv")
+```
+
+## Basic Sanitation vs Life Expectancy
+```{r}
+analyse("X2010", "./Data/at_least_basic_sanitation_overall_access_percent.csv", "./Data/life_expectancy_years.csv")
+```
+
+## gdp/cap vs Life Expectancy
+```{r}
+
+analyse("X2010", "./Data/gdppercapita_us_inflation_adjusted.csv", "./Data/life_expectancy_years.csv")
+```
+
+## gdp/cap vs Sanitation
+```{r}
+
+analyse("X2010", "./Data/gdppercapita_us_inflation_adjusted.csv", "./Data/at_least_basic_sanitation_overall_access_percent.csv")
+```
