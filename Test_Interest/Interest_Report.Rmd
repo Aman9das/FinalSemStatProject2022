@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 
 ```{r}
+library(MASS)
 setwd(".")
 
 numerise = function(x){
@@ -28,7 +29,7 @@ analyse = function(yearname, csv1, csv2){
   d3 = merge(x = d1, y = d2, by = "country")
   head(d3)
   
-  x1 = log(numerise(d3[, paste(yearname, ".x", sep='')]))
+  x1 = log(numerise(d3[, paste(yearname, ".x", sep='')])) #logarithm of x1 (mainly for gdp per capita)
   x2 = numerise(d3[, paste(yearname, ".y", sep='')])
   # 
   # plot(density(x1), main = "Density Graph",
@@ -39,8 +40,11 @@ analyse = function(yearname, csv1, csv2){
   #      xlim = c(-20, 120), col = "dark green")
   # lines(ecdf(d3[, paste(yearname, ".y", sep='')]), col = "dark red")
   # 
-  plot(x1, x2)
   cor(x1, x2)
+  model = lm(formula=x2~x1)
+  print(summary(model))
+  plot(x1, x2)
+  abline(model)
 }
 
 ```
