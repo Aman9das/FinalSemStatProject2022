@@ -1,43 +1,55 @@
 ---
-title: "Penguins, meet Quarto!"
-format: html
-editor: visual
+title: Quarto Learning
+author: Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
+format:
+  revealjs:
+    theme: simple
 ---
 
-```{r}
-#| label: load-packages
-#| include: false
+# intro
+This is me learning to use quarto for the *first* time. I want to create a **presentation** using `ggplot2`
+functions. Data to source from [gapminder](https://gapminder.org) and learnt the subject from <https://www.isical.ac.in>
 
-library(tidyverse)
-library(palmerpenguins)
+## graph
+```{r, echo=FALSE}
+library(ggplot2)
 ```
 
-## Meet Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Meet the penguins
-
-![](https://raw.githubusercontent.com/quarto-dev/quarto-web/main/docs/get-started/hello/rstudio/lter_penguins.png){style="float:right;" fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="401"}
-
-The `penguins` data from the [**palmerpenguins**](https://allisonhorst.github.io/palmerpenguins "palmerpenguins R package") package contains size measurements for `r nrow(penguins)` penguins from three species observed on three islands in the Palmer Archipelago, Antarctica.
-
-The plot below shows the relationship between flipper and bill lengths of these penguins.
-
-```{r}
-#| label: plot-penguins
-#| warning: false
-#| echo: false
-
-ggplot(penguins, 
-       aes(x = flipper_length_mm, y = bill_length_mm)) +
-  geom_point(aes(color = species, shape = species)) +
-  scale_color_manual(values = c("darkorange","purple","cyan4")) +
-  labs(
-    title = "Flipper and bill length",
-    subtitle = "Dimensions for penguins at Palmer Station LTER",
-    x = "Flipper length (mm)", y = "Bill length (mm)",
-    color = "Penguin species", shape = "Penguin species"
-  ) +
-  theme_minimal()
+```{r echo=TRUE}
+ggplot(CO2, aes(x=conc,
+                y = uptake))+
+  geom_point()
 ```
+---
+```{r}
+mean_uptake = mean(CO2$uptake)
+```
+The average uptake is `r mean_uptake`.
+
+## Equation
+
+$$
+\Large
+e^{i\pi} - 1 = 0
+$$
+
+## Tabbed
+
+::: {.panel-tabset}
+
+### Graph
+
+```{r echo=FALSE}
+ggplot(CO2, aes(x=conc,
+                y = uptake))+
+  geom_point()
+```
+
+### Code
+
+```{r echo=TRUE, eval=FALSE}
+ggplot(CO2, aes(x=conc,
+                y = uptake))+
+  geom_point()
+```
+:::
