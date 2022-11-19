@@ -8,4 +8,4 @@
 
 - ./Formal/hello.qmd is prototypic Quarto Document that outputs to hello.html
 
-- ./Test_Interest contains pre 
+- ./Test_Interest contains initial analysis..
