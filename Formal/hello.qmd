@@ -7,8 +7,10 @@ format:
     transition: slide
 ---
 
-# intro
-This is me learning to use quarto for the *first* time. I want to create a **presentation** using `ggplot2`
+# Overview
+
+## Intro
+This is us learning to use quarto for the *first* time. I want to create a **presentation** using `ggplot2`
 functions. Data to source from [gapminder](https://gapminder.org) and learnt the subject from <https://www.isical.ac.in>
 
 ## graph

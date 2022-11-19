@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(MASS)
+library(ggplot2)
 setwd(".")
 
 numerise = function(x){
@@ -43,8 +44,17 @@ analyse = function(yearname, csv1, csv2){
   cor(x1, x2)
   model = lm(formula=x2~x1)
   print(summary(model))
-  plot(x1, x2)
-  abline(model)
+  # plot(x1, x2)
+  ggplot(model, aes(
+    x = x1,
+    y = x2
+  ))+
+    geom_point()+
+    geom_smooth(
+      method = 'lm',
+      se = FALSE
+    )
+  # abline(model)
 }
 
 ```
