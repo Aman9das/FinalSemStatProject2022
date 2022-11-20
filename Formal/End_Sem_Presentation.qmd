@@ -1,0 +1,14 @@
+---
+title: Bivariate Ananlysis between GDP, Sanitation and Lifespan
+author: Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
+format:
+  revealjs:
+    theme: default
+    transition: slide
+---
+
+# Overview
+
+We explore the correlation and relationship between GDP per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.
+
+# 
