@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aman Das" />
 
-<meta name="date" content="2022-11-19" />
+<meta name="date" content="2022-11-22" />
 
 <title>Elementary Analysis on Interesting DataSets</title>
 
@@ -131,62 +131,64 @@ a.sourceLine {
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Elementary Analysis on Interesting DataSets</h1>
 <h4 class="author project-author">Aman Das</h4>
-<h4 class="date project-date">2022-11-19</h4>
+<h4 class="date project-date">2022-11-22</h4>
 </section>
 
 
 
 <section class="main-content">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;.&quot;</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>numerise <span class="ot">=</span> <span class="cf">function</span>(x){</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  x[<span class="fu">grepl</span>(<span class="st">&quot;k$&quot;</span>, x)] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">&quot;k$&quot;</span>, <span class="st">&quot;&quot;</span>, x[<span class="fu">grepl</span>(<span class="st">&quot;k$&quot;</span>, x)]))<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>analyse <span class="ot">=</span> <span class="cf">function</span>(yearname, csv1, csv2){</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  d1_raw <span class="ot">=</span> <span class="fu">read.csv</span>(csv1)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">=</span> d1_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d1_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, yearname)]</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  d2_raw <span class="ot">=</span> <span class="fu">read.csv</span>(csv2)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  d2 <span class="ot">=</span> d2_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d2_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, yearname)]</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  d3 <span class="ot">=</span> <span class="fu">merge</span>(<span class="at">x =</span> d1, <span class="at">y =</span> d2, <span class="at">by =</span> <span class="st">&quot;country&quot;</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(d3)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">=</span> <span class="fu">log</span>(<span class="fu">numerise</span>(d3[, <span class="fu">paste</span>(yearname, <span class="st">&quot;.x&quot;</span>, <span class="at">sep=</span><span class="st">&#39;&#39;</span>)])) <span class="co">#logarithm of x1 (mainly for gdp per capita)</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">=</span> <span class="fu">numerise</span>(d3[, <span class="fu">paste</span>(yearname, <span class="st">&quot;.y&quot;</span>, <span class="at">sep=</span><span class="st">&#39;&#39;</span>)])</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(density(x1), main = &quot;Density Graph&quot;,</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      xlim = c(-20, 120), ylim = c(0, 1/12), col = &quot;dark green&quot;)</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lines(density(x2), col = &quot;dark red&quot;)</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(ecdf(x1), main = &quot;ECDF Graph&quot;,</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      xlim = c(-20, 120), col = &quot;dark green&quot;)</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lines(ecdf(d3[, paste(yearname, &quot;.y&quot;, sep=&#39;&#39;)]), col = &quot;dark red&quot;)</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(x1, x2)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula=</span>x2<span class="sc">~</span>x1)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">summary</span>(model))</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(x1, x2)</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(model, <span class="fu">aes</span>(</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> x1,</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> x2</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  ))<span class="sc">+</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">se =</span> <span class="cn">FALSE</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># abline(model)</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;.&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>numerise <span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  x[<span class="fu">grepl</span>(<span class="st">&quot;k$&quot;</span>, x)] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">&quot;k$&quot;</span>, <span class="st">&quot;&quot;</span>, x[<span class="fu">grepl</span>(<span class="st">&quot;k$&quot;</span>, x)]))<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>analyse <span class="ot">=</span> <span class="cf">function</span>(yearname, csv1, csv2){</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  d1_raw <span class="ot">=</span> <span class="fu">read.csv</span>(csv1)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">=</span> d1_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d1_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, yearname)]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  d2_raw <span class="ot">=</span> <span class="fu">read.csv</span>(csv2)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  d2 <span class="ot">=</span> d2_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d2_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, yearname)]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  d3 <span class="ot">=</span> <span class="fu">merge</span>(<span class="at">x =</span> d1, <span class="at">y =</span> d2, <span class="at">by =</span> <span class="st">&quot;country&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(d3)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">=</span> <span class="fu">log</span>(<span class="fu">numerise</span>(d3[, <span class="fu">paste</span>(yearname, <span class="st">&quot;.x&quot;</span>, <span class="at">sep=</span><span class="st">&#39;&#39;</span>)])) <span class="co">#logarithm of x1 (mainly for gdp per capita)</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">=</span> <span class="fu">numerise</span>(d3[, <span class="fu">paste</span>(yearname, <span class="st">&quot;.y&quot;</span>, <span class="at">sep=</span><span class="st">&#39;&#39;</span>)])</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(density(x1), main = &quot;Density Graph&quot;,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      xlim = c(-20, 120), ylim = c(0, 1/12), col = &quot;dark green&quot;)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lines(density(x2), col = &quot;dark red&quot;)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(ecdf(x1), main = &quot;ECDF Graph&quot;,</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      xlim = c(-20, 120), col = &quot;dark green&quot;)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lines(ecdf(d3[, paste(yearname, &quot;.y&quot;, sep=&#39;&#39;)]), col = &quot;dark red&quot;)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">cor</span>(x1, x2))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula=</span>x2<span class="sc">~</span>x1)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">summary</span>(model))</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot(x1, x2)</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(model, <span class="fu">aes</span>(</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> x1,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> x2</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  ))<span class="sc">+</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># abline(model)</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div id="water-supply-rural-vs-agriculture-employment" class="section level2">
 <h2>Water Supply Rural vs Agriculture employment</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>yearname <span class="ot">=</span> <span class="st">&quot;X2009&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(yearname, <span class="st">&quot;./Data/at_least_basic_water_source_rural_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/agriculture_workers_percent_of_employment.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yearname <span class="ot">=</span> <span class="st">&quot;X2009&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(yearname, <span class="st">&quot;./Data/at_least_basic_water_source_rural_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/agriculture_workers_percent_of_employment.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] -0.7480668
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -209,8 +211,9 @@ a.sourceLine {
 </div>
 <div id="sugar-consumption-vs-life-expectancy" class="section level2">
 <h2>Sugar consumption vs Life Expectancy</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/sugar_per_person_g_per_day.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/sugar_per_person_g_per_day.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6215792
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -233,8 +236,9 @@ a.sourceLine {
 </div>
 <div id="seafood-consumption-vs-life-expectancy" class="section level2">
 <h2>Seafood consumption vs Life Expectancy</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4001865
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -257,8 +261,9 @@ a.sourceLine {
 </div>
 <div id="sugar-consumption-vs-fish-consumption" class="section level2">
 <h2>Sugar consumption vs Fish Consumption</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/sugar_per_person_g_per_day.csv&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/sugar_per_person_g_per_day.csv&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2119844
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -281,8 +286,9 @@ a.sourceLine {
 </div>
 <div id="seafood-consumption-vs-basic-sanitation" class="section level2">
 <h2>Seafood consumption vs Basic Sanitation</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/fisfod_cons_pc.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.3232359
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -305,8 +311,9 @@ a.sourceLine {
 </div>
 <div id="basic-sanitation-vs-life-expectancy" class="section level2">
 <h2>Basic Sanitation vs Life Expectancy</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7489749
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -329,8 +336,9 @@ a.sourceLine {
 </div>
 <div id="proportion-of-government-spending-on-health-vs-life-expectancy" class="section level2">
 <h2>proportion of Government spending on health vs Life Expectancy</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/government_health_spending_of_total_gov_spending_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/government_health_spending_of_total_gov_spending_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.350158
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -353,8 +361,9 @@ a.sourceLine {
 </div>
 <div id="proportion-of-government-spending-on-health-vs-sanitation" class="section level2">
 <h2>proportion of Government spending on health vs Sanitation</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/government_health_spending_of_total_gov_spending_percent.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/government_health_spending_of_total_gov_spending_percent.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.3050559
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -377,8 +386,9 @@ a.sourceLine {
 </div>
 <div id="basic-sanitation-vs-life-expectancy-1" class="section level2">
 <h2>Basic Sanitation vs Life Expectancy</h2>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7489749
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -401,8 +411,9 @@ a.sourceLine {
 </div>
 <div id="gdpcap-vs-life-expectancy" class="section level2">
 <h2>gdp/cap vs Life Expectancy</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/gdppercapita_us_inflation_adjusted.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/gdppercapita_us_inflation_adjusted.csv&quot;</span>, <span class="st">&quot;./Data/life_expectancy_years.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7723197
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 
@@ -425,8 +436,9 @@ a.sourceLine {
 </div>
 <div id="gdpcap-vs-sanitation" class="section level2">
 <h2>gdp/cap vs Sanitation</h2>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/gdppercapita_us_inflation_adjusted.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">analyse</span>(<span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;./Data/gdppercapita_us_inflation_adjusted.csv&quot;</span>, <span class="st">&quot;./Data/at_least_basic_sanitation_overall_access_percent.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.8034625
+## 
 ## Call:
 ## lm(formula = x2 ~ x1)
 ## 

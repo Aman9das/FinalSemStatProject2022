@@ -7,12 +7,12 @@ output:
     theme: cayman
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 # Overview
 
-```{r}
+```{r echo=TRUE}
 library(MASS)
 library(ggplot2)
 setwd(".")
@@ -41,7 +41,7 @@ analyse = function(yearname, csv1, csv2){
   #      xlim = c(-20, 120), col = "dark green")
   # lines(ecdf(d3[, paste(yearname, ".y", sep='')]), col = "dark red")
   # 
-  cor(x1, x2)
+  print(cor(x1, x2))
   model = lm(formula=x2~x1)
   print(summary(model))
   # plot(x1, x2)

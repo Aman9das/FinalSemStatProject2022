@@ -1,33 +1,43 @@
 ---
 title: End-Semester Project
-subtitle: Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations.
+subtitle: Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations in 2010
 author: 
   - Raj Pratap Singh
   - Shreyansh Mukhopadhyay
   - Aman Das
 format:
   revealjs:
-    theme: simple
+    theme: [default, custom.scss]
     transition: slide
     controls: true
     controls-layout: bottom-right
     controls-back-arrows: faded
     hide-inactive-cursor: true
 code-fold: true
-highlight-style: atom-one
+code-summary: Source
+highlight-style: gruvbox
+menu: false
 ---
-
-# Overview
-
-We explore the correlation and relationship between Gross Domestic Product per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.
 
 # Introduction
 
-This presentation demonstrates the capabilities of Bivariate Analysis on datasets, to infer relationship between various features of the Population. The features of interest in this presentation are:
+## Overview
+
+This presentation demonstrates the capabilities of **Bivariate Analysis** on datasets, to infer relationship between various features of the Population. The features of interest today are:
 
 ::: {.incremental}
-- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year Population. Indication the general economic prosperity level.
-- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities which are not shared with other households.
-- **Life Expectancy**: The average number of years a newborn child would live if current mortality patterns were to stay the same.
+- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year Population 
+- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities.
+- **Life Expectancy**: The average number of years a newly born Child would live.
 :::
+
+## Data
+
+
+
+## Scatter Plot
+
+A `scatter plot` (also called a `scatterplot`, `scatter graph`, `scatter chart`, `scattergram`, or `scatter diagram`) is a type of **Plot** or **mathematical diagram** using *Cartesian coordinate system* to display values for typically two Variable for a set of data. If the points are coded (color/shape/size), one additional variable can be displayed.
+
+---
 
