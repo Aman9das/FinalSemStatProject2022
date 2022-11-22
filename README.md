@@ -6,6 +6,6 @@
 
 ## Files: 
 
-- ./Formal/hello.qmd is prototypic Quarto Document that outputs to hello.html
+- ./Formal/End_Sem_Presentation is prototypic Quarto Document that outputs to End_Sem_Presentation.html
 
 - ./Test_Interest contains initial analysis..

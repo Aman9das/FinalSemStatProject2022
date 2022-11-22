@@ -9,8 +9,10 @@
 <link href="End_Sem_Presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
-  <meta name="author" content="Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das">
-  <title>Bivariate Ananlysis between GDP, Sanitation and Lifespan</title>
+  <meta name="author" content="Raj Pratap Singh">
+  <meta name="author" content="Shreyansh Mukhopadhyay">
+  <meta name="author" content="Aman Das">
+  <title>End-Semester Project</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -324,12 +326,23 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Bivariate Ananlysis between GDP, Sanitation and Lifespan</h1>
+  <h1 class="title">End-Semester Project</h1>
+  <p class="subtitle">Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations.</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das 
+Raj Pratap Singh 
+</div>
+</div>
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Shreyansh Mukhopadhyay 
+</div>
+</div>
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Aman Das 
 </div>
 </div>
 </div>
@@ -337,11 +350,19 @@ Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
 </section>
 <section id="overview" class="title-slide slide level1 center">
 <h1>Overview</h1>
-<p>We explore the correlation and relationship between GDP per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.</p>
+<p>We explore the correlation and relationship between Gross Domestic Product per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.</p>
 </section>
 
-<section id="section" class="title-slide slide level1 center">
-<h1></h1>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+<p>This presentation demonstrates the capabilities of Bivariate Analysis on datasets, to infer relationship between various features of the Population. The features of interest in this presentation are:</p>
+<div>
+<ul>
+<li class="fragment"><strong>Logarithm of GDP per Capita</strong>: Logarithm of Gross Domestic Product divided by Mid-year Population. Indication the general economic prosperity level.</li>
+<li class="fragment"><strong>Basic Sanitation Access</strong>: Percentage of people using at least basic Sanitation facilities which are not shared with other households.</li>
+<li class="fragment"><strong>Life Expectancy</strong>: The average number of years a newborn child would live if current mortality patterns were to stay the same.</li>
+</ul>
+</div>
 <div class="footer footer-default">
 
 </div>
@@ -370,7 +391,7 @@ Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
       // Full list of configuration options available at:
       // https://revealjs.com/config/
       Reveal.initialize({
-'controlsAuto': true,
+'controlsAuto': false,
 'previewLinksAuto': false,
 'smaller': false,
 'pdfSeparateFragments': false,
@@ -381,14 +402,14 @@ Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
 'smaller': false,
  
         // Display controls in the bottom right corner
-        controls: false,
+        controls: true,
 
         // Help the user learn the controls by providing hints, for example by
         // bouncing the down arrow when they first encounter a vertical slide
         controlsTutorial: false,
 
         // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
+        controlsLayout: 'bottom-right',
 
         // Visibility rule for backwards navigation arrows; "faded", "hidden"
         // or "visible"

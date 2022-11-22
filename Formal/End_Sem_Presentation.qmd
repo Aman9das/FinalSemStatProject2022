@@ -1,14 +1,33 @@
 ---
-title: Bivariate Ananlysis between GDP, Sanitation and Lifespan
-author: Raj Pratap Singh, Shreyansh Mukhopadhyay, Aman Das
+title: End-Semester Project
+subtitle: Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations.
+author: 
+  - Raj Pratap Singh
+  - Shreyansh Mukhopadhyay
+  - Aman Das
 format:
   revealjs:
-    theme: default
+    theme: simple
     transition: slide
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: faded
+    hide-inactive-cursor: true
+code-fold: true
+highlight-style: atom-one
 ---
 
 # Overview
 
-We explore the correlation and relationship between GDP per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.
+We explore the correlation and relationship between Gross Domestic Product per capita, Sanitation Level, and Average Life Expectancy of Nations in the year 2009.
 
-# 
+# Introduction
+
+This presentation demonstrates the capabilities of Bivariate Analysis on datasets, to infer relationship between various features of the Population. The features of interest in this presentation are:
+
+::: {.incremental}
+- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year Population. Indication the general economic prosperity level.
+- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities which are not shared with other households.
+- **Life Expectancy**: The average number of years a newborn child would live if current mortality patterns were to stay the same.
+:::
+
