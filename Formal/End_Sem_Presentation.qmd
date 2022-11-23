@@ -2,9 +2,9 @@
 title: End-Semester Project
 subtitle: Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations in 2010
 author: 
-  - Raj Pratap Singh
-  - Shreyansh Mukhopadhyay
-  - Aman Das
+  - Raj Pratap Singh [BS2219]
+  - Shreyansh Mukhopadhyay [BS2147]
+  - Aman Das [BS2206]
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -15,9 +15,15 @@ format:
     hide-inactive-cursor: true
 code-fold: true
 code-summary: Source
-highlight-style: gruvbox
+highlight-style: gruvbox-dark
 menu: false
 ---
+
+```{r include=FALSE}
+library(knitr)
+library(ggplot2)
+
+```
 
 # Introduction
 
@@ -26,14 +32,49 @@ menu: false
 This presentation demonstrates the capabilities of **Bivariate Analysis** on datasets, to infer relationship between various features of the Population. The features of interest today are:
 
 ::: {.incremental}
-- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year Population 
-- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities.
-- **Life Expectancy**: The average number of years a newly born Child would live.
+- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year. Population. [*lngdp*]
+- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities. [*snt*]
+- **Life Expectancy**: The average number of years a newly born Child would live. [*lfx*]
 :::
 
 ## Data
 
+```{r echo=TRUE, collapse=TRUE}
+script.dir <- getSrcDirectory(function(x) {x})
+setwd(script.dir)
 
+numerise = function(x){
+  x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
+  x <- as.numeric(x)
+  return(x)
+}
+
+d1_raw = read.csv("./Data/gdp.csv")
+d2_raw = read.csv("./Data/sanitation.csv")
+d3_raw = read.csv("./Data/life_expectancy.csv")
+
+yearname = "X2010"
+
+d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
+colnames(d1)[2] = "lngdp"
+d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
+colnames(d2)[2] = "snt"
+d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
+colnames(d3)[2] = "lfx"
+
+dtemp = merge(x = d1, y = d2, by = "country")
+d = merge(x = dtemp, y = d3, by = "country")
+
+d$lngdp = log(numerise(d$lngdp))
+
+write.csv(d, "./Data/assembled.csv")
+
+kable(head(d))
+```
+
+# Bivariate Analysis
+
+##
 
 ## Scatter Plot
 
@@ -41,3 +82,42 @@ A `scatter plot` (also called a `scatterplot`, `scatter graph`, `scatter chart`,
 
 ---
 
+### Sanitation vs. GDP per Capita
+``` {r echo=TRUE}
+ggplot(d, aes(x = lngdp, y = snt))+
+  geom_point()+
+  theme_minimal()+
+  theme(
+    plot.background = element_rect(fill = "#f9f5d7"),
+    panel.grid = element_line(colour = "#d5c4a1"),
+    axis.line = element_line(colour = "#928374")
+    )
+```
+
+---
+
+### Life Expectancy vs. GDP per Capita
+```{r echo=TRUE}
+ggplot(d, aes(x = lngdp, y = lfx))+
+  geom_point()+
+  theme_minimal()+
+  theme(
+    plot.background = element_rect(fill = "#f9f5d7"),
+    panel.grid = element_line(colour = "#d5c4a1"),
+    axis.line = element_line(colour = "#928374")
+    )
+```
+
+---
+
+### Sanitation vs. Life Expectation
+```{r echo=TRUE}
+ggplot(d, aes(x = snt, y = lfx))+
+  geom_point()+
+  theme_minimal()+
+  theme(
+    plot.background = element_rect(fill = "#f9f5d7"),
+    panel.grid = element_line(colour = "#d5c4a1"),
+    axis.line = element_line(colour = "#928374")
+    )
+```
