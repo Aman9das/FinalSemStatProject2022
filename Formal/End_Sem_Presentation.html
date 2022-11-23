@@ -308,6 +308,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -391,7 +392,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">End-Semester Project</h1>
-  <p class="subtitle">Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations in 2010</p>
+  <p class="subtitle">Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -419,7 +420,7 @@ Aman Das [BS2206]
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<p>This presentation demonstrates the capabilities of <strong>Bivariate Analysis</strong> on datasets, to infer relationship between various features of the Population. The features of interest today are:</p>
+<p>This presentation demonstrates the capabilities of <em>Bivariate Analysis</em> on datasets, to infer relationship between various features of Nations.</p>
 <div>
 <ul>
 <li class="fragment"><strong>Logarithm of GDP per Capita</strong>: Logarithm of Gross Domestic Product divided by Mid-year. Population. [<em>lngdp</em>]</li>
@@ -432,7 +433,7 @@ Aman Das [BS2206]
 <h2>Data</h2>
 <div class="cell">
 <details>
-<summary>Source</summary>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>script.dir <span class="ot">&lt;-</span> <span class="fu">getSrcDirectory</span>(<span class="cf">function</span>(x) {x})</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">setwd</span>(script.dir)</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
@@ -462,7 +463,7 @@ Aman Das [BS2206]
 <span id="cb1-27"><a href="#cb1-27"></a></span>
 <span id="cb1-28"><a href="#cb1-28"></a><span class="fu">write.csv</span>(d, <span class="st">"./Data/assembled.csv"</span>)</span>
 <span id="cb1-29"><a href="#cb1-29"></a></span>
-<span id="cb1-30"><a href="#cb1-30"></a><span class="fu">kable</span>(<span class="fu">head</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="fu">kable</span>(<span class="fu">head</span>(d, 5L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -505,35 +506,32 @@ Aman Das [BS2206]
 <td style="text-align: right;">41.1</td>
 <td style="text-align: right;">60.2</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">Antigua and Barbuda</td>
-<td style="text-align: right;">9.546813</td>
-<td style="text-align: right;">86.3</td>
-<td style="text-align: right;">75.9</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
+<p><sub><sup>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</sup></sub></p>
 </section></section>
 <section>
 <section id="bivariate-analysis" class="title-slide slide level1 center">
 <h1>Bivariate Analysis</h1>
 
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-</section>
 <section id="scatter-plot" class="slide level2">
 <h2>Scatter Plot</h2>
-<p>A <code>scatter plot</code> (also called a <code>scatterplot</code>, <code>scatter graph</code>, <code>scatter chart</code>, <code>scattergram</code>, or <code>scatter diagram</code>) is a type of <strong>Plot</strong> or <strong>mathematical diagram</strong> using <em>Cartesian coordinate system</em> to display values for typically two Variable for a set of data. If the points are coded (color/shape/size), one additional variable can be displayed.</p>
+<p>A <em>Scatter plot</em> is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the <em>abscissa</em> and the other variable determining the <em>ordinate</em>. It helps us:</p>
+<ul>
+<li>take a short glance at effect of two variables.</li>
+<li>suggest kinds of correlations between variables.</li>
+<li>estimate the direction of correlation.</li>
+</ul>
 </section>
 <section class="slide level2">
 
-<h3 id="sanitation-vs.-gdp-per-capita">Sanitation vs.&nbsp;GDP per Capita</h3>
+<h4 id="sanitation-vs.-gdp-per-capita">Sanitation vs.&nbsp;GDP per Capita</h4>
 <div class="cell">
 <details>
-<summary>Source</summary>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> lngdp, <span class="at">y =</span> snt))<span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
@@ -548,10 +546,10 @@ Aman Das [BS2206]
 <img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section class="slide level2">
 
-<h3 id="life-expectancy-vs.-gdp-per-capita">Life Expectancy vs.&nbsp;GDP per Capita</h3>
+<h4 id="life-expectancy-vs.-gdp-per-capita">Life Expectancy vs.&nbsp;GDP per Capita</h4>
 <div class="cell">
 <details>
-<summary>Source</summary>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> lngdp, <span class="at">y =</span> lfx))<span class="sc">+</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
@@ -566,10 +564,10 @@ Aman Das [BS2206]
 <img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section class="slide level2">
 
-<h3 id="sanitation-vs.-life-expectation">Sanitation vs.&nbsp;Life Expectation</h3>
+<h4 id="life-expectation-vs.-sanitation">Life Expectation vs.&nbsp;Sanitation</h4>
 <div class="cell">
 <details>
-<summary>Source</summary>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> snt, <span class="at">y =</span> lfx))<span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
@@ -581,10 +579,144 @@ Aman Das [BS2206]
 </details>
 
 </div>
-<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="correlation-coefficients" class="slide level2">
+<h2>Correlation Coefficients</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>d_cor <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">"*Sanitation vs. ln(GDP/capita)*"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="st">"*Life Exp. vs. ln(GDP/capita)*"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  ),</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  <span class="at">Pearson =</span> <span class="fu">c</span>(</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"pearson"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  ),</span>
+<span id="cb5-13"><a href="#cb5-13"></a>  <span class="at">Spearman =</span> <span class="fu">c</span>(</span>
+<span id="cb5-14"><a href="#cb5-14"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17"></a>  ),</span>
+<span id="cb5-18"><a href="#cb5-18"></a>  <span class="at">Kendall =</span> <span class="fu">c</span>(</span>
+<span id="cb5-19"><a href="#cb5-19"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb5-20"><a href="#cb5-20"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb5-21"><a href="#cb5-21"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"kendall"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22"></a>  )</span>
+<span id="cb5-23"><a href="#cb5-23"></a>)</span>
+<span id="cb5-24"><a href="#cb5-24"></a></span>
+<span id="cb5-25"><a href="#cb5-25"></a><span class="fu">kable</span>(</span>
+<span id="cb5-26"><a href="#cb5-26"></a>  d_cor,</span>
+<span id="cb5-27"><a href="#cb5-27"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb5-28"><a href="#cb5-28"></a>    <span class="st">"*Pearson's* r"</span>,</span>
+<span id="cb5-29"><a href="#cb5-29"></a>    <span class="st">"*Spearman's* r\U209B"</span>,</span>
+<span id="cb5-30"><a href="#cb5-30"></a>    <span class="st">"*Kendall's* \U03C4"</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>  )</span>
+<span id="cb5-32"><a href="#cb5-32"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 42%">
+<col style="width: 18%">
+<col style="width: 21%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><em>Pearson’s</em> r</th>
+<th style="text-align: right;"><em>Spearman’s</em> rₛ</th>
+<th style="text-align: right;"><em>Kendall’s</em> τ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP/capita)</em></td>
+<td style="text-align: right;">0.8065923</td>
+<td style="text-align: right;">0.8592020</td>
+<td style="text-align: right;">0.6745816</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP/capita)</em></td>
+<td style="text-align: right;">0.7722893</td>
+<td style="text-align: right;">0.8163910</td>
+<td style="text-align: right;">0.6216788</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">0.8135103</td>
+<td style="text-align: right;">0.8351294</td>
+<td style="text-align: right;">0.6374424</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="covariance-matrix" class="slide level2">
+<h2>Covariance Matrix</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">kable</span>(</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  cov_mat,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="st">"*ln(GDP/capita)*"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="st">"*Sanitation*"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="st">"*Life*"</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  )</span>
+<span id="cb6-10"><a href="#cb6-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><em>ln(GDP/capita)</em></th>
+<th style="text-align: right;"><em>Sanitation</em></th>
+<th style="text-align: right;"><em>Life</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lngdp</td>
+<td style="text-align: right;">2.017909</td>
+<td style="text-align: right;">33.84045</td>
+<td style="text-align: right;">9.522019</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">snt</td>
+<td style="text-align: right;">33.840452</td>
+<td style="text-align: right;">872.29346</td>
+<td style="text-align: right;">208.541550</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lfx</td>
+<td style="text-align: right;">9.522019</td>
+<td style="text-align: right;">208.54155</td>
+<td style="text-align: right;">75.334944</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="correlation-matrix" class="slide level2">
+<h2>Correlation Matrix</h2>
+</section></section>
+<section id="linear-regression" class="title-slide slide level1 center">
+<h1>Linear Regression</h1>
+<div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
@@ -609,7 +741,7 @@ Aman Das [BS2206]
       // Full list of configuration options available at:
       // https://revealjs.com/config/
       Reveal.initialize({
-'controlsAuto': false,
+'controlsAuto': true,
 'previewLinksAuto': false,
 'smaller': false,
 'pdfSeparateFragments': false,
@@ -620,14 +752,14 @@ Aman Das [BS2206]
 'smaller': false,
  
         // Display controls in the bottom right corner
-        controls: true,
+        controls: false,
 
         // Help the user learn the controls by providing hints, for example by
         // bouncing the down arrow when they first encounter a vertical slide
         controlsTutorial: false,
 
         // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'bottom-right',
+        controlsLayout: 'edges',
 
         // Visibility rule for backwards navigation arrows; "faded", "hidden"
         // or "visible"

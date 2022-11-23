@@ -1,12 +1,17 @@
 /*-- scss:defaults --*/
 
 $body-bg: #f9f5d7;
-$body-color: #282828;
+$body-color: #3c3836;
 $link-color: #928374;
 $font-family-sans-serif: "Cantarell",“Source Sans Pro”, Helvetica, sans-serif;
+$presentation-heading-color: #282828;
 
 /*-- scss:rules --*/
 
 .subtitle {
   font-style: italic;
+}
+
+.quarto-title-author-name {
+  font-style: bold;
 }

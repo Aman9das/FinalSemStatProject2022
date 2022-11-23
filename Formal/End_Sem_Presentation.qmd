@@ -1,7 +1,7 @@
 ---
 title: End-Semester Project
-subtitle: Bivariate Analysis on GDP, Sanitation and Life Expectancy across Nations in 2010
-author: 
+subtitle: Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010
+author:
   - Raj Pratap Singh [BS2219]
   - Shreyansh Mukhopadhyay [BS2147]
   - Aman Das [BS2206]
@@ -9,27 +9,23 @@ format:
   revealjs:
     theme: [default, custom.scss]
     transition: slide
-    controls: true
-    controls-layout: bottom-right
-    controls-back-arrows: faded
     hide-inactive-cursor: true
-code-fold: true
-code-summary: Source
-highlight-style: gruvbox-dark
-menu: false
+    code-fold: true
+    highlight-style: gruvbox-dark
+    menu: false
+    scrollable: true
 ---
 
 ```{r include=FALSE}
 library(knitr)
 library(ggplot2)
-
 ```
 
 # Introduction
 
 ## Overview
 
-This presentation demonstrates the capabilities of **Bivariate Analysis** on datasets, to infer relationship between various features of the Population. The features of interest today are:
+This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
 
 ::: {.incremental}
 - **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year. Population. [*lngdp*]
@@ -69,20 +65,24 @@ d$lngdp = log(numerise(d$lngdp))
 
 write.csv(d, "./Data/assembled.csv")
 
-kable(head(d))
+kable(head(d, 5L))
 ```
+
+<sub><sup>FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).</sup></sub>
 
 # Bivariate Analysis
 
-##
-
 ## Scatter Plot
 
-A `scatter plot` (also called a `scatterplot`, `scatter graph`, `scatter chart`, `scattergram`, or `scatter diagram`) is a type of **Plot** or **mathematical diagram** using *Cartesian coordinate system* to display values for typically two Variable for a set of data. If the points are coded (color/shape/size), one additional variable can be displayed.
+A *Scatter plot* is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the *abscissa* and the other variable determining the *ordinate*. It helps us:
+
+- take a short glance at effect of two variables.
+- suggest kinds of correlations between variables.
+- estimate the direction of correlation.
 
 ---
 
-### Sanitation vs. GDP per Capita
+#### Sanitation vs. GDP per Capita
 ``` {r echo=TRUE}
 ggplot(d, aes(x = lngdp, y = snt))+
   geom_point()+
@@ -96,7 +96,7 @@ ggplot(d, aes(x = lngdp, y = snt))+
 
 ---
 
-### Life Expectancy vs. GDP per Capita
+#### Life Expectancy vs. GDP per Capita
 ```{r echo=TRUE}
 ggplot(d, aes(x = lngdp, y = lfx))+
   geom_point()+
@@ -110,7 +110,7 @@ ggplot(d, aes(x = lngdp, y = lfx))+
 
 ---
 
-### Sanitation vs. Life Expectation
+#### Life Expectation vs. Sanitation
 ```{r echo=TRUE}
 ggplot(d, aes(x = snt, y = lfx))+
   geom_point()+
@@ -121,3 +121,63 @@ ggplot(d, aes(x = snt, y = lfx))+
     axis.line = element_line(colour = "#928374")
     )
 ```
+
+
+## Correlation Coefficients
+
+```{r echo=TRUE}
+d_cor = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP/capita)*",
+    "*Life Exp. vs. ln(GDP/capita)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  Pearson = c(
+    cor(d$snt, d$lngdp, method="pearson"),
+    cor(d$lfx, d$lngdp, method="pearson"),
+    cor(d$lfx, d$snt, method="pearson")
+  ),
+  Spearman = c(
+    cor(d$snt, d$lngdp, method="spearman"),
+    cor(d$lfx, d$lngdp, method="spearman"),
+    cor(d$lfx, d$snt, method="spearman")
+  ),
+  Kendall = c(
+    cor(d$snt, d$lngdp, method="kendall"),
+    cor(d$lfx, d$lngdp, method="kendall"),
+    cor(d$lfx, d$snt, method="kendall")
+  )
+)
+
+kable(
+  d_cor,
+  col.names = c(
+    "*Pearson's* r",
+    "*Spearman's* r\U209B",
+    "*Kendall's* \U03C4"
+  )
+)
+```
+
+## Covariance Matrix
+
+```{r echo=TRUE}
+cov_mat = cov(d[, 2:4])
+
+kable(
+  cov_mat,
+  col.names = c(
+    "*ln(GDP/capita)*",
+    "*Sanitation*",
+    "*Life*"
+  )
+)
+```
+
+## Correlation Matrix
+
+
+
+# Linear Regression
+
