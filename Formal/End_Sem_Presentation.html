@@ -510,8 +510,10 @@ Aman Das [BS2206]
 </table>
 </div>
 </div>
-<p><sub><sup>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</sup></sub></p>
-</section></section>
+
+<aside><div>
+<p>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</p>
+</div></aside></section></section>
 <section>
 <section id="bivariate-analysis" class="title-slide slide level1 center">
 <h1>Bivariate Analysis</h1>
@@ -588,8 +590,8 @@ Aman Das [BS2206]
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>d_cor <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">"*Sanitation vs. ln(GDP/capita)*"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="st">"*Life Exp. vs. ln(GDP/capita)*"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
 <span id="cb5-6"><a href="#cb5-6"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
 <span id="cb5-7"><a href="#cb5-7"></a>  ),</span>
 <span id="cb5-8"><a href="#cb5-8"></a>  <span class="at">Pearson =</span> <span class="fu">c</span>(</span>
@@ -615,16 +617,17 @@ Aman Das [BS2206]
 <span id="cb5-28"><a href="#cb5-28"></a>    <span class="st">"*Pearson's* r"</span>,</span>
 <span id="cb5-29"><a href="#cb5-29"></a>    <span class="st">"*Spearman's* r\U209B"</span>,</span>
 <span id="cb5-30"><a href="#cb5-30"></a>    <span class="st">"*Kendall's* \U03C4"</span></span>
-<span id="cb5-31"><a href="#cb5-31"></a>  )</span>
-<span id="cb5-32"><a href="#cb5-32"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-31"><a href="#cb5-31"></a>  ),</span>
+<span id="cb5-32"><a href="#cb5-32"></a>  <span class="at">digits=</span><span class="dv">5</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
 <colgroup>
-<col style="width: 42%">
-<col style="width: 18%">
-<col style="width: 21%">
-<col style="width: 18%">
+<col style="width: 38%">
+<col style="width: 19%">
+<col style="width: 22%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -636,80 +639,120 @@ Aman Das [BS2206]
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP/capita)</em></td>
-<td style="text-align: right;">0.8065923</td>
-<td style="text-align: right;">0.8592020</td>
-<td style="text-align: right;">0.6745816</td>
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">0.85920</td>
+<td style="text-align: right;">0.67458</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP/capita)</em></td>
-<td style="text-align: right;">0.7722893</td>
-<td style="text-align: right;">0.8163910</td>
-<td style="text-align: right;">0.6216788</td>
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.77229</td>
+<td style="text-align: right;">0.81639</td>
+<td style="text-align: right;">0.62168</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
-<td style="text-align: right;">0.8135103</td>
-<td style="text-align: right;">0.8351294</td>
-<td style="text-align: right;">0.6374424</td>
+<td style="text-align: right;">0.81351</td>
+<td style="text-align: right;">0.83513</td>
+<td style="text-align: right;">0.63744</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section>
-<section id="covariance-matrix" class="slide level2">
-<h2>Covariance Matrix</h2>
+
+<aside><div>
+<p>GDP per capita is used.</p>
+</div></aside></section>
+<section id="covariance-and-correlation-matrix" class="slide level2 smaller">
+<h2>Covariance and Correlation Matrix</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><em>Covariance Matrix</em></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">kable</span>(</span>
-<span id="cb6-4"><a href="#cb6-4"></a>  cov_mat,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
-<span id="cb6-6"><a href="#cb6-6"></a>    <span class="st">"*ln(GDP/capita)*"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>    <span class="st">"*Sanitation*"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    <span class="st">"*Life*"</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>  )</span>
-<span id="cb6-10"><a href="#cb6-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: right;"><em>ln(GDP/capita)</em></th>
-<th style="text-align: right;"><em>Sanitation</em></th>
-<th style="text-align: right;"><em>Life</em></th>
+<th style="text-align: right;">lngdp</th>
+<th style="text-align: right;">snt</th>
+<th style="text-align: right;">lfx</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">lngdp</td>
-<td style="text-align: right;">2.017909</td>
-<td style="text-align: right;">33.84045</td>
-<td style="text-align: right;">9.522019</td>
+<td style="text-align: right;">2.018</td>
+<td style="text-align: right;">33.840</td>
+<td style="text-align: right;">9.522</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">snt</td>
-<td style="text-align: right;">33.840452</td>
-<td style="text-align: right;">872.29346</td>
-<td style="text-align: right;">208.541550</td>
+<td style="text-align: right;">33.840</td>
+<td style="text-align: right;">872.293</td>
+<td style="text-align: right;">208.542</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">lfx</td>
-<td style="text-align: right;">9.522019</td>
-<td style="text-align: right;">208.54155</td>
-<td style="text-align: right;">75.334944</td>
+<td style="text-align: right;">9.522</td>
+<td style="text-align: right;">208.542</td>
+<td style="text-align: right;">75.335</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section>
-<section id="correlation-matrix" class="slide level2">
-<h2>Correlation Matrix</h2>
+</div><div class="column" style="width:50%;">
+<p><em>Correlation Matrix</em></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cor_mat <span class="ot">=</span> <span class="fu">cor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">lngdp</th>
+<th style="text-align: right;">snt</th>
+<th style="text-align: right;">lfx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lngdp</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.807</td>
+<td style="text-align: right;">0.772</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">snt</td>
+<td style="text-align: right;">0.807</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.814</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lfx</td>
+<td style="text-align: right;">0.772</td>
+<td style="text-align: right;">0.814</td>
+<td style="text-align: right;">1.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section id="linear-regression" class="title-slide slide level1 center">
 <h1>Linear Regression</h1>
@@ -894,9 +937,9 @@ Aman Das [BS2206]
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1080,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,

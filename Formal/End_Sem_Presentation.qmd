@@ -7,6 +7,8 @@ author:
   - Aman Das [BS2206]
 format:
   revealjs:
+    width: 1080
+    height: 720
     theme: [default, custom.scss]
     transition: slide
     hide-inactive-cursor: true
@@ -68,7 +70,9 @@ write.csv(d, "./Data/assembled.csv")
 kable(head(d, 5L))
 ```
 
-<sub><sup>FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).</sup></sub>
+::: aside
+FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).
+:::
 
 # Bivariate Analysis
 
@@ -129,8 +133,8 @@ ggplot(d, aes(x = snt, y = lfx))+
 d_cor = data.frame(
   row.names = "Variable",
   Variable = c(
-    "*Sanitation vs. ln(GDP/capita)*",
-    "*Life Exp. vs. ln(GDP/capita)*",
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
     "*Life Exp. vs. Sanitation*"
   ),
   Pearson = c(
@@ -156,28 +160,42 @@ kable(
     "*Pearson's* r",
     "*Spearman's* r\U209B",
     "*Kendall's* \U03C4"
-  )
+  ),
+  digits=5
 )
 ```
 
-## Covariance Matrix
+::: aside
+GDP per capita is used.
+:::
+
+## Covariance and Correlation Matrix {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+*Covariance Matrix*
 
 ```{r echo=TRUE}
 cov_mat = cov(d[, 2:4])
 
-kable(
-  cov_mat,
-  col.names = c(
-    "*ln(GDP/capita)*",
-    "*Sanitation*",
-    "*Life*"
-  )
-)
+kable(cov_mat, digits=3)
 ```
+:::
 
-## Correlation Matrix
+::: {.column width="50%"}
 
+*Correlation Matrix*
 
+```{r echo=TRUE}
+cor_mat = cor(d[, 2:4])
+
+kable(cor_mat, digits=3)
+```
+:::
+
+::::
 
 # Linear Regression
 
