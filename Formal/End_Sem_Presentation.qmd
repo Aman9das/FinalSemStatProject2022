@@ -30,7 +30,7 @@ library(ggplot2)
 This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
 
 ::: {.incremental}
-- **Logarithm of GDP per Capita**: Logarithm of Gross Domestic Product divided by Mid-year. Population. [*lngdp*]
+- **Logarithm of GDP per Capita**: Logarithm (base $e$) of Gross Domestic Product divided by Mid-year. Population. [*lngdp*]
 - **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities. [*snt*]
 - **Life Expectancy**: The average number of years a newly born Child would live. [*lfx*]
 :::
@@ -73,6 +73,48 @@ kable(head(d, 5L))
 ::: aside
 FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).
 :::
+
+# Univariate Analysis
+
+## Mean and Standard Deviation
+
+$$
+\begin{align}
+\bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}}
+&&
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
+\end{align}
+$$
+
+```{r echo=TRUE}
+d_cor = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*ln(GDP)*",
+    "*Sanitation*",
+    "*Life Exp.*"
+  ),
+  Mean = c(
+    mean(d$lngdp),
+    mean(d$snt),
+    mean(d$lfx)
+  ),
+  SD = c(
+    sd(d$lngdp),
+    sd(d$snt),
+    sd(d$lfx)
+  )
+)
+
+kable(
+  d_cor,
+  col.names = c(
+    "Mean $\\bar{x}$",
+    "Standard Deviation $s_x$"
+  ),
+  digits=5
+)
+```
 
 # Bivariate Analysis
 
@@ -126,6 +168,44 @@ ggplot(d, aes(x = snt, y = lfx))+
     )
 ```
 
+## Covariance and Correlation Matrices {.smaller}
+
+*Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
+*Correlation* $r_{x,y}$ is any relationship, causal or spurious, between two random variables $x$, $y$. Pearson's $r$ correlation is considered.
+
+$$
+\begin{align}
+\operatorname {cov} (x,y)={\frac {\sum _{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n}}
+&&
+r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
+\end{align}
+$$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r echo=TRUE}
+cov_mat = cov(d[, 2:4])
+
+kable(cov_mat, digits=3)
+```
+
+$$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
+:::
+
+::: {.column width="50%"}
+
+```{r echo=TRUE}
+cor_mat = cor(d[, 2:4])
+
+kable(cor_mat, digits=3)
+```
+
+$$A_{i,j} = r_{x_i, x_j}$$
+:::
+
+::::
 
 ## Correlation Coefficients
 
@@ -157,9 +237,9 @@ d_cor = data.frame(
 kable(
   d_cor,
   col.names = c(
-    "*Pearson's* r",
-    "*Spearman's* r\U209B",
-    "*Kendall's* \U03C4"
+    "*Pearson's* $r$",
+    "*Spearman's* $r_s$",
+    "*Kendall's* $\\tau$"
   ),
   digits=5
 )
@@ -169,33 +249,12 @@ kable(
 GDP per capita is used.
 :::
 
-## Covariance and Correlation Matrix {.smaller}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-*Covariance Matrix*
-
-```{r echo=TRUE}
-cov_mat = cov(d[, 2:4])
-
-kable(cov_mat, digits=3)
-```
-:::
-
-::: {.column width="50%"}
-
-*Correlation Matrix*
-
-```{r echo=TRUE}
-cor_mat = cor(d[, 2:4])
-
-kable(cor_mat, digits=3)
-```
-:::
-
-::::
-
 # Linear Regression
 
+*Simple Univariate Linear Regression*  is a method for estimating the relationship$Y=f(X)$ of a *response* variable $Y$ with a *predictor* variable $X$, as a Line that closely fits the *scatter plot*.
+
+$$
+y_i = a + b x_i + e_i.
+$$
+
+Where $a$ is the slope, $b$ is the intercept, and $e_i$ is the i
