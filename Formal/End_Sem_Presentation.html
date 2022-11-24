@@ -421,14 +421,12 @@ Aman Das [BS2206]
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
 <p>This presentation demonstrates the capabilities of <em>Bivariate Analysis</em> on datasets, to infer relationship between various features of Nations.</p>
-<div>
 <ul>
-<li class="fragment"><strong>Logarithm of GDP per Capita</strong>: Logarithm (base <span class="math inline">\(e\)</span>) of Gross Domestic Product divided by Mid-year. Population. [<em>lngdp</em>]</li>
-<li class="fragment"><strong>Basic Sanitation Access</strong>: Percentage of people using at least basic Sanitation facilities. [<em>snt</em>]</li>
-<li class="fragment"><strong>Life Expectancy</strong>: The average number of years a newly born Child would live. [<em>lfx</em>]</li>
+<li><strong>Logarithm of GDP per Capita</strong>: Logarithm (base <span class="math inline">\(e\)</span>) of Gross Domestic Product per citizen. [<em>lngdp</em><sup>1</sup>]</li>
+<li><strong>Basic Sanitation Access</strong>: Percentage of people using at least basic Sanitation facilities. [<em>snt</em>]</li>
+<li><strong>Life Expectancy</strong>: The average number of years a newly born Child would live. [<em>lfx</em>]</li>
 </ul>
-</div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>GDP per capita is used.</p></li></ol></aside></section>
 <section id="data" class="slide level2">
 <h2>Data</h2>
 <div class="cell">
@@ -512,15 +510,18 @@ Aman Das [BS2206]
 </div>
 
 <aside><div>
-<p>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</p>
+<p><sub>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</sub></p>
 </div></aside></section></section>
 <section>
-<section id="univariate-analysis" class="title-slide slide level1 center">
-<h1>Univariate Analysis</h1>
+<section id="univariate-statistics" class="title-slide slide level1 center">
+<h1>Univariate Statistics</h1>
 
 </section>
-<section id="mean-and-standard-deviation" class="slide level2">
+<section id="mean-and-standard-deviation" class="slide level2 smaller">
 <h2>Mean and Standard Deviation</h2>
+<p><em>Sample Mean</em> <span class="math inline">\(\bar{x}\)</span> is a measure of central tendency of a random variable <span class="math inline">\(x\)</span>.</p>
+<p><em>Standard deviation</em> <span class="math inline">\(s_x\)</span> is a measure of dispersion in random variable <span class="math inline">\(x\)</span>.</p>
+<p>Note that <span class="math inline">\(x_i\)</span> is the i<sup>th</sup> observation of the random variable <span class="math inline">\(x\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
 \bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}}
@@ -590,76 +591,80 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 </div>
 </section></section>
 <section>
-<section id="bivariate-analysis" class="title-slide slide level1 center">
-<h1>Bivariate Analysis</h1>
-
-</section>
-<section id="scatter-plot" class="slide level2">
-<h2>Scatter Plot</h2>
+<section id="scatter-plot" class="title-slide slide level1 center">
+<h1>Scatter Plot</h1>
 <p>A <em>Scatter plot</em> is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the <em>abscissa</em> and the other variable determining the <em>ordinate</em>. It helps us:</p>
 <ul>
 <li>take a short glance at effect of two variables.</li>
 <li>suggest kinds of correlations between variables.</li>
 <li>estimate the direction of correlation.</li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h4 id="sanitation-vs.-gdp-per-capita">Sanitation vs.&nbsp;GDP per Capita</h4>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> lngdp, <span class="at">y =</span> snt))<span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">theme</span>(</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
-<span id="cb3-7"><a href="#cb3-7"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>sctrplot <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    d, x_map, y_map,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb3-5"><a href="#cb3-5"></a>){</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  plot1 <span class="ot">=</span> <span class="fu">ggplot</span>(d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x_map, <span class="at">y =</span> y_map))<span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="fu">theme</span>(</span>
+<span id="cb3-10"><a href="#cb3-10"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
+<span id="cb3-11"><a href="#cb3-11"></a>      <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
+<span id="cb3-12"><a href="#cb3-12"></a>      <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>      )<span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="fu">labs</span>(</span>
+<span id="cb3-15"><a href="#cb3-15"></a>      <span class="at">x=</span>x_lab,</span>
+<span id="cb3-16"><a href="#cb3-16"></a>      <span class="at">y=</span>y_lab,</span>
+<span id="cb3-17"><a href="#cb3-17"></a>      <span class="at">title=</span>title</span>
+<span id="cb3-18"><a href="#cb3-18"></a>    )</span>
+<span id="cb3-19"><a href="#cb3-19"></a>  </span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">return</span>(plot1)</span>
+<span id="cb3-21"><a href="#cb3-21"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-
 </div>
-<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
-<section class="slide level2">
-
-<h4 id="life-expectancy-vs.-gdp-per-capita">Life Expectancy vs.&nbsp;GDP per Capita</h4>
+</section>
+<section id="sanitation-vs.-gdp-per-capita" class="slide level2">
+<h2>Sanitation vs.&nbsp;GDP per Capita</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> lngdp, <span class="at">y =</span> lfx))<span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt, <span class="st">"log of GDP per capita"</span>, <span class="st">"Sanitation Access %"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
 <img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section class="slide level2">
-
-<h4 id="life-expectation-vs.-sanitation">Life Expectation vs.&nbsp;Sanitation</h4>
+<section id="life-expectancy-vs.-gdp-per-capita" class="slide level2">
+<h2>Life Expectancy vs.&nbsp;GDP per Capita</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> snt, <span class="at">y =</span> lfx))<span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">theme</span>(</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx, <span class="st">"log of GDP per capita"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
 <img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="life-expectation-vs.-sanitation" class="slide level2">
+<h2>Life Expectation vs.&nbsp;Sanitation</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx, <span class="st">"Sanitation Access %"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="bivariate-statistics" class="title-slide slide level1 center">
+<h1>Bivariate Statistics</h1>
+
+</section>
 <section id="covariance-and-correlation-matrices" class="slide level2 smaller">
 <h2>Covariance and Correlation Matrices</h2>
-<p><em>Covariance</em> <span class="math inline">\(\operatorname{cov}(x, y)\)</span> is a measure of the joint variability of two random variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>. <em>Correlation</em> <span class="math inline">\(r_{x,y}\)</span> is any relationship, causal or spurious, between two random variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>. Pearson’s <span class="math inline">\(r\)</span> correlation is considered.</p>
+<p><em>Covariance</em> <span class="math inline">\(\operatorname{cov}(x, y)\)</span> is a measure of the joint variability of two random variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>.</p>
+<p><em>Correlation</em> <span class="math inline">\(r_{x,y}\)</span> is any relationship, causal or spurious, between two random variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>. <em>Pearson’s</em> <span class="math inline">\(r\)</span> correlation coefficient is considered here.</p>
 <p><span class="math display">\[
 \begin{align}
 \operatorname {cov} (x,y)={\frac {\sum _{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n}}
@@ -672,9 +677,9 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -714,9 +719,9 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cor_mat <span class="ot">=</span> <span class="fu">cor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>cor_mat <span class="ot">=</span> <span class="fu">cor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -755,44 +760,43 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 </div>
 </div>
 </section>
-<section id="correlation-coefficients" class="slide level2">
-<h2>Correlation Coefficients</h2>
+<section id="other-correlation-coefficients" class="slide level2">
+<h2>Other Correlation Coefficients</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>d_cor <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>  ),</span>
-<span id="cb8-8"><a href="#cb8-8"></a>  <span class="at">Pearson =</span> <span class="fu">c</span>(</span>
-<span id="cb8-9"><a href="#cb8-9"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
-<span id="cb8-10"><a href="#cb8-10"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
-<span id="cb8-11"><a href="#cb8-11"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"pearson"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12"></a>  ),</span>
-<span id="cb8-13"><a href="#cb8-13"></a>  <span class="at">Spearman =</span> <span class="fu">c</span>(</span>
-<span id="cb8-14"><a href="#cb8-14"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
-<span id="cb8-15"><a href="#cb8-15"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
-<span id="cb8-16"><a href="#cb8-16"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"spearman"</span>)</span>
-<span id="cb8-17"><a href="#cb8-17"></a>  ),</span>
-<span id="cb8-18"><a href="#cb8-18"></a>  <span class="at">Kendall =</span> <span class="fu">c</span>(</span>
-<span id="cb8-19"><a href="#cb8-19"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
-<span id="cb8-20"><a href="#cb8-20"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
-<span id="cb8-21"><a href="#cb8-21"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"kendall"</span>)</span>
-<span id="cb8-22"><a href="#cb8-22"></a>  )</span>
-<span id="cb8-23"><a href="#cb8-23"></a>)</span>
-<span id="cb8-24"><a href="#cb8-24"></a></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="fu">kable</span>(</span>
-<span id="cb8-26"><a href="#cb8-26"></a>  d_cor,</span>
-<span id="cb8-27"><a href="#cb8-27"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
-<span id="cb8-28"><a href="#cb8-28"></a>    <span class="st">"*Pearson's* $r$"</span>,</span>
-<span id="cb8-29"><a href="#cb8-29"></a>    <span class="st">"*Spearman's* $r_s$"</span>,</span>
-<span id="cb8-30"><a href="#cb8-30"></a>    <span class="st">"*Kendall's* $</span><span class="sc">\\</span><span class="st">tau$"</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a>  ),</span>
-<span id="cb8-32"><a href="#cb8-32"></a>  <span class="at">digits=</span><span class="dv">5</span></span>
-<span id="cb8-33"><a href="#cb8-33"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>d_cor <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>  ),</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="at">Pearson =</span> <span class="fu">c</span>(</span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb9-11"><a href="#cb9-11"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"pearson"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12"></a>  ),</span>
+<span id="cb9-13"><a href="#cb9-13"></a>  <span class="at">Spearman =</span> <span class="fu">c</span>(</span>
+<span id="cb9-14"><a href="#cb9-14"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb9-15"><a href="#cb9-15"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb9-16"><a href="#cb9-16"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17"></a>  ),</span>
+<span id="cb9-18"><a href="#cb9-18"></a>  <span class="at">Kendall =</span> <span class="fu">c</span>(</span>
+<span id="cb9-19"><a href="#cb9-19"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb9-20"><a href="#cb9-20"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb9-21"><a href="#cb9-21"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"kendall"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22"></a>  )</span>
+<span id="cb9-23"><a href="#cb9-23"></a>)</span>
+<span id="cb9-24"><a href="#cb9-24"></a></span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="fu">kable</span>(</span>
+<span id="cb9-26"><a href="#cb9-26"></a>  d_cor,</span>
+<span id="cb9-27"><a href="#cb9-27"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb9-28"><a href="#cb9-28"></a>    <span class="st">"*Pearson's* $r$"</span>,</span>
+<span id="cb9-29"><a href="#cb9-29"></a>    <span class="st">"*Spearman's* $r_s$"</span>,</span>
+<span id="cb9-30"><a href="#cb9-30"></a>    <span class="st">"*Kendall's* $</span><span class="sc">\\</span><span class="st">tau$"</span></span>
+<span id="cb9-31"><a href="#cb9-31"></a>  )</span>
+<span id="cb9-32"><a href="#cb9-32"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table style="width:100%;">
@@ -813,41 +817,94 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
-<td style="text-align: right;">0.80659</td>
-<td style="text-align: right;">0.85920</td>
-<td style="text-align: right;">0.67458</td>
+<td style="text-align: right;">0.8065923</td>
+<td style="text-align: right;">0.8592020</td>
+<td style="text-align: right;">0.6745816</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
-<td style="text-align: right;">0.77229</td>
-<td style="text-align: right;">0.81639</td>
-<td style="text-align: right;">0.62168</td>
+<td style="text-align: right;">0.7722893</td>
+<td style="text-align: right;">0.8163910</td>
+<td style="text-align: right;">0.6216788</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
-<td style="text-align: right;">0.81351</td>
-<td style="text-align: right;">0.83513</td>
-<td style="text-align: right;">0.63744</td>
+<td style="text-align: right;">0.8135103</td>
+<td style="text-align: right;">0.8351294</td>
+<td style="text-align: right;">0.6374424</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-
-<aside><div>
-<p>GDP per capita is used.</p>
-</div></aside></section></section>
+</section></section>
+<section>
 <section id="linear-regression" class="title-slide slide level1 center">
 <h1>Linear Regression</h1>
-<p><em>Simple Univariate Linear Regression</em> is a method for estimating the relationship<span class="math inline">\(Y=f(X)\)</span> of a <em>response</em> variable <span class="math inline">\(Y\)</span> with a <em>predictor</em> variable <span class="math inline">\(X\)</span>, as a Line that closely fits the <em>scatter plot</em>.</p>
+<p><em>Simple Univariate Linear Regression</em> is a method for estimating the relationship <span class="math inline">\(y_i=f(x_i)\)</span> of a <em>response</em> variable <span class="math inline">\(y\)</span> with a <em>predictor</em> variable <span class="math inline">\(x\)</span>, as a line that closely fits the <span class="math inline">\(y\)</span> vs.&nbsp;<span class="math inline">\(x\)</span> <em>scatter plot</em>.</p>
 <p><span class="math display">\[
 y_i = a + b x_i + e_i.
 \]</span></p>
-<p>Where <span class="math inline">\(a\)</span> is the slope, <span class="math inline">\(b\)</span> is the intercept, and <span class="math inline">\(e_i\)</span> is the i</p>
-<div class="footer footer-default">
+<p>Where <span class="math inline">\(a\)</span> is the intercept, <span class="math inline">\(b\)</span> is the slope, and <span class="math inline">\(e_i\)</span> is the i<sup>th</sup> residual error. We aim to minimize <span class="math inline">\(e_i\)</span> for better fit.</p>
+</section>
+<section id="ordinary-least-squares" class="slide level2">
+<h2>Ordinary Least Squares</h2>
+<p>Minimize <span class="math inline">\(e_i\)</span> by minimizing <span class="math inline">\(\sum{e_i^2}\)</span>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>olsplot <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    d, x_map, y_map,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb10-5"><a href="#cb10-5"></a>){</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  lmmodel <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> y_map<span class="sc">~</span>x_map)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>  plot1 <span class="ot">=</span> <span class="fu">ggplot</span>(d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x_map, <span class="at">y =</span> y_map))<span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="fu">theme</span>(</span>
+<span id="cb10-11"><a href="#cb10-11"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
+<span id="cb10-12"><a href="#cb10-12"></a>      <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
+<span id="cb10-13"><a href="#cb10-13"></a>      <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>),</span>
+<span id="cb10-14"><a href="#cb10-14"></a>      </span>
+<span id="cb10-15"><a href="#cb10-15"></a>      )<span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>    <span class="fu">labs</span>(</span>
+<span id="cb10-17"><a href="#cb10-17"></a>      <span class="at">x=</span>x_lab,</span>
+<span id="cb10-18"><a href="#cb10-18"></a>      <span class="at">y=</span>y_lab,</span>
+<span id="cb10-19"><a href="#cb10-19"></a>      <span class="at">title=</span>title</span>
+<span id="cb10-20"><a href="#cb10-20"></a>    )<span class="sc">+</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb10-22"><a href="#cb10-22"></a>      <span class="at">method=</span><span class="st">"lm"</span>,</span>
+<span id="cb10-23"><a href="#cb10-23"></a>      <span class="at">se=</span><span class="cn">FALSE</span>,</span>
+<span id="cb10-24"><a href="#cb10-24"></a>      <span class="at">color =</span> <span class="st">"#504945"</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>    )</span>
+<span id="cb10-26"><a href="#cb10-26"></a>  </span>
+<span id="cb10-27"><a href="#cb10-27"></a>  <span class="fu">return</span>(plot1)</span>
+<span id="cb10-28"><a href="#cb10-28"></a>}</span>
+<span id="cb10-29"><a href="#cb10-29"></a></span>
+<span id="cb10-30"><a href="#cb10-30"></a>olsshow <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb10-31"><a href="#cb10-31"></a>    d, x_map, y_map,</span>
+<span id="cb10-32"><a href="#cb10-32"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb10-33"><a href="#cb10-33"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb10-34"><a href="#cb10-34"></a>){</span>
+<span id="cb10-35"><a href="#cb10-35"></a>  lmmodel <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> y_map<span class="sc">~</span>x_map)</span>
+<span id="cb10-36"><a href="#cb10-36"></a>  </span>
+<span id="cb10-37"><a href="#cb10-37"></a>  <span class="fu">print</span>(<span class="fu">summary</span>(lmmodel))</span>
+<span id="cb10-38"><a href="#cb10-38"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">olsplot</span>(d, d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-</section>
+<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+
+</div>
+</section></section>
+
     </div>
   </div>
 

@@ -16,6 +16,8 @@ format:
     highlight-style: gruvbox-dark
     menu: false
     scrollable: true
+execute:
+  cache: false
 ---
 
 ```{r include=FALSE}
@@ -29,11 +31,9 @@ library(ggplot2)
 
 This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
 
-::: {.incremental}
-- **Logarithm of GDP per Capita**: Logarithm (base $e$) of Gross Domestic Product divided by Mid-year. Population. [*lngdp*]
+- **Logarithm of GDP per Capita**: Logarithm (base $e$) of Gross Domestic Product per citizen. [*lngdp*^[GDP per capita is used.]]
 - **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities. [*snt*]
 - **Life Expectancy**: The average number of years a newly born Child would live. [*lfx*]
-:::
 
 ## Data
 
@@ -71,12 +71,18 @@ kable(head(d, 5L))
 ```
 
 ::: aside
-FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).
+<sub>FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).</sub>
 :::
 
-# Univariate Analysis
+# Univariate Statistics
 
-## Mean and Standard Deviation
+## Mean and Standard Deviation {.smaller}
+
+*Sample Mean* $\bar{x}$ is a measure of central tendency of a random variable $x$.
+
+*Standard deviation* $s_x$ is a measure of dispersion in random variable $x$.
+
+Note that $x_i$ is the i<sup>th</sup> observation of the random variable $x$. 
 
 $$
 \begin{align}
@@ -116,9 +122,7 @@ kable(
 )
 ```
 
-# Bivariate Analysis
-
-## Scatter Plot
+# Scatter Plot
 
 A *Scatter plot* is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the *abscissa* and the other variable determining the *ordinate*. It helps us:
 
@@ -126,52 +130,53 @@ A *Scatter plot* is a type of Plot using Cartesian coordinate system to display 
 - suggest kinds of correlations between variables.
 - estimate the direction of correlation.
 
----
-
-#### Sanitation vs. GDP per Capita
 ``` {r echo=TRUE}
-ggplot(d, aes(x = lngdp, y = snt))+
-  geom_point()+
-  theme_minimal()+
-  theme(
-    plot.background = element_rect(fill = "#f9f5d7"),
-    panel.grid = element_line(colour = "#d5c4a1"),
-    axis.line = element_line(colour = "#928374")
+sctrplot = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+    geom_point()+
+    theme_minimal()+
+    theme(
+      plot.background = element_rect(fill = "#f9f5d7"),
+      panel.grid = element_line(colour = "#d5c4a1"),
+      axis.line = element_line(colour = "#928374")
+      )+
+    labs(
+      x=x_lab,
+      y=y_lab,
+      title=title
     )
+  
+  return(plot1)
+}
 ```
 
----
+## Sanitation vs. GDP per Capita
 
-#### Life Expectancy vs. GDP per Capita
 ```{r echo=TRUE}
-ggplot(d, aes(x = lngdp, y = lfx))+
-  geom_point()+
-  theme_minimal()+
-  theme(
-    plot.background = element_rect(fill = "#f9f5d7"),
-    panel.grid = element_line(colour = "#d5c4a1"),
-    axis.line = element_line(colour = "#928374")
-    )
+sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
----
-
-#### Life Expectation vs. Sanitation
+## Life Expectancy vs. GDP per Capita
 ```{r echo=TRUE}
-ggplot(d, aes(x = snt, y = lfx))+
-  geom_point()+
-  theme_minimal()+
-  theme(
-    plot.background = element_rect(fill = "#f9f5d7"),
-    panel.grid = element_line(colour = "#d5c4a1"),
-    axis.line = element_line(colour = "#928374")
-    )
+sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
+
+## Life Expectation vs. Sanitation
+```{r echo=TRUE}
+sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
+```
+
+# Bivariate Statistics
 
 ## Covariance and Correlation Matrices {.smaller}
 
 *Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
-*Correlation* $r_{x,y}$ is any relationship, causal or spurious, between two random variables $x$, $y$. Pearson's $r$ correlation is considered.
+
+*Correlation* $r_{x,y}$ is any relationship, causal or spurious, between two random variables $x$, $y$. *Pearson's* $r$ correlation coefficient is considered here.
 
 $$
 \begin{align}
@@ -207,7 +212,7 @@ $$A_{i,j} = r_{x_i, x_j}$$
 
 ::::
 
-## Correlation Coefficients
+## Other Correlation Coefficients
 
 ```{r echo=TRUE}
 d_cor = data.frame(
@@ -240,21 +245,65 @@ kable(
     "*Pearson's* $r$",
     "*Spearman's* $r_s$",
     "*Kendall's* $\\tau$"
-  ),
-  digits=5
+  )
 )
 ```
 
-::: aside
-GDP per capita is used.
-:::
-
 # Linear Regression
 
-*Simple Univariate Linear Regression*  is a method for estimating the relationship$Y=f(X)$ of a *response* variable $Y$ with a *predictor* variable $X$, as a Line that closely fits the *scatter plot*.
+*Simple Univariate Linear Regression*  is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
 
 $$
 y_i = a + b x_i + e_i.
 $$
 
-Where $a$ is the slope, $b$ is the intercept, and $e_i$ is the i
+Where $a$ is the intercept, $b$ is the slope, and $e_i$ is the i<sup>th</sup> residual error. We aim to minimize $e_i$ for better fit.
+
+## Ordinary Least Squares
+
+Minimize $e_i$ by minimizing $\sum{e_i^2}$.
+
+```{r echo=TRUE}
+olsplot = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  lmmodel = lm(formula = y_map~x_map)
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+    geom_point()+
+    theme_minimal()+
+    theme(
+      plot.background = element_rect(fill = "#f9f5d7"),
+      panel.grid = element_line(colour = "#d5c4a1"),
+      axis.line = element_line(colour = "#928374"),
+      
+      )+
+    labs(
+      x=x_lab,
+      y=y_lab,
+      title=title
+    )+
+    geom_smooth(
+      method="lm",
+      se=FALSE,
+      color = "#504945"
+    )
+  
+  return(plot1)
+}
+
+olsshow = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  lmmodel = lm(formula = y_map~x_map)
+  
+  print(summary(lmmodel))
+}
+```
+
+```{r echo=TRUE}
+olsplot(d, d$lfx, d$snt)
+```
