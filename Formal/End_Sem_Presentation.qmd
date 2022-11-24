@@ -7,8 +7,8 @@ author:
   - Aman Das [BS2206]
 format:
   revealjs:
-    width: 1080
-    height: 720
+    width: 1200
+    height: 750
     theme: [default, custom.scss]
     transition: slide
     hide-inactive-cursor: true
@@ -31,9 +31,9 @@ library(ggplot2)
 
 This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
 
-- **Logarithm of GDP per Capita**: Logarithm (base $e$) of Gross Domestic Product per citizen. [*lngdp*^[GDP per capita is used.]]
-- **Basic Sanitation Access**: Percentage of people using at least basic Sanitation facilities. [*snt*]
-- **Life Expectancy**: The average number of years a newly born Child would live. [*lfx*]
+- **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in $) per citizen. Adjusted for Inflation. [*lngdp*]
+- **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. [*snt*]
+- **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. [*lfx*]
 
 ## Data
 
@@ -67,7 +67,7 @@ d$lngdp = log(numerise(d$lngdp))
 
 write.csv(d, "./Data/assembled.csv")
 
-kable(head(d, 5L))
+kable(head(d, 6L))
 ```
 
 ::: aside
@@ -93,6 +93,7 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 $$
 
 ```{r echo=TRUE}
+
 d_cor = data.frame(
   row.names = "Variable",
   Variable = c(
@@ -140,7 +141,7 @@ sctrplot = function(
     geom_point()+
     theme_minimal()+
     theme(
-      plot.background = element_rect(fill = "#f9f5d7"),
+      plot.background = element_rect(fill = "#f9f5d7", color = NA),
       panel.grid = element_line(colour = "#d5c4a1"),
       axis.line = element_line(colour = "#928374")
       )+
@@ -193,7 +194,7 @@ $$
 ```{r echo=TRUE}
 cov_mat = cov(d[, 2:4])
 
-kable(cov_mat, digits=3)
+kable(cov_mat, digits=5)
 ```
 
 $$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
@@ -204,7 +205,7 @@ $$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
 ```{r echo=TRUE}
 cor_mat = cor(d[, 2:4])
 
-kable(cor_mat, digits=3)
+kable(cor_mat, digits=5)
 ```
 
 $$A_{i,j} = r_{x_i, x_j}$$
@@ -241,6 +242,7 @@ d_cor = data.frame(
 
 kable(
   d_cor,
+  digit = 5,
   col.names = c(
     "*Pearson's* $r$",
     "*Spearman's* $r_s$",
@@ -257,11 +259,11 @@ $$
 y_i = a + b x_i + e_i.
 $$
 
-Where $a$ is the intercept, $b$ is the slope, and $e_i$ is the i<sup>th</sup> residual error. We aim to minimize $e_i$ for better fit.
+Where $a$ is the *intercept*, $b$ is the *slope*, and $e_i$ is the i<sup>th</sup> residual *error*. We aim to minimize $e_i$ for better fit.
 
 ## Ordinary Least Squares
 
-Minimize $e_i$ by minimizing $\sum{e_i^2}$.
+*Ordinary Least squares method* reduces $e_i$ by minimizing *error sum of squares* $\sum{e_i^2}$.
 
 ```{r echo=TRUE}
 olsplot = function(
@@ -274,7 +276,7 @@ olsplot = function(
     geom_point()+
     theme_minimal()+
     theme(
-      plot.background = element_rect(fill = "#f9f5d7"),
+      plot.background = element_rect(fill = "#f9f5d7", color=NA),
       panel.grid = element_line(colour = "#d5c4a1"),
       axis.line = element_line(colour = "#928374"),
       
@@ -293,17 +295,74 @@ olsplot = function(
   return(plot1)
 }
 
-olsshow = function(
+olssmry = function(
     d, x_map, y_map,
     x_lab=waiver(), y_lab=waiver(),
     title=waiver()
 ){
-  lmmodel = lm(formula = y_map~x_map)
+  model = lm(formula=y_map~x_map)
+  smry = summary(model, signif.stars=TRUE)
   
-  print(summary(lmmodel))
+  smryvec = c(
+    as.numeric(model$coefficients["(Intercept)"]),
+    as.numeric(model$coefficients["x_map"]),
+    smry$r.squared
+  )
+  
+  return(smryvec)
 }
+
+olstab = t(data.frame(
+  SvG = olssmry(d, d$lngdp, d$snt),
+  LvG = olssmry(d, d$lngdp, d$lfx),
+  LvS = olssmry(d, d$snt, d$lfx)
+))
+
+row.names(olstab) = c(
+  "*Sanitation vs. ln(GDP)*",
+  "*Life Exp. vs. ln(GDP)*",
+  "*Life Exp. vs. Sanitation*"
+)
+
+kable(
+  olstab,
+  digit = 5,
+  col.names=c(
+  "$\\hat{a}$",
+  "$\\hat{b}$",
+  "$R^2$"
+  )
+)
 ```
 
-```{r echo=TRUE}
-olsplot(d, d$lfx, d$snt)
+::: aside
+$R^2$: Coefficient of Determination
+:::
+
+## Fitted lines on Scatter Plot
+
+::: {.absolute top=87 left=0 width="600"}
+
+```{r}
+olsplot(d, d$lngdp, d$snt,
+        "log of GDP per capita", "Sanitation access %")
 ```
+
+:::
+
+::: {.absolute top=405 left=316 width="600"}
+
+```{r}
+olsplot(d, d$lngdp, d$lfx,
+        "log of GDP per capita", "Life Expectancy")
+```
+
+:::
+
+::: {.absolute top=87 left=600 width="600"}
+
+```{r}
+olsplot(d, d$snt, d$lfx,
+        "Sanitation access %", "Life Expectancy")
+```
+:::

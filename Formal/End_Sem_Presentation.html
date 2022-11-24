@@ -422,11 +422,11 @@ Aman Das [BS2206]
 <h2>Overview</h2>
 <p>This presentation demonstrates the capabilities of <em>Bivariate Analysis</em> on datasets, to infer relationship between various features of Nations.</p>
 <ul>
-<li><strong>Logarithm of GDP per Capita</strong>: Logarithm (base <span class="math inline">\(e\)</span>) of Gross Domestic Product per citizen. [<em>lngdp</em><sup>1</sup>]</li>
-<li><strong>Basic Sanitation Access</strong>: Percentage of people using at least basic Sanitation facilities. [<em>snt</em>]</li>
-<li><strong>Life Expectancy</strong>: The average number of years a newly born Child would live. [<em>lfx</em>]</li>
+<li><strong>log of GDP per capita</strong>: Logarithm (base <span class="math inline">\(e\)</span>) of Gross Domestic Product (in $) per citizen. Adjusted for Inflation. [<em>lngdp</em>]</li>
+<li><strong>Sanitation Access %</strong>: Percentage of people using at least basic Sanitation facilities, not shared with other households. [<em>snt</em>]</li>
+<li><strong>Life Expectancy</strong>: The average number of years a newly born child would live, provided current mortality patterns hold. [<em>lfx</em>]</li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>GDP per capita is used.</p></li></ol></aside></section>
+</section>
 <section id="data" class="slide level2">
 <h2>Data</h2>
 <div class="cell">
@@ -461,7 +461,7 @@ Aman Das [BS2206]
 <span id="cb1-27"><a href="#cb1-27"></a></span>
 <span id="cb1-28"><a href="#cb1-28"></a><span class="fu">write.csv</span>(d, <span class="st">"./Data/assembled.csv"</span>)</span>
 <span id="cb1-29"><a href="#cb1-29"></a></span>
-<span id="cb1-30"><a href="#cb1-30"></a><span class="fu">kable</span>(<span class="fu">head</span>(d, 5L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="fu">kable</span>(<span class="fu">head</span>(d, 6L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -503,6 +503,12 @@ Aman Das [BS2206]
 <td style="text-align: right;">8.291547</td>
 <td style="text-align: right;">41.1</td>
 <td style="text-align: right;">60.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: right;">9.546813</td>
+<td style="text-align: right;">86.3</td>
+<td style="text-align: right;">75.9</td>
 </tr>
 </tbody>
 </table>
@@ -611,7 +617,7 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 <span id="cb3-7"><a href="#cb3-7"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb3-8"><a href="#cb3-8"></a>    <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
 <span id="cb3-9"><a href="#cb3-9"></a>    <span class="fu">theme</span>(</span>
-<span id="cb3-10"><a href="#cb3-10"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
 <span id="cb3-11"><a href="#cb3-11"></a>      <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
 <span id="cb3-12"><a href="#cb3-12"></a>      <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>)</span>
 <span id="cb3-13"><a href="#cb3-13"></a>      )<span class="sc">+</span></span>
@@ -679,7 +685,7 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -694,21 +700,21 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">lngdp</td>
-<td style="text-align: right;">2.018</td>
-<td style="text-align: right;">33.840</td>
-<td style="text-align: right;">9.522</td>
+<td style="text-align: right;">2.01791</td>
+<td style="text-align: right;">33.84045</td>
+<td style="text-align: right;">9.52202</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">snt</td>
-<td style="text-align: right;">33.840</td>
-<td style="text-align: right;">872.293</td>
-<td style="text-align: right;">208.542</td>
+<td style="text-align: right;">33.84045</td>
+<td style="text-align: right;">872.29346</td>
+<td style="text-align: right;">208.54155</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">lfx</td>
-<td style="text-align: right;">9.522</td>
-<td style="text-align: right;">208.542</td>
-<td style="text-align: right;">75.335</td>
+<td style="text-align: right;">9.52202</td>
+<td style="text-align: right;">208.54155</td>
+<td style="text-align: right;">75.33494</td>
 </tr>
 </tbody>
 </table>
@@ -721,7 +727,7 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>cor_mat <span class="ot">=</span> <span class="fu">cor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
@@ -736,21 +742,21 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">lngdp</td>
-<td style="text-align: right;">1.000</td>
-<td style="text-align: right;">0.807</td>
-<td style="text-align: right;">0.772</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">0.77229</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">snt</td>
-<td style="text-align: right;">0.807</td>
-<td style="text-align: right;">1.000</td>
-<td style="text-align: right;">0.814</td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">0.81351</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">lfx</td>
-<td style="text-align: right;">0.772</td>
-<td style="text-align: right;">0.814</td>
-<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.77229</td>
+<td style="text-align: right;">0.81351</td>
+<td style="text-align: right;">1.00000</td>
 </tr>
 </tbody>
 </table>
@@ -791,12 +797,13 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <span id="cb9-24"><a href="#cb9-24"></a></span>
 <span id="cb9-25"><a href="#cb9-25"></a><span class="fu">kable</span>(</span>
 <span id="cb9-26"><a href="#cb9-26"></a>  d_cor,</span>
-<span id="cb9-27"><a href="#cb9-27"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
-<span id="cb9-28"><a href="#cb9-28"></a>    <span class="st">"*Pearson's* $r$"</span>,</span>
-<span id="cb9-29"><a href="#cb9-29"></a>    <span class="st">"*Spearman's* $r_s$"</span>,</span>
-<span id="cb9-30"><a href="#cb9-30"></a>    <span class="st">"*Kendall's* $</span><span class="sc">\\</span><span class="st">tau$"</span></span>
-<span id="cb9-31"><a href="#cb9-31"></a>  )</span>
-<span id="cb9-32"><a href="#cb9-32"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-27"><a href="#cb9-27"></a>  <span class="at">digit =</span> <span class="dv">5</span>,</span>
+<span id="cb9-28"><a href="#cb9-28"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb9-29"><a href="#cb9-29"></a>    <span class="st">"*Pearson's* $r$"</span>,</span>
+<span id="cb9-30"><a href="#cb9-30"></a>    <span class="st">"*Spearman's* $r_s$"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31"></a>    <span class="st">"*Kendall's* $</span><span class="sc">\\</span><span class="st">tau$"</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a>  )</span>
+<span id="cb9-33"><a href="#cb9-33"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table style="width:100%;">
@@ -817,21 +824,21 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
-<td style="text-align: right;">0.8065923</td>
-<td style="text-align: right;">0.8592020</td>
-<td style="text-align: right;">0.6745816</td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">0.85920</td>
+<td style="text-align: right;">0.67458</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
-<td style="text-align: right;">0.7722893</td>
-<td style="text-align: right;">0.8163910</td>
-<td style="text-align: right;">0.6216788</td>
+<td style="text-align: right;">0.77229</td>
+<td style="text-align: right;">0.81639</td>
+<td style="text-align: right;">0.62168</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
-<td style="text-align: right;">0.8135103</td>
-<td style="text-align: right;">0.8351294</td>
-<td style="text-align: right;">0.6374424</td>
+<td style="text-align: right;">0.81351</td>
+<td style="text-align: right;">0.83513</td>
+<td style="text-align: right;">0.63744</td>
 </tr>
 </tbody>
 </table>
@@ -845,11 +852,11 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 <p><span class="math display">\[
 y_i = a + b x_i + e_i.
 \]</span></p>
-<p>Where <span class="math inline">\(a\)</span> is the intercept, <span class="math inline">\(b\)</span> is the slope, and <span class="math inline">\(e_i\)</span> is the i<sup>th</sup> residual error. We aim to minimize <span class="math inline">\(e_i\)</span> for better fit.</p>
+<p>Where <span class="math inline">\(a\)</span> is the <em>intercept</em>, <span class="math inline">\(b\)</span> is the <em>slope</em>, and <span class="math inline">\(e_i\)</span> is the i<sup>th</sup> residual <em>error</em>. We aim to minimize <span class="math inline">\(e_i\)</span> for better fit.</p>
 </section>
 <section id="ordinary-least-squares" class="slide level2">
 <h2>Ordinary Least Squares</h2>
-<p>Minimize <span class="math inline">\(e_i\)</span> by minimizing <span class="math inline">\(\sum{e_i^2}\)</span>.</p>
+<p><em>Ordinary Least squares method</em> reduces <span class="math inline">\(e_i\)</span> by minimizing <em>error sum of squares</em> <span class="math inline">\(\sum{e_i^2}\)</span>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -863,7 +870,7 @@ y_i = a + b x_i + e_i.
 <span id="cb10-8"><a href="#cb10-8"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb10-9"><a href="#cb10-9"></a>    <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
 <span id="cb10-10"><a href="#cb10-10"></a>    <span class="fu">theme</span>(</span>
-<span id="cb10-11"><a href="#cb10-11"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>),</span>
+<span id="cb10-11"><a href="#cb10-11"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f9f5d7"</span>, <span class="at">color=</span><span class="cn">NA</span>),</span>
 <span id="cb10-12"><a href="#cb10-12"></a>      <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#d5c4a1"</span>),</span>
 <span id="cb10-13"><a href="#cb10-13"></a>      <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#928374"</span>),</span>
 <span id="cb10-14"><a href="#cb10-14"></a>      </span>
@@ -882,29 +889,109 @@ y_i = a + b x_i + e_i.
 <span id="cb10-27"><a href="#cb10-27"></a>  <span class="fu">return</span>(plot1)</span>
 <span id="cb10-28"><a href="#cb10-28"></a>}</span>
 <span id="cb10-29"><a href="#cb10-29"></a></span>
-<span id="cb10-30"><a href="#cb10-30"></a>olsshow <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb10-30"><a href="#cb10-30"></a>olssmry <span class="ot">=</span> <span class="cf">function</span>(</span>
 <span id="cb10-31"><a href="#cb10-31"></a>    d, x_map, y_map,</span>
 <span id="cb10-32"><a href="#cb10-32"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
 <span id="cb10-33"><a href="#cb10-33"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
 <span id="cb10-34"><a href="#cb10-34"></a>){</span>
-<span id="cb10-35"><a href="#cb10-35"></a>  lmmodel <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> y_map<span class="sc">~</span>x_map)</span>
-<span id="cb10-36"><a href="#cb10-36"></a>  </span>
-<span id="cb10-37"><a href="#cb10-37"></a>  <span class="fu">print</span>(<span class="fu">summary</span>(lmmodel))</span>
-<span id="cb10-38"><a href="#cb10-38"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-35"><a href="#cb10-35"></a>  model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula=</span>y_map<span class="sc">~</span>x_map)</span>
+<span id="cb10-36"><a href="#cb10-36"></a>  smry <span class="ot">=</span> <span class="fu">summary</span>(model, <span class="at">signif.stars=</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-37"><a href="#cb10-37"></a>  </span>
+<span id="cb10-38"><a href="#cb10-38"></a>  smryvec <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb10-39"><a href="#cb10-39"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]),</span>
+<span id="cb10-40"><a href="#cb10-40"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="st">"x_map"</span>]),</span>
+<span id="cb10-41"><a href="#cb10-41"></a>    smry<span class="sc">$</span>r.squared</span>
+<span id="cb10-42"><a href="#cb10-42"></a>  )</span>
+<span id="cb10-43"><a href="#cb10-43"></a>  </span>
+<span id="cb10-44"><a href="#cb10-44"></a>  <span class="fu">return</span>(smryvec)</span>
+<span id="cb10-45"><a href="#cb10-45"></a>}</span>
+<span id="cb10-46"><a href="#cb10-46"></a></span>
+<span id="cb10-47"><a href="#cb10-47"></a>olstab <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb10-48"><a href="#cb10-48"></a>  <span class="at">SvG =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt),</span>
+<span id="cb10-49"><a href="#cb10-49"></a>  <span class="at">LvG =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx),</span>
+<span id="cb10-50"><a href="#cb10-50"></a>  <span class="at">LvS =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx)</span>
+<span id="cb10-51"><a href="#cb10-51"></a>))</span>
+<span id="cb10-52"><a href="#cb10-52"></a></span>
+<span id="cb10-53"><a href="#cb10-53"></a><span class="fu">row.names</span>(olstab) <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb10-54"><a href="#cb10-54"></a>  <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb10-55"><a href="#cb10-55"></a>  <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb10-56"><a href="#cb10-56"></a>  <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb10-57"><a href="#cb10-57"></a>)</span>
+<span id="cb10-58"><a href="#cb10-58"></a></span>
+<span id="cb10-59"><a href="#cb10-59"></a><span class="fu">kable</span>(</span>
+<span id="cb10-60"><a href="#cb10-60"></a>  olstab,</span>
+<span id="cb10-61"><a href="#cb10-61"></a>  <span class="at">digit =</span> <span class="dv">5</span>,</span>
+<span id="cb10-62"><a href="#cb10-62"></a>  <span class="at">col.names=</span><span class="fu">c</span>(</span>
+<span id="cb10-63"><a href="#cb10-63"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{a}$"</span>,</span>
+<span id="cb10-64"><a href="#cb10-64"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{b}$"</span>,</span>
+<span id="cb10-65"><a href="#cb10-65"></a>  <span class="st">"$R^2$"</span></span>
+<span id="cb10-66"><a href="#cb10-66"></a>  )</span>
+<span id="cb10-67"><a href="#cb10-67"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\(\hat{a}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\hat{b}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">-70.79844</td>
+<td style="text-align: right;">16.77006</td>
+<td style="text-align: right;">0.65059</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">30.24203</td>
+<td style="text-align: right;">4.71876</td>
+<td style="text-align: right;">0.59643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">53.22795</td>
+<td style="text-align: right;">0.23907</td>
+<td style="text-align: right;">0.66180</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">olsplot</span>(d, d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+</div>
 
+<aside><div>
+<p><span class="math inline">\(R^2\)</span>: Coefficient of Determination</p>
+</div></aside></section>
+<section id="fitted-lines-on-scatter-plot" class="slide level2">
+<h2>Fitted lines on Scatter Plot</h2>
+<div class="absolute" style="top: 87px; left: 0px; width: 600px; ">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>
-<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+</div>
+</div>
+<div class="absolute" style="top: 405px; left: 316px; width: 600px; ">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<div class="absolute" style="top: 87px; left: 600px; width: 600px; ">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<div class="footer footer-default">
 
 </div>
 </section></section>
-
     </div>
   </div>
 
@@ -1082,9 +1169,9 @@ y_i = a + b x_i + e_i.
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1080,
+        width: 1200,
 
-        height: 720,
+        height: 750,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,

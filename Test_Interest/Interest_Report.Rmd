@@ -43,7 +43,8 @@ analyse = function(yearname, csv1, csv2){
   # 
   print(cor(x1, x2))
   model = lm(formula=x2~x1)
-  print(summary(model))
+  print(summary(model, 
+signif.stars = TRUE))
   # plot(x1, x2)
   ggplot(model, aes(
     x = x1,
