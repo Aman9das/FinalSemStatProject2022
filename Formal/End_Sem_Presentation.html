@@ -7,7 +7,7 @@
 <link href="End_Sem_Presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="End_Sem_Presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="End_Sem_Presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.1.189">
 
   <meta name="author" content="Raj Pratap Singh [BS2219]">
   <meta name="author" content="Shreyansh Mukhopadhyay [BS2147]">
@@ -390,29 +390,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center">
   <h1 class="title">End-Semester Project</h1>
   <p class="subtitle">Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Raj Pratap Singh [BS2219] 
-</div>
-</div>
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Shreyansh Mukhopadhyay [BS2147] 
-</div>
-</div>
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Aman Das [BS2206] 
-</div>
-</div>
-</div>
-
+  <p class="author">Raj Pratap Singh [BS2219]</p>
+  <p class="author">Shreyansh Mukhopadhyay [BS2147]</p>
+  <p class="author">Aman Das [BS2206]</p>
 </section>
+
 <section>
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
@@ -443,9 +428,9 @@ Aman Das [BS2206]
 <span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">return</span>(x)</span>
 <span id="cb1-8"><a href="#cb1-8"></a>}</span>
 <span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>d1_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./Data/gdp.csv"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>d2_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./Data/sanitation.csv"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12"></a>d3_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"./Data/life_expectancy.csv"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>d1_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">".</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">gdp.csv"</span>, <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>d2_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">".</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">sanitation.csv"</span>, <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>d3_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">".</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">life_expectancy.csv"</span>, <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
 <span id="cb1-13"><a href="#cb1-13"></a></span>
 <span id="cb1-14"><a href="#cb1-14"></a>yearname <span class="ot">=</span> <span class="st">"X2010"</span></span>
 <span id="cb1-15"><a href="#cb1-15"></a></span>
@@ -1065,15 +1050,12 @@ y_i = a + b x_i + e_i.
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -1084,6 +1066,13 @@ y_i = a + b x_i + e_i.
               window.jQuery(currentSlide).trigger("shown");
             }
           }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
         }
 
         // hookup for slidy
@@ -1135,24 +1124,7 @@ y_i = a + b x_i + e_i.
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
         setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1190,42 +1162,24 @@ y_i = a + b x_i + e_i.
           return note.innerHTML;
         });
       }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
           });
-        }
+          return popup.innerHTML;
+        });
       }
     });
     </script>
