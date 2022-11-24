@@ -23,6 +23,7 @@ execute:
 ```{r include=FALSE}
 library(knitr)
 library(ggplot2)
+library(quantreg)
 ```
 
 # Introduction
@@ -38,7 +39,7 @@ This presentation demonstrates the capabilities of *Bivariate Analysis* on datas
 ## Data
 
 ```{r echo=TRUE, collapse=TRUE}
-script.dir <- getSrcDirectory(function(x) {x})
+script.dir = "~/Documents/Indian_Statistical_Institute/Sem_1/Statistical_Methods_1/Projects/Final_Sem/Formal"
 setwd(script.dir)
 
 numerise = function(x){
@@ -157,17 +158,17 @@ sctrplot = function(
 
 ## Sanitation vs. GDP per Capita
 
-```{r echo=TRUE}
+```{r}
 sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
 ## Life Expectancy vs. GDP per Capita
-```{r echo=TRUE}
+```{r}
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
 ## Life Expectation vs. Sanitation
-```{r echo=TRUE}
+```{r}
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
@@ -256,45 +257,16 @@ kable(
 *Simple Univariate Linear Regression*  is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
 
 $$
-y_i = a + b x_i + e_i.
+y_i = \hat{a} + \hat{b} x_i + e_i.
 $$
 
-Where $a$ is the *intercept*, $b$ is the *slope*, and $e_i$ is the i<sup>th</sup> residual *error*. We aim to minimize $e_i$ for better fit.
+Where $\hat{a}$ is the *intercept*, $\hat{b}$ is the *slope*, and $e_i$ is the i<sup>th</sup> residual *error*. We aim to minimize $e_i$ for better fit.
 
 ## Ordinary Least Squares
 
 *Ordinary Least squares method* reduces $e_i$ by minimizing *error sum of squares* $\sum{e_i^2}$.
 
 ```{r echo=TRUE}
-olsplot = function(
-    d, x_map, y_map,
-    x_lab=waiver(), y_lab=waiver(),
-    title=waiver()
-){
-  lmmodel = lm(formula = y_map~x_map)
-  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
-    geom_point()+
-    theme_minimal()+
-    theme(
-      plot.background = element_rect(fill = "#f9f5d7", color=NA),
-      panel.grid = element_line(colour = "#d5c4a1"),
-      axis.line = element_line(colour = "#928374"),
-      
-      )+
-    labs(
-      x=x_lab,
-      y=y_lab,
-      title=title
-    )+
-    geom_smooth(
-      method="lm",
-      se=FALSE,
-      color = "#504945"
-    )
-  
-  return(plot1)
-}
-
 olssmry = function(
     d, x_map, y_map,
     x_lab=waiver(), y_lab=waiver(),
@@ -339,30 +311,110 @@ kable(
 $R^2$: Coefficient of Determination
 :::
 
-## Fitted lines on Scatter Plot
+## Least Absolute Deviation
 
-::: {.absolute top=87 left=0 width="600"}
+*Least absolute Deviation method* reduces $e_i$ by minimizing the *sum of absolute deviations* $\sum{|e_i|}$.
 
-```{r}
-olsplot(d, d$lngdp, d$snt,
-        "log of GDP per capita", "Sanitation access %")
+```{r echo=TRUE}
+ladsmry = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  model = rq(formula=y_map~x_map)
+  smry = summary(model)
+  
+  smryvec = c(
+    as.numeric(model$coefficients[1]),
+    as.numeric(model$coefficients[2])
+  )
+  
+  return(smryvec)
+}
+
+olstab = t(data.frame(
+  SvG = ladsmry(d, d$lngdp, d$snt),
+  LvG = ladsmry(d, d$lngdp, d$lfx),
+  LvS = ladsmry(d, d$snt, d$lfx)
+))
+
+row.names(olstab) = c(
+  "*Sanitation vs. ln(GDP)*",
+  "*Life Exp. vs. ln(GDP)*",
+  "*Life Exp. vs. Sanitation*"
+)
+
+kable(
+  olstab,
+  digit = 5,
+  col.names=c(
+  "$\\hat{a}$",
+  "$\\hat{b}$"
+  )
+)
 ```
 
-:::
+# Line fitting
 
-::: {.absolute top=405 left=316 width="600"}
-
-```{r}
-olsplot(d, d$lngdp, d$lfx,
-        "log of GDP per capita", "Life Expectancy")
+```{r echo=TRUE}
+linearplot = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+    geom_point()+
+    theme_minimal()+
+    theme(
+      plot.background = element_rect(fill = "#f9f5d7", color = NA),
+      panel.grid = element_line(colour = "#d5c4a1"),
+      axis.line = element_line(colour = "#928374")
+      )+
+    labs(
+      x=x_lab,
+      y=y_lab,
+      title=title
+    )+
+    geom_smooth(
+      method="lm",
+      formula=y~x,
+      se=FALSE,
+      aes(color = "Ordinary Least Squares")
+    )+
+    geom_smooth(
+      method="rq",
+      formula=y~x,
+      se=FALSE,
+      aes(color = "Least Absolute Deviation")
+    )+
+    labs(
+      color="Line fit method"
+    )+
+    scale_color_manual(
+      values=c(
+        "#cc241d80",
+        "#45858880", 
+        "#689d6a80")
+      )
+  
+  return(plot1)
+}
 ```
 
-:::
-
-::: {.absolute top=87 left=600 width="600"}
+## Sanitation vs. GDP per Capita
 
 ```{r}
-olsplot(d, d$snt, d$lfx,
-        "Sanitation access %", "Life Expectancy")
+linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
-:::
+
+## Life Expectancy vs. GDP per Capita
+```{r}
+linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
+```
+
+## Life Expectation vs. Sanitation
+```{r}
+linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
+```
+
+# Partial Correlation
