@@ -47,9 +47,9 @@ numerise = function(x){
   return(x)
 }
 
-d1_raw = read.csv(".\\Data\\gdp.csv", fileEncoding = 'UTF-8-BOM')
-d2_raw = read.csv(".\\Data\\sanitation.csv", fileEncoding = 'UTF-8-BOM')
-d3_raw = read.csv(".\\Data\\life_expectancy.csv", fileEncoding = 'UTF-8-BOM')
+d1_raw = read.csv(file.path(".","Data","gdp.csv"), fileEncoding = 'UTF-8-BOM')
+d2_raw = read.csv(file.path(".","Data","sanitation.csv"), fileEncoding = 'UTF-8-BOM')
+d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
 
 yearname = "X2010"
 
