@@ -10,12 +10,23 @@ format:
     width: 1200
     height: 750
     theme: [default, custom.scss]
+    highlight-style: gruvbox
     transition: slide
+    # logo: ./Data/logo.png
     hide-inactive-cursor: true
     code-fold: true
-    highlight-style: gruvbox-dark
     menu: false
     scrollable: true
+    history: true
+  html:
+    toc: true
+    html-math-method: katex
+    theme:
+      light:
+        - sandstone
+      dark:
+        - slate
+    highlight-style: gruvbox
 execute:
   cache: false
 ---
@@ -139,7 +150,9 @@ sctrplot = function(
     title=waiver()
 ){
   plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
-    geom_point()+
+    geom_point(
+      alpha=0.6
+    )+
     theme_minimal()+
     theme(
       plot.background = element_rect(fill = "#f9f5d7", color = NA),
@@ -354,7 +367,9 @@ kable(
 )
 ```
 
-# Line fitting
+## Line fitting
+
+Plotting the estimated *Linear Model* on the Scatter Plot.
 
 ```{r echo=TRUE}
 linearplot = function(
@@ -363,7 +378,9 @@ linearplot = function(
     title=waiver()
 ){
   plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
-    geom_point()+
+    geom_point(
+      alpha=0.6
+    )+
     theme_minimal()+
     theme(
       plot.background = element_rect(fill = "#f9f5d7", color = NA),
@@ -388,13 +405,12 @@ linearplot = function(
       aes(color = "Least Absolute Deviation")
     )+
     labs(
-      color="Line fit method"
+      color="Linear Model"
     )+
     scale_color_manual(
       values=c(
         "#cc241d80",
-        "#45858880", 
-        "#689d6a80")
+        "#45858880")
       )
   
   return(plot1)
