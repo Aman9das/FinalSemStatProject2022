@@ -21,12 +21,10 @@ format:
   html:
     toc: true
     html-math-method: katex
+    highlight-style: gruvbox-dark
     theme:
-      light:
-        - sandstone
-      dark:
-        - slate
-    highlight-style: gruvbox
+      light: sandstone
+      dark: slate
 execute:
   cache: false
 ---
@@ -35,6 +33,8 @@ execute:
 library(knitr)
 library(ggplot2)
 library(quantreg)
+library(ppcor)
+library(psych)
 ```
 
 # Introduction
@@ -88,25 +88,31 @@ kable(head(d, 6L))
 
 # Univariate Statistics
 
-## Mean and Standard Deviation {.smaller}
+## Measures of Central Tendency {.smaller}
 
-*Sample Mean* $\bar{x}$ is a measure of central tendency of a random variable $x$.
-
-*Standard deviation* $s_x$ is a measure of dispersion in random variable $x$.
-
-Note that $x_i$ is the i<sup>th</sup> observation of the random variable $x$. 
+*Mean or Arithmetic Mean* $\bar{x}$,
+*Geometric Mean* $\operatorname{GM}(x)$,
+*Harmonic Mean* $\operatorname{HM}(x)$,
+*Median* $\operatorname{median}(x)$ and
+*Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
 
 $$
 \begin{align}
-\bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}}
-&&
-s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
+\bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}} &&
+\operatorname{GM}(x) = \left(\prod_{i=1}^n a_i\right)^\frac{1}{n}
 \end{align}
 $$
 
 ```{r echo=TRUE}
+getmode <- function(v) {
+ uniqv <- unique(v)
+ freq = max(tabulate(match(v, uniqv)))
+ res = uniqv[which.max(tabulate(match(v, uniqv)))]
+ if (freq == 1) res = NULL
+ return(res)
+}
 
-d_cor = data.frame(
+d_central = data.frame(
   row.names = "Variable",
   Variable = c(
     "*ln(GDP)*",
@@ -118,6 +124,74 @@ d_cor = data.frame(
     mean(d$snt),
     mean(d$lfx)
   ),
+  GM = c(
+    geometric.mean(d$lngdp),
+    geometric.mean(d$snt),
+    geometric.mean(d$lfx)
+  ),
+  HM = c(
+    harmonic.mean(d$lngdp),
+    harmonic.mean(d$snt),
+    harmonic.mean(d$lfx)
+  ),
+  Median = c(
+    median(d$lngdp),
+    median(d$snt),
+    median(d$lfx)
+  ),
+  Mode = c(
+    getmode(d$lngdp),
+    getmode(d$snt),
+    getmode(d$lfx)
+  )
+)
+
+kable(
+  d_central,
+  col.names = c(
+    "$\\bar{x}$",
+    "$\\operatorname{GM}(x)$",
+    "$\\operatorname{HM}(x)$",
+    "$\\operatorname{median}(x)$",
+    "$\\operatorname{mode}(x)$"
+  ),
+  digits=5
+)
+```
+
+::: aside
+Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$. 
+:::
+
+## Measures of Dispersion {.smaller}
+
+Range range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
+
+$$
+\begin{align}
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
+\end{align}
+$$
+
+```{echo=TRUE}
+d_disp = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*ln(GDP)*",
+    "*Sanitation*",
+    "*Life Exp.*"
+  ),
+  Range = c(
+    max(d$lngdp) - min(d$lngdp),
+    max(d$snt) - min(d$snt),
+    max(d$lfx) - min(d$lfx)
+  ),
+  SIR = c(
+    IQR(d$lngdp)/2,
+    IQR(d$snt)/2,
+    IQR(d$lfx)/2
+  ),
+  
   SD = c(
     sd(d$lngdp),
     sd(d$snt),
@@ -126,9 +200,11 @@ d_cor = data.frame(
 )
 
 kable(
-  d_cor,
+  d_disp,
   col.names = c(
-    "Mean $\\bar{x}$",
+    "Range",
+    "SIR",
+    "Range",
     "Standard Deviation $s_x$"
   ),
   digits=5
@@ -203,7 +279,7 @@ $$
 
 :::: {.columns}
 
-::: {.column width="50%"}
+::: {.column width="48%"}
 
 ```{r echo=TRUE}
 cov_mat = cov(d[, 2:4])
@@ -214,7 +290,10 @@ kable(cov_mat, digits=5)
 $$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
 :::
 
-::: {.column width="50%"}
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
 
 ```{r echo=TRUE}
 cor_mat = cor(d[, 2:4])
@@ -434,3 +513,33 @@ linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
 # Partial Correlation
+
+```{r}
+partcor = pcor(d[, 2:4])$estimate
+spartcor = spcor(d[, 2:4])$estimate
+
+pcortab = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  SPCor = c(
+    spartcor[2, 1], # row number denotes the X, col number denotes the Y
+    spartcor[3, 1],
+    spartcor[3, 2]
+  ),
+  PCor = c(
+    partcor[2, 1],
+    partcor[3, 1],
+    partcor[3, 2]
+  )
+)
+
+kable(pcortab,
+      col.names = c(
+        "Semi-Partial Correlation",
+        "Partial Correlation"
+      ))
+```
