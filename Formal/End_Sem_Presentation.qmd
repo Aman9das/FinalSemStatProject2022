@@ -244,6 +244,7 @@ kable(
 About?
 
 ``` {r echo=TRUE}
+#| fig-align: center
 labelfunction = function(val1){
   return(list(c(
     "log of GDP per capita",
