@@ -2,9 +2,9 @@
 title: End-Semester Project
 subtitle: Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010
 author:
+  - Aman Das [BS2206]
   - Raj Pratap Singh [BS2219]
   - Shreyansh Mukhopadhyay [BS2147]
-  - Aman Das [BS2206]
 format:
   revealjs:
     width: 1200
@@ -25,6 +25,8 @@ format:
     theme:
       light: sandstone
       dark: slate
+  pptx:
+    reference-doc: ./Templates/template1
 execute:
   cache: false
 ---
@@ -35,6 +37,18 @@ library(ggplot2)
 library(quantreg)
 library(ppcor)
 library(psych)
+
+mytheme=theme_minimal()+
+theme(
+  plot.background = element_rect(fill = "#f9f5d7", color = NA),
+  panel.grid = element_line(colour = "#d5c4a1"),
+  axis.line = element_line(colour = "#928374"),
+  )
+mycolor=scale_color_manual(
+      values=c(
+        "#cc241d80",
+        "#45858880")
+      )
 ```
 
 # Introduction
@@ -43,9 +57,9 @@ library(psych)
 
 This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
 
-- **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in $) per citizen. Adjusted for Inflation. [*lngdp*]
-- **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. [*snt*]
-- **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. [*lfx*]
+-   **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in \$) per citizen. Adjusted for Inflation. \[*lngdp*\]
+-   **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. \[*snt*\]
+-   **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
 
 ## Data
 
@@ -90,11 +104,7 @@ kable(head(d, 6L))
 
 ## Measures of Central Tendency {.smaller}
 
-*Mean or Arithmetic Mean* $\bar{x}$,
-*Geometric Mean* $\operatorname{GM}(x)$,
-*Harmonic Mean* $\operatorname{HM}(x)$,
-*Median* $\operatorname{median}(x)$ and
-*Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
+*Mean or Arithmetic Mean* $\bar{x}$, *Geometric Mean* $\operatorname{GM}(x)$, *Harmonic Mean* $\operatorname{HM}(x)$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
 
 $$
 \begin{align}
@@ -160,7 +170,7 @@ kable(
 ```
 
 ::: aside
-Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$. 
+Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$.
 :::
 
 ## Measures of Dispersion {.smaller}
@@ -173,7 +183,15 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 \end{align}
 $$
 
-```{echo=TRUE}
+``` {r echo=TRUE}
+getmd = function(x, center = mean(x)){
+  md = mean(
+    abs(
+      x - rep(center, length(x))
+      )
+    )
+  return(md)
+}
 d_disp = data.frame(
   row.names = "Variable",
   Variable = c(
@@ -191,7 +209,16 @@ d_disp = data.frame(
     IQR(d$snt)/2,
     IQR(d$lfx)/2
   ),
-  
+  MD = c(
+    getmd(d$lngdp),
+    getmd(d$snt),
+    getmd(d$lfx)
+  ),
+  variance = c(
+    (sd(d$lngdp))^2,
+    (sd(d$snt))^2,
+    (sd(d$lfx))^2
+  ),
   SD = c(
     sd(d$lngdp),
     sd(d$snt),
@@ -204,22 +231,57 @@ kable(
   col.names = c(
     "Range",
     "SIR",
-    "Range",
-    "Standard Deviation $s_x$"
+    "Mean Deviation",
+    "s_x^2",
+    "$s_x$"
   ),
   digits=5
 )
 ```
 
+## Box Plot
+
+About?
+
+``` {r echo=TRUE}
+labelfunction = function(val1){
+  return(list(c(
+    "log of GDP per capita",
+    "Sanitation Access %",
+    "Life Expectancy"
+  )))
+}
+ggplot(stack(d[2:4]), mapping = aes(y = values))+
+geom_boxplot(aes(fill=ind), alpha=0.8)+
+labs(
+  x=NULL,
+  y=NULL
+  )+
+mytheme+
+scale_color_manual(
+  values=c(
+    "#cc241d80",
+    "#45858880")
+  )+
+facet_wrap(~ind, scales="free", labeller = labelfunction)+
+  theme(axis.text.x=element_blank(),
+        legend.position="none",
+        strip.text.x = element_text(size = 12))
+  
+  
+```
+
+## Inferences
+
 # Scatter Plot
 
 A *Scatter plot* is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the *abscissa* and the other variable determining the *ordinate*. It helps us:
 
-- take a short glance at effect of two variables.
-- suggest kinds of correlations between variables.
-- estimate the direction of correlation.
+-   take a short glance at effect of two variables.
+-   suggest kinds of correlations between variables.
+-   estimate the direction of correlation.
 
-``` {r echo=TRUE}
+```{r echo=TRUE}
 sctrplot = function(
     d, x_map, y_map,
     x_lab=waiver(), y_lab=waiver(),
@@ -229,12 +291,7 @@ sctrplot = function(
     geom_point(
       alpha=0.6
     )+
-    theme_minimal()+
-    theme(
-      plot.background = element_rect(fill = "#f9f5d7", color = NA),
-      panel.grid = element_line(colour = "#d5c4a1"),
-      axis.line = element_line(colour = "#928374")
-      )+
+    mytheme+
     labs(
       x=x_lab,
       y=y_lab,
@@ -252,14 +309,18 @@ sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
 ## Life Expectancy vs. GDP per Capita
+
 ```{r}
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
 ## Life Expectation vs. Sanitation
+
 ```{r}
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
+
+## Inferences
 
 # Bivariate Statistics
 
@@ -277,10 +338,8 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 \end{align}
 $$
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="48%"}
-
 ```{r echo=TRUE}
 cov_mat = cov(d[, 2:4])
 
@@ -294,7 +353,6 @@ $$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
 :::
 
 ::: {.column width="48%"}
-
 ```{r echo=TRUE}
 cor_mat = cor(d[, 2:4])
 
@@ -303,10 +361,13 @@ kable(cor_mat, digits=5)
 
 $$A_{i,j} = r_{x_i, x_j}$$
 :::
-
-::::
+:::
 
 ## Other Correlation Coefficients
+
+*Pearson*,
+*Spearman*,
+*Kendall* #TODO
 
 ```{r echo=TRUE}
 d_cor = data.frame(
@@ -344,9 +405,37 @@ kable(
 )
 ```
 
+# Partial Correlation
+
+*Partial* 
+
+```{r}
+partcor = pcor(d[, 2:4])$estimate
+
+pcortab = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  PCor = c(
+    partcor[2, 1],
+    partcor[3, 1],
+    partcor[3, 2]
+  )
+)
+
+kable(pcortab,
+      col.names = c(
+        "Partial Correlation"
+      ))
+```
+
+
 # Linear Regression
 
-*Simple Univariate Linear Regression*  is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
+*Simple Univariate Linear Regression* is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
 
 $$
 y_i = \hat{a} + \hat{b} x_i + e_i.
@@ -460,12 +549,7 @@ linearplot = function(
     geom_point(
       alpha=0.6
     )+
-    theme_minimal()+
-    theme(
-      plot.background = element_rect(fill = "#f9f5d7", color = NA),
-      panel.grid = element_line(colour = "#d5c4a1"),
-      axis.line = element_line(colour = "#928374")
-      )+
+    mytheme+
     labs(
       x=x_lab,
       y=y_lab,
@@ -486,11 +570,7 @@ linearplot = function(
     labs(
       color="Linear Model"
     )+
-    scale_color_manual(
-      values=c(
-        "#cc241d80",
-        "#45858880")
-      )
+    mycolor
   
   return(plot1)
 }
@@ -503,43 +583,13 @@ linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
 ## Life Expectancy vs. GDP per Capita
+
 ```{r}
 linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
 ## Life Expectation vs. Sanitation
+
 ```{r}
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
-```
-
-# Partial Correlation
-
-```{r}
-partcor = pcor(d[, 2:4])$estimate
-spartcor = spcor(d[, 2:4])$estimate
-
-pcortab = data.frame(
-  row.names = "Variable",
-  Variable = c(
-    "*Sanitation vs. ln(GDP)*",
-    "*Life Exp. vs. ln(GDP)*",
-    "*Life Exp. vs. Sanitation*"
-  ),
-  SPCor = c(
-    spartcor[2, 1], # row number denotes the X, col number denotes the Y
-    spartcor[3, 1],
-    spartcor[3, 2]
-  ),
-  PCor = c(
-    partcor[2, 1],
-    partcor[3, 1],
-    partcor[3, 2]
-  )
-)
-
-kable(pcortab,
-      col.names = c(
-        "Semi-Partial Correlation",
-        "Partial Correlation"
-      ))
 ```
