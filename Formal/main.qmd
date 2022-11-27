@@ -32,7 +32,7 @@ format:
       dark: slate
   pptx:
     output-file: PPT_powerpoint.pptx
-    reference-doc: ./Templates/template1
+    reference-doc: ./Templates/template1.pptx
 execute:
   cache: false
 ---

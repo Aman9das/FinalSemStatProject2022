@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Aman Das [BS2206]">
+<meta name="author" content="Raj Pratap Singh [BS2219]">
+<meta name="author" content="Shreyansh Mukhopadhyay [BS2147]">
+
+<title>End-Semester Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="main_files/libs/clipboard/clipboard.min.js"></script>
+<script src="main_files/libs/quarto-html/quarto.js"></script>
+<script src="main_files/libs/quarto-html/popper.min.js"></script>
+<script src="main_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="main_files/libs/quarto-html/anchor.min.js"></script>
+<link href="main_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="main_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="main_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="main_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="main_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="main_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="main_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  </ul></li>
+  <li><a href="#univariate-statistics" id="toc-univariate-statistics" class="nav-link" data-scroll-target="#univariate-statistics">Univariate Statistics</a>
+  <ul class="collapse">
+  <li><a href="#measures-of-central-tendency" id="toc-measures-of-central-tendency" class="nav-link" data-scroll-target="#measures-of-central-tendency">Measures of Central Tendency</a></li>
+  <li><a href="#measures-of-dispersion" id="toc-measures-of-dispersion" class="nav-link" data-scroll-target="#measures-of-dispersion">Measures of Dispersion</a></li>
+  <li><a href="#box-plot" id="toc-box-plot" class="nav-link" data-scroll-target="#box-plot">Box Plot</a></li>
+  <li><a href="#inferences" id="toc-inferences" class="nav-link" data-scroll-target="#inferences">Inferences</a></li>
+  </ul></li>
+  <li><a href="#scatter-plot" id="toc-scatter-plot" class="nav-link" data-scroll-target="#scatter-plot">Scatter Plot</a>
+  <ul class="collapse">
+  <li><a href="#sanitation-vs.-gdp-per-capita" id="toc-sanitation-vs.-gdp-per-capita" class="nav-link" data-scroll-target="#sanitation-vs.-gdp-per-capita">Sanitation vs.&nbsp;GDP per Capita</a></li>
+  <li><a href="#life-expectancy-vs.-gdp-per-capita" id="toc-life-expectancy-vs.-gdp-per-capita" class="nav-link" data-scroll-target="#life-expectancy-vs.-gdp-per-capita">Life Expectancy vs.&nbsp;GDP per Capita</a></li>
+  <li><a href="#life-expectation-vs.-sanitation" id="toc-life-expectation-vs.-sanitation" class="nav-link" data-scroll-target="#life-expectation-vs.-sanitation">Life Expectation vs.&nbsp;Sanitation</a></li>
+  <li><a href="#inferences-1" id="toc-inferences-1" class="nav-link" data-scroll-target="#inferences-1">Inferences</a></li>
+  </ul></li>
+  <li><a href="#bivariate-statistics" id="toc-bivariate-statistics" class="nav-link" data-scroll-target="#bivariate-statistics">Bivariate Statistics</a>
+  <ul class="collapse">
+  <li><a href="#covariance-and-correlation-matrices" id="toc-covariance-and-correlation-matrices" class="nav-link" data-scroll-target="#covariance-and-correlation-matrices">Covariance and Correlation Matrices</a></li>
+  <li><a href="#other-correlation-coefficients" id="toc-other-correlation-coefficients" class="nav-link" data-scroll-target="#other-correlation-coefficients">Other Correlation Coefficients</a></li>
+  <li><a href="#partial-correlation" id="toc-partial-correlation" class="nav-link" data-scroll-target="#partial-correlation">Partial Correlation</a></li>
+  <li><a href="#inferences-2" id="toc-inferences-2" class="nav-link" data-scroll-target="#inferences-2">Inferences</a></li>
+  </ul></li>
+  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear Regression</a>
+  <ul class="collapse">
+  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link" data-scroll-target="#ordinary-least-squares">Ordinary Least Squares</a></li>
+  <li><a href="#least-absolute-deviation" id="toc-least-absolute-deviation" class="nav-link" data-scroll-target="#least-absolute-deviation">Least Absolute Deviation</a></li>
+  <li><a href="#line-fitting" id="toc-line-fitting" class="nav-link" data-scroll-target="#line-fitting">Line fitting</a></li>
+  <li><a href="#sanitation-vs.-gdp-per-capita-1" id="toc-sanitation-vs.-gdp-per-capita-1" class="nav-link" data-scroll-target="#sanitation-vs.-gdp-per-capita-1">Sanitation vs.&nbsp;GDP per Capita</a></li>
+  <li><a href="#life-expectancy-vs.-gdp-per-capita-1" id="toc-life-expectancy-vs.-gdp-per-capita-1" class="nav-link" data-scroll-target="#life-expectancy-vs.-gdp-per-capita-1">Life Expectancy vs.&nbsp;GDP per Capita</a></li>
+  <li><a href="#life-expectancy-vs.-sanitation" id="toc-life-expectancy-vs.-sanitation" class="nav-link" data-scroll-target="#life-expectancy-vs.-sanitation">Life Expectancy vs.&nbsp;Sanitation</a></li>
+  <li><a href="#inferences-3" id="toc-inferences-3" class="nav-link" data-scroll-target="#inferences-3">Inferences</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">End-Semester Project</h1>
+<p class="subtitle lead">Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Aman Das [BS2206] </p>
+             <p>Raj Pratap Singh [BS2219] </p>
+             <p>Shreyansh Mukhopadhyay [BS2147] </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This presentation demonstrates the capabilities of <em>Bivariate Analysis</em> on datasets, to infer relationship between various features of Nations.</p>
+<ul>
+<li><strong>log of GDP per capita</strong>: Logarithm (base <span class="math inline">e</span>) of Gross Domestic Product (in $) per citizen. Adjusted for Inflation. [<em>lngdp</em>]</li>
+<li><strong>Sanitation Access %</strong>: Percentage of people using at least basic Sanitation facilities, not shared with other households. [<em>snt</em>]</li>
+<li><strong>Life Expectancy</strong>: The average number of years a newly born child would live, provided current mortality patterns hold. [<em>lfx</em>]</li>
+</ul>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>script.dir <span class="ot">&lt;-</span> <span class="fu">getSrcDirectory</span>(<span class="cf">function</span>(x) {x})</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(script.dir)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>numerise <span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  x[<span class="fu">grepl</span>(<span class="st">"k$"</span>, x)] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"k$"</span>, <span class="st">""</span>, x[<span class="fu">grepl</span>(<span class="st">"k$"</span>, x)]))<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>d1_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(<span class="st">"."</span>,<span class="st">"Data"</span>,<span class="st">"gdp.csv"</span>), <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>d2_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(<span class="st">"."</span>,<span class="st">"Data"</span>,<span class="st">"sanitation.csv"</span>), <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>d3_raw <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(<span class="st">"."</span>,<span class="st">"Data"</span>,<span class="st">"life_expectancy.csv"</span>), <span class="at">fileEncoding =</span> <span class="st">'UTF-8-BOM'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>yearname <span class="ot">=</span> <span class="st">"X2010"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">=</span> d1_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d1_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">"country"</span>, yearname)]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d1)[<span class="dv">2</span>] <span class="ot">=</span> <span class="st">"lngdp"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">=</span> d2_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d2_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">"country"</span>, yearname)]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d2)[<span class="dv">2</span>] <span class="ot">=</span> <span class="st">"snt"</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">=</span> d3_raw[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">numerise</span>(d3_raw[, yearname])),][,<span class="fu">c</span>(<span class="st">"country"</span>, yearname)]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d3)[<span class="dv">2</span>] <span class="ot">=</span> <span class="st">"lfx"</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>dtemp <span class="ot">=</span> <span class="fu">merge</span>(<span class="at">x =</span> d1, <span class="at">y =</span> d2, <span class="at">by =</span> <span class="st">"country"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> <span class="fu">merge</span>(<span class="at">x =</span> dtemp, <span class="at">y =</span> d3, <span class="at">by =</span> <span class="st">"country"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>lngdp <span class="ot">=</span> <span class="fu">log</span>(<span class="fu">numerise</span>(d<span class="sc">$</span>lngdp))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(d, <span class="st">"./Data/assembled.csv"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(d, 6L))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: right;">lngdp</th>
+<th style="text-align: right;">snt</th>
+<th style="text-align: right;">lfx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">6.265301</td>
+<td style="text-align: right;">34.9</td>
+<td style="text-align: right;">60.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: right;">8.183118</td>
+<td style="text-align: right;">95.2</td>
+<td style="text-align: right;">78.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">8.273847</td>
+<td style="text-align: right;">87.0</td>
+<td style="text-align: right;">74.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: right;">10.454495</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">81.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: right;">8.291547</td>
+<td style="text-align: right;">41.1</td>
+<td style="text-align: right;">60.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: right;">9.546813</td>
+<td style="text-align: right;">86.3</td>
+<td style="text-align: right;">75.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="aside">
+<p><sub>FREE DATA FROM <a href="un.org">UN</a>, <a href="https://worldbank.org">WORLD BANK</a>, <a href="https://who.org">WHO</a>, <a href="http://www.healthdata.org/">IMHE</a> VIA <a href="https://gapminder.org">GAPMINDER.ORG</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY LICENSE</a>.</sub></p>
+</div>
+</section>
+</section>
+<section id="univariate-statistics" class="level1">
+<h1>Univariate Statistics</h1>
+<section id="measures-of-central-tendency" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="measures-of-central-tendency">Measures of Central Tendency</h2>
+<p><em>Mean or Arithmetic Mean</em> <span class="math inline">\bar{x}</span>, <em>Geometric Mean</em> <span class="math inline">\operatorname{GM}(x)</span>, <em>Harmonic Mean</em> <span class="math inline">\operatorname{HM}(x)</span>, <em>Median</em> <span class="math inline">\operatorname{median}(x)</span> and <em>Mode</em> <span class="math inline">\operatorname{mode}(x)</span> are some measures of <em>central tendency</em> in the sample.</p>
+<p><span class="math display">
+\small
+\begin{align}
+\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &amp;&amp;
+\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &amp;&amp;
+\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
+\end{align}
+</span> <span class="math display">
+\small
+\begin{align}
+\operatorname{median}(x)=\begin{cases}
+x_{(n + 1)/ 2} &amp;: n = 1 \mod{2} \\
+\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &amp;:n = 0 \mod{2}
+\end{cases} &amp;&amp;
+\operatorname{mode}(x) = x_{(n)}
+\end{align}
+</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>getmode <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> uniqv <span class="ot">&lt;-</span> <span class="fu">unique</span>(v)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> freq <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(v, uniqv)))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> res <span class="ot">=</span> uniqv[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(v, uniqv)))]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (freq <span class="sc">==</span> <span class="dv">1</span>) res <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(res)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>d_central <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*ln(GDP)*"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Sanitation*"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp.*"</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mean =</span> <span class="fu">c</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">GM =</span> <span class="fu">c</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geometric.mean</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geometric.mean</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geometric.mean</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">HM =</span> <span class="fu">c</span>(</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">harmonic.mean</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">harmonic.mean</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">harmonic.mean</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median =</span> <span class="fu">c</span>(</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">median</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">median</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">median</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mode =</span> <span class="fu">c</span>(</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmode</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmode</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmode</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  d_central,</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}$"</span>,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{GM}(x)$"</span>,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{HM}(x)$"</span>,</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{median}(x)$"</span>,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{mode}(x)$"</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits=</span><span class="dv">5</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 22%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\bar{x}</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{GM}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{HM}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{median}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{mode}(x)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>ln(GDP)</em></td>
+<td style="text-align: right;">8.54124</td>
+<td style="text-align: right;">8.42229</td>
+<td style="text-align: right;">8.30248</td>
+<td style="text-align: right;">8.48673</td>
+<td style="text-align: right;">9.23014</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Sanitation</em></td>
+<td style="text-align: right;">72.43857</td>
+<td style="text-align: right;">62.58904</td>
+<td style="text-align: right;">47.61862</td>
+<td style="text-align: right;">85.60000</td>
+<td style="text-align: right;">100.00000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp.</em></td>
+<td style="text-align: right;">70.54603</td>
+<td style="text-align: right;">69.95538</td>
+<td style="text-align: right;">69.28316</td>
+<td style="text-align: right;">72.40000</td>
+<td style="text-align: right;">73.20000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="aside">
+<p>Note: <span class="math inline">x_i</span> is the i<sup>th</sup> observation. <span class="math inline">x_{(i)}</span> is the i<sup>th</sup> largest observation.</p>
+</div>
+</section>
+<section id="measures-of-dispersion" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="measures-of-dispersion">Measures of Dispersion</h2>
+<p>Range(x), Semi-int<code>..</code> SIR(x), Mean Deviation about x’ <span class="math inline">\operatorname{MD}_{(x')}(x)</span>, Variance <span class="math inline">s_x^2</span>, Standard Deviation <span class="math inline">s_x</span> <code>...</code></p>
+<p><span class="math display">
+\small
+\begin{align}
+\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &amp;&amp;
+\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &amp;&amp;
+\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
+\end{align}
+</span> <span class="math display">
+\small
+\begin{align}
+\operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &amp;&amp;
+\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2} &amp;&amp;
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &amp;&amp;
+s^2_x= (s_x)^2
+\end{align}
+</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>getmd <span class="ot">=</span> <span class="cf">function</span>(x, <span class="at">center =</span> <span class="fu">mean</span>(x)){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  md <span class="ot">=</span> <span class="fu">mean</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abs</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      x <span class="sc">-</span> <span class="fu">rep</span>(center, <span class="fu">length</span>(x))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(md)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>d_disp <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*ln(GDP)*"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Sanitation*"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp.*"</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Range =</span> <span class="fu">c</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(d<span class="sc">$</span>lngdp) <span class="sc">-</span> <span class="fu">min</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(d<span class="sc">$</span>snt) <span class="sc">-</span> <span class="fu">min</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(d<span class="sc">$</span>lfx) <span class="sc">-</span> <span class="fu">min</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">SIR =</span> <span class="fu">c</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">IQR</span>(d<span class="sc">$</span>lngdp)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">IQR</span>(d<span class="sc">$</span>snt)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">IQR</span>(d<span class="sc">$</span>lfx)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">MD =</span> <span class="fu">c</span>(</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmd</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmd</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getmd</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">c</span>(</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">sd</span>(d<span class="sc">$</span>lngdp))<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">sd</span>(d<span class="sc">$</span>snt))<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">sd</span>(d<span class="sc">$</span>lfx))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">SD =</span> <span class="fu">c</span>(</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sd</span>(d<span class="sc">$</span>lngdp),</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sd</span>(d<span class="sc">$</span>snt),</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sd</span>(d<span class="sc">$</span>lfx)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  d_disp,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{Range}(x)$"</span>,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{SIR}(x)$"</span>,</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{MD}_{(</span><span class="sc">\\</span><span class="st">bar{x})}(x)$"</span>,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">quad s_x^2$"</span>,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">quad s_x$"</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits=</span><span class="dv">5</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 11%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{Range}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{SIR}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\operatorname{MD}_{(\bar{x})}(x)</span></th>
+<th style="text-align: right;"><span class="math inline">\quad s_x^2</span></th>
+<th style="text-align: right;"><span class="math inline">\quad s_x</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>ln(GDP)</em></td>
+<td style="text-align: right;">6.04435</td>
+<td style="text-align: right;">1.06914</td>
+<td style="text-align: right;">1.17229</td>
+<td style="text-align: right;">2.01791</td>
+<td style="text-align: right;">1.42053</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Sanitation</em></td>
+<td style="text-align: right;">94.03000</td>
+<td style="text-align: right;">24.65000</td>
+<td style="text-align: right;">25.50487</td>
+<td style="text-align: right;">872.29346</td>
+<td style="text-align: right;">29.53461</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp.</em></td>
+<td style="text-align: right;">50.80000</td>
+<td style="text-align: right;">6.00000</td>
+<td style="text-align: right;">6.98712</td>
+<td style="text-align: right;">75.33494</td>
+<td style="text-align: right;">8.67957</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="box-plot" class="level2">
+<h2 class="anchored" data-anchor-id="box-plot">Box Plot</h2>
+<p>About?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labelfunction <span class="ot">=</span> <span class="cf">function</span>(val1){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="fu">c</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log of GDP per capita"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sanitation Access %"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Life Expectancy"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">stack</span>(d[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]), <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> values))<span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>ind), <span class="at">alpha=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="cn">NULL</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span><span class="cn">NULL</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>mytheme<span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_color_manual</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">values=</span><span class="fu">c</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#cc241d80"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#45858880"</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>ind, <span class="at">scales=</span><span class="st">"free"</span>, <span class="at">labeller =</span> labelfunction)<span class="sc">+</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"none"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="inferences" class="level2">
+<h2 class="anchored" data-anchor-id="inferences">Inferences</h2>
+</section>
+</section>
+<section id="scatter-plot" class="level1">
+<h1>Scatter Plot</h1>
+<p>A <em>Scatter plot</em> is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the <em>abscissa</em> and the other variable determining the <em>ordinate</em>. It helps us:</p>
+<ul>
+<li>take a short glance at effect of two variables.</li>
+<li>suggest kinds of correlations between variables.</li>
+<li>estimate the direction of correlation.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sctrplot <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    d, x_map, y_map,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  plot1 <span class="ot">=</span> <span class="fu">ggplot</span>(d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x_map, <span class="at">y =</span> y_map))<span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha=</span><span class="fl">0.6</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    mytheme<span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x_lab,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y_lab,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span>title</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(plot1)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sanitation-vs.-gdp-per-capita" class="level2">
+<h2 class="anchored" data-anchor-id="sanitation-vs.-gdp-per-capita">Sanitation vs.&nbsp;GDP per Capita</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt, <span class="st">"log of GDP per capita"</span>, <span class="st">"Sanitation Access %"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="life-expectancy-vs.-gdp-per-capita" class="level2">
+<h2 class="anchored" data-anchor-id="life-expectancy-vs.-gdp-per-capita">Life Expectancy vs.&nbsp;GDP per Capita</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx, <span class="st">"log of GDP per capita"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="life-expectation-vs.-sanitation" class="level2">
+<h2 class="anchored" data-anchor-id="life-expectation-vs.-sanitation">Life Expectation vs.&nbsp;Sanitation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sctrplot</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx, <span class="st">"Sanitation Access %"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="inferences-1" class="level2">
+<h2 class="anchored" data-anchor-id="inferences-1">Inferences</h2>
+<p>seems like Linear correlation</p>
+</section>
+</section>
+<section id="bivariate-statistics" class="level1">
+<h1>Bivariate Statistics</h1>
+<section id="covariance-and-correlation-matrices" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="covariance-and-correlation-matrices">Covariance and Correlation Matrices</h2>
+<p><em>Covariance</em> <span class="math inline">\operatorname{cov}(x, y)</span> is a measure of the joint variability of two random variables <span class="math inline">x</span>, <span class="math inline">y</span>.</p>
+<p><em>Correlation</em> <span class="math inline">r_{x,y}</span> is any relationship, causal or spurious, between two random variables <span class="math inline">x</span>, <span class="math inline">y</span>. <em>Pearson’s</em> <span class="math inline">r</span> correlation coefficient is considered here.</p>
+<p><span class="math display">
+\begin{align}
+\operatorname {cov} (x,y)={\frac {\sum _{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n}}
+&amp;&amp;
+r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
+\end{align}
+</span></p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cov_mat <span class="ot">=</span> <span class="fu">cov</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(cov_mat, <span class="at">digits=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">lngdp</th>
+<th style="text-align: right;">snt</th>
+<th style="text-align: right;">lfx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lngdp</td>
+<td style="text-align: right;">2.01791</td>
+<td style="text-align: right;">33.84045</td>
+<td style="text-align: right;">9.52202</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">snt</td>
+<td style="text-align: right;">33.84045</td>
+<td style="text-align: right;">872.29346</td>
+<td style="text-align: right;">208.54155</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lfx</td>
+<td style="text-align: right;">9.52202</td>
+<td style="text-align: right;">208.54155</td>
+<td style="text-align: right;">75.33494</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">A_{i,j} = \operatorname{cov}(x_i, x_j)</span></p>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cor_mat <span class="ot">=</span> <span class="fu">cor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(cor_mat, <span class="at">digits=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">lngdp</th>
+<th style="text-align: right;">snt</th>
+<th style="text-align: right;">lfx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lngdp</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">0.77229</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">snt</td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">0.81351</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lfx</td>
+<td style="text-align: right;">0.77229</td>
+<td style="text-align: right;">0.81351</td>
+<td style="text-align: right;">1.00000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">A_{i,j} = r_{x_i, x_j}</span></p>
+</div>
+</div>
+</section>
+<section id="other-correlation-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="other-correlation-coefficients">Other Correlation Coefficients</h2>
+<p><em>Pearson</em>, <em>Spearman</em>, <em>Kendall</em> #TODO</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d_cor <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pearson =</span> <span class="fu">c</span>(</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"pearson"</span>),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"pearson"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Spearman =</span> <span class="fu">c</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"spearman"</span>),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">Kendall =</span> <span class="fu">c</span>(</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>snt, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>lngdp, <span class="at">method=</span><span class="st">"kendall"</span>),</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cor</span>(d<span class="sc">$</span>lfx, d<span class="sc">$</span>snt, <span class="at">method=</span><span class="st">"kendall"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  d_cor,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">digit =</span> <span class="dv">5</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Pearson's* $r$"</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Spearman's* $r_s$"</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Kendall's* $</span><span class="sc">\\</span><span class="st">tau$"</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 19%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><em>Pearson’s</em> <span class="math inline">r</span></th>
+<th style="text-align: right;"><em>Spearman’s</em> <span class="math inline">r_s</span></th>
+<th style="text-align: right;"><em>Kendall’s</em> <span class="math inline">\tau</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.80659</td>
+<td style="text-align: right;">0.85920</td>
+<td style="text-align: right;">0.67458</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.77229</td>
+<td style="text-align: right;">0.81639</td>
+<td style="text-align: right;">0.62168</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">0.81351</td>
+<td style="text-align: right;">0.83513</td>
+<td style="text-align: right;">0.63744</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="partial-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="partial-correlation">Partial Correlation</h2>
+<p><em>Partial</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>partcor <span class="ot">=</span> <span class="fu">pcor</span>(d[, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])<span class="sc">$</span>estimate</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>pcortab <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">PCor =</span> <span class="fu">c</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    partcor[<span class="dv">2</span>, <span class="dv">1</span>],</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    partcor[<span class="dv">3</span>, <span class="dv">1</span>],</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    partcor[<span class="dv">3</span>, <span class="dv">2</span>]</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pcortab,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Partial Correlation"</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Partial Correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.4826925</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">0.3377892</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">0.5075384</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="inferences-2" class="level2">
+<h2 class="anchored" data-anchor-id="inferences-2">Inferences</h2>
+<p>Good linear correlation lets try to observe line of best fit.</p>
+</section>
+</section>
+<section id="linear-regression" class="level1">
+<h1>Linear Regression</h1>
+<p><em>Simple Univariate Linear Regression</em> is a method for estimating the relationship <span class="math inline">y_i=f(x_i)</span> of a <em>response</em> variable <span class="math inline">y</span> with a <em>predictor</em> variable <span class="math inline">x</span>, as a line that closely fits the <span class="math inline">y</span> vs.&nbsp;<span class="math inline">x</span> <em>scatter plot</em>.</p>
+<p><span class="math display">
+y_i = \hat{a} + \hat{b} x_i + e_i.
+</span></p>
+<p>Where <span class="math inline">\hat{a}</span> is the <em>intercept</em>, <span class="math inline">\hat{b}</span> is the <em>slope</em>, and <span class="math inline">e_i</span> is the i<sup>th</sup> residual <em>error</em>. We aim to minimize <span class="math inline">e_i</span> for better fit.</p>
+<section id="ordinary-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="ordinary-least-squares">Ordinary Least Squares</h2>
+<p><em>Ordinary Least squares method</em> reduces <span class="math inline">e_i</span> by minimizing <em>error sum of squares</em> <span class="math inline">\sum{e_i^2}</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>olssmry <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    d, x_map, y_map,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula=</span>y_map<span class="sc">~</span>x_map)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  smry <span class="ot">=</span> <span class="fu">summary</span>(model, <span class="at">signif.stars=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  smryvec <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="st">"x_map"</span>]),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    smry<span class="sc">$</span>r.squared</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(smryvec)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>olstab <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">SvG =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt),</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">LvG =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx),</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">LvS =</span> <span class="fu">olssmry</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(olstab) <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  olstab,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">digit =</span> <span class="dv">5</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names=</span><span class="fu">c</span>(</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{a}$"</span>,</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{b}$"</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$R^2$"</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\hat{a}</span></th>
+<th style="text-align: right;"><span class="math inline">\hat{b}</span></th>
+<th style="text-align: right;"><span class="math inline">R^2</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">-70.79844</td>
+<td style="text-align: right;">16.77006</td>
+<td style="text-align: right;">0.65059</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">30.24203</td>
+<td style="text-align: right;">4.71876</td>
+<td style="text-align: right;">0.59643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">53.22795</td>
+<td style="text-align: right;">0.23907</td>
+<td style="text-align: right;">0.66180</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="aside">
+<p><span class="math inline">R^2</span>: Coefficient of Determination</p>
+</div>
+</section>
+<section id="least-absolute-deviation" class="level2">
+<h2 class="anchored" data-anchor-id="least-absolute-deviation">Least Absolute Deviation</h2>
+<p><em>Least absolute Deviation method</em> reduces <span class="math inline">e_i</span> by minimizing the <em>sum of absolute deviations</em> <span class="math inline">\sum{|e_i|}</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ladsmry <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    d, x_map, y_map,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">=</span> <span class="fu">rq</span>(<span class="at">formula=</span>y_map<span class="sc">~</span>x_map)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  smry <span class="ot">=</span> <span class="fu">summary</span>(model)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  smryvec <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="dv">1</span>]),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(model<span class="sc">$</span>coefficients[<span class="dv">2</span>])</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(smryvec)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>olstab <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">SvG =</span> <span class="fu">ladsmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt),</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">LvG =</span> <span class="fu">ladsmry</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx),</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">LvS =</span> <span class="fu">ladsmry</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(olstab) <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Sanitation vs. ln(GDP)*"</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Life Exp. vs. ln(GDP)*"</span>,</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*Life Exp. vs. Sanitation*"</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  olstab,</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">digit =</span> <span class="dv">5</span>,</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names=</span><span class="fu">c</span>(</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{a}$"</span>,</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">hat{b}$"</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;"><span class="math inline">\hat{a}</span></th>
+<th style="text-align: right;"><span class="math inline">\hat{b}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Sanitation vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">-71.23153</td>
+<td style="text-align: right;">16.80472</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;ln(GDP)</em></td>
+<td style="text-align: right;">31.99047</td>
+<td style="text-align: right;">4.61340</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Life Exp. vs.&nbsp;Sanitation</em></td>
+<td style="text-align: right;">53.73041</td>
+<td style="text-align: right;">0.23963</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="line-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="line-fitting">Line fitting</h2>
+<p>Plotting the estimated <em>Linear Model</em> on the Scatter Plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>linearplot <span class="ot">=</span> <span class="cf">function</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    d, x_map, y_map,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_lab=</span><span class="fu">waiver</span>(), <span class="at">y_lab=</span><span class="fu">waiver</span>(),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">waiver</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  plot1 <span class="ot">=</span> <span class="fu">ggplot</span>(d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x_map, <span class="at">y =</span> y_map))<span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha=</span><span class="fl">0.6</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    mytheme<span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x_lab,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y_lab,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span>title</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">method=</span><span class="st">"lm"</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">formula=</span>y<span class="sc">~</span>x,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">se=</span><span class="cn">FALSE</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">color =</span> <span class="st">"Ordinary Least Squares"</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">method=</span><span class="st">"rq"</span>,</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">formula=</span>y<span class="sc">~</span>x,</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">se=</span><span class="cn">FALSE</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">color =</span> <span class="st">"Least Absolute Deviation"</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">"Linear Model"</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    mycolor</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(plot1)</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sanitation-vs.-gdp-per-capita-1" class="level2">
+<h2 class="anchored" data-anchor-id="sanitation-vs.-gdp-per-capita-1">Sanitation vs.&nbsp;GDP per Capita</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>snt, <span class="st">"log of GDP per capita"</span>, <span class="st">"Sanitation Access %"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="life-expectancy-vs.-gdp-per-capita-1" class="level2">
+<h2 class="anchored" data-anchor-id="life-expectancy-vs.-gdp-per-capita-1">Life Expectancy vs.&nbsp;GDP per Capita</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearplot</span>(d, d<span class="sc">$</span>lngdp, d<span class="sc">$</span>lfx, <span class="st">"log of GDP per capita"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="life-expectancy-vs.-sanitation" class="level2">
+<h2 class="anchored" data-anchor-id="life-expectancy-vs.-sanitation">Life Expectancy vs.&nbsp;Sanitation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearplot</span>(d, d<span class="sc">$</span>snt, d<span class="sc">$</span>lfx, <span class="st">"Sanitation Access %"</span>, <span class="st">"Life Expectancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="main_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="inferences-3" class="level2">
+<h2 class="anchored" data-anchor-id="inferences-3">Inferences</h2>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
