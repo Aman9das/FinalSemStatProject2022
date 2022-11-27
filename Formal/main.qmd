@@ -1,0 +1,632 @@
+---
+title: End-Semester Project
+subtitle: Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010
+author:
+  - Aman Das [BS2206]
+  - Raj Pratap Singh [BS2219]
+  - Shreyansh Mukhopadhyay [BS2147]
+format:
+  revealjs:
+    output-file: PPT_Reveal.html
+    embed-resources: true
+    width: 1200
+    height: 750
+    theme: [default, custom.scss]
+    highlight-style: gruvbox
+    transition: slide
+    # logo: ./Data/logo.png
+    toc: true
+    toc-depth: 1
+    hide-inactive-cursor: true
+    code-fold: true
+    menu: false
+    scrollable: true
+    history: true
+  html:
+    output-file: WEBPAGE_html.html
+    toc: true
+    html-math-method: katex
+    highlight-style: gruvbox-dark
+    theme:
+      light: sandstone
+      dark: slate
+  pptx:
+    output-file: PPT_powerpoint.pptx
+    reference-doc: ./Templates/template1
+execute:
+  cache: false
+---
+
+```{r include=FALSE}
+library(knitr)
+library(ggplot2)
+library(quantreg)
+library(ppcor)
+library(psych)
+# library(kableExtra)
+
+mytheme=theme_minimal()+
+theme(
+  plot.background = element_rect(fill = "#f9f5d7", color = NA),
+  panel.grid = element_line(colour = "#d5c4a1"),
+  axis.line = element_line(colour = "#928374"),
+  )
+mycolor=scale_color_manual(
+      values=c(
+        "#cc241d80",
+        "#45858880")
+      )
+```
+
+# Introduction
+
+## Overview
+
+This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
+
+-   **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in \$) per citizen. Adjusted for Inflation. \[*lngdp*\]
+-   **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. \[*snt*\]
+-   **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
+
+## Data
+
+```{r echo=TRUE, collapse=TRUE}
+script.dir <- getSrcDirectory(function(x) {x})
+setwd(script.dir)
+
+numerise = function(x){
+  x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
+  x <- as.numeric(x)
+  return(x)
+}
+
+d1_raw = read.csv(file.path(".","Data","gdp.csv"), fileEncoding = 'UTF-8-BOM')
+d2_raw = read.csv(file.path(".","Data","sanitation.csv"), fileEncoding = 'UTF-8-BOM')
+d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
+
+yearname = "X2010"
+
+d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
+colnames(d1)[2] = "lngdp"
+d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
+colnames(d2)[2] = "snt"
+d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
+colnames(d3)[2] = "lfx"
+
+dtemp = merge(x = d1, y = d2, by = "country")
+d = merge(x = dtemp, y = d3, by = "country")
+
+d$lngdp = log(numerise(d$lngdp))
+
+write.csv(d, "./Data/assembled.csv")
+
+kable(head(d, 6L))
+```
+
+::: aside
+<sub>FREE DATA FROM [UN](un.org), [WORLD BANK](https://worldbank.org), [WHO](https://who.org), [IMHE](http://www.healthdata.org/) VIA [GAPMINDER.ORG](https://gapminder.org), [CC-BY LICENSE](https://creativecommons.org/licenses/by/2.0/).</sub>
+:::
+
+# Univariate Statistics
+
+## Measures of Central Tendency {.smaller}
+
+*Mean or Arithmetic Mean* $\bar{x}$, *Geometric Mean* $\operatorname{GM}(x)$, *Harmonic Mean* $\operatorname{HM}(x)$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
+
+$$
+\small
+\begin{align}
+\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &&
+\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &&
+\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
+\end{align}
+$$ $$
+\small
+\begin{align}
+\operatorname{median}(x)=\begin{cases}
+x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
+\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &:n = 0 \mod{2}
+\end{cases} &&
+\operatorname{mode}(x) = x_{(n)}
+\end{align}
+$$
+
+```{r echo=TRUE}
+getmode <- function(v) {
+ uniqv <- unique(v)
+ freq = max(tabulate(match(v, uniqv)))
+ res = uniqv[which.max(tabulate(match(v, uniqv)))]
+ if (freq == 1) res = NULL
+ return(res)
+}
+
+d_central = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*ln(GDP)*",
+    "*Sanitation*",
+    "*Life Exp.*"
+  ),
+  Mean = c(
+    mean(d$lngdp),
+    mean(d$snt),
+    mean(d$lfx)
+  ),
+  GM = c(
+    geometric.mean(d$lngdp),
+    geometric.mean(d$snt),
+    geometric.mean(d$lfx)
+  ),
+  HM = c(
+    harmonic.mean(d$lngdp),
+    harmonic.mean(d$snt),
+    harmonic.mean(d$lfx)
+  ),
+  Median = c(
+    median(d$lngdp),
+    median(d$snt),
+    median(d$lfx)
+  ),
+  Mode = c(
+    getmode(d$lngdp),
+    getmode(d$snt),
+    getmode(d$lfx)
+  )
+)
+
+kable(
+  d_central,
+  col.names = c(
+    "$\\bar{x}$",
+    "$\\operatorname{GM}(x)$",
+    "$\\operatorname{HM}(x)$",
+    "$\\operatorname{median}(x)$",
+    "$\\operatorname{mode}(x)$"
+  ),
+  digits=5
+)
+```
+
+::: aside
+Note: $x_i$ is the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest observation.
+:::
+
+## Measures of Dispersion {.smaller}
+
+Range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
+
+$$
+\small
+\begin{align}
+\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
+\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &&
+\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
+\end{align}
+$$ $$
+\small
+\begin{align}
+\operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &&
+\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2} &&
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &&
+s^2_x= (s_x)^2
+\end{align}
+$$
+
+```{r echo=TRUE}
+getmd = function(x, center = mean(x)){
+  md = mean(
+    abs(
+      x - rep(center, length(x))
+      )
+    )
+  return(md)
+}
+d_disp = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*ln(GDP)*",
+    "*Sanitation*",
+    "*Life Exp.*"
+  ),
+  Range = c(
+    max(d$lngdp) - min(d$lngdp),
+    max(d$snt) - min(d$snt),
+    max(d$lfx) - min(d$lfx)
+  ),
+  SIR = c(
+    IQR(d$lngdp)/2,
+    IQR(d$snt)/2,
+    IQR(d$lfx)/2
+  ),
+  MD = c(
+    getmd(d$lngdp),
+    getmd(d$snt),
+    getmd(d$lfx)
+  ),
+  variance = c(
+    (sd(d$lngdp))^2,
+    (sd(d$snt))^2,
+    (sd(d$lfx))^2
+  ),
+  SD = c(
+    sd(d$lngdp),
+    sd(d$snt),
+    sd(d$lfx)
+  )
+)
+
+kable(
+  d_disp,
+  col.names = c(
+    "$\\operatorname{Range}(x)$",
+    "$\\operatorname{SIR}(x)$",
+    "$\\operatorname{MD}_{(\\bar{x})}(x)$",
+    "$\\quad s_x^2$",
+    "$\\quad s_x$"
+  ),
+  digits=5
+)
+```
+
+## Box Plot
+
+About?
+
+```{r echo=TRUE}
+#| fig-align: center
+labelfunction = function(val1){
+  return(list(c(
+    "log of GDP per capita",
+    "Sanitation Access %",
+    "Life Expectancy"
+  )))
+}
+ggplot(stack(d[2:4]), mapping = aes(y = values))+
+geom_boxplot(aes(fill=ind), alpha=0.8)+
+labs(
+  x=NULL,
+  y=NULL
+  )+
+mytheme+
+scale_color_manual(
+  values=c(
+    "#cc241d80",
+    "#45858880")
+  )+
+facet_wrap(~ind, scales="free", labeller = labelfunction)+
+  theme(axis.text.x=element_blank(),
+        legend.position="none",
+        strip.text.x = element_text(size = 14))
+  
+  
+```
+
+## Inferences
+
+# Scatter Plot
+
+A *Scatter plot* is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. The data are displayed as a collection of points, each having one variable determining the *abscissa* and the other variable determining the *ordinate*. It helps us:
+
+-   take a short glance at effect of two variables.
+-   suggest kinds of correlations between variables.
+-   estimate the direction of correlation.
+
+```{r echo=TRUE}
+sctrplot = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+    geom_point(
+      alpha=0.6
+    )+
+    mytheme+
+    labs(
+      x=x_lab,
+      y=y_lab,
+      title=title
+    )
+  
+  return(plot1)
+}
+```
+
+## Sanitation vs. GDP per Capita
+
+```{r}
+sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
+```
+
+## Life Expectancy vs. GDP per Capita
+
+```{r}
+sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
+```
+
+## Life Expectation vs. Sanitation
+
+```{r}
+sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
+```
+
+## Inferences
+
+seems like Linear correlation
+
+# Bivariate Statistics
+
+## Covariance and Correlation Matrices {.smaller}
+
+*Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
+
+*Correlation* $r_{x,y}$ is any relationship, causal or spurious, between two random variables $x$, $y$. *Pearson's* $r$ correlation coefficient is considered here.
+
+$$
+\begin{align}
+\operatorname {cov} (x,y)={\frac {\sum _{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n}}
+&&
+r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
+\end{align}
+$$
+
+::: columns
+::: {.column width="48%"}
+```{r echo=TRUE}
+cov_mat = cov(d[, 2:4])
+
+kable(cov_mat, digits=5)
+```
+
+$$A_{i,j} = \operatorname{cov}(x_i, x_j)$$
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+```{r echo=TRUE}
+cor_mat = cor(d[, 2:4])
+
+kable(cor_mat, digits=5)
+```
+
+$$A_{i,j} = r_{x_i, x_j}$$
+:::
+:::
+
+## Other Correlation Coefficients
+
+*Pearson*, *Spearman*, *Kendall* #TODO
+
+```{r echo=TRUE}
+d_cor = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  Pearson = c(
+    cor(d$snt, d$lngdp, method="pearson"),
+    cor(d$lfx, d$lngdp, method="pearson"),
+    cor(d$lfx, d$snt, method="pearson")
+  ),
+  Spearman = c(
+    cor(d$snt, d$lngdp, method="spearman"),
+    cor(d$lfx, d$lngdp, method="spearman"),
+    cor(d$lfx, d$snt, method="spearman")
+  ),
+  Kendall = c(
+    cor(d$snt, d$lngdp, method="kendall"),
+    cor(d$lfx, d$lngdp, method="kendall"),
+    cor(d$lfx, d$snt, method="kendall")
+  )
+)
+
+kable(
+  d_cor,
+  digit = 5,
+  col.names = c(
+    "*Pearson's* $r$",
+    "*Spearman's* $r_s$",
+    "*Kendall's* $\\tau$"
+  )
+)
+```
+
+## Partial Correlation
+
+*Partial*
+
+```{r}
+partcor = pcor(d[, 2:4])$estimate
+
+pcortab = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  PCor = c(
+    partcor[2, 1],
+    partcor[3, 1],
+    partcor[3, 2]
+  )
+)
+
+kable(pcortab,
+      col.names = c(
+        "Partial Correlation"
+      ))
+```
+
+## Inferences
+
+Good linear correlation lets try to observe line of best fit.
+
+# Linear Regression
+
+*Simple Univariate Linear Regression* is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
+
+$$
+y_i = \hat{a} + \hat{b} x_i + e_i.
+$$
+
+Where $\hat{a}$ is the *intercept*, $\hat{b}$ is the *slope*, and $e_i$ is the i<sup>th</sup> residual *error*. We aim to minimize $e_i$ for better fit.
+
+## Ordinary Least Squares
+
+*Ordinary Least squares method* reduces $e_i$ by minimizing *error sum of squares* $\sum{e_i^2}$.
+
+```{r echo=TRUE}
+olssmry = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  model = lm(formula=y_map~x_map)
+  smry = summary(model, signif.stars=TRUE)
+  
+  smryvec = c(
+    as.numeric(model$coefficients["(Intercept)"]),
+    as.numeric(model$coefficients["x_map"]),
+    smry$r.squared
+  )
+  
+  return(smryvec)
+}
+
+olstab = t(data.frame(
+  SvG = olssmry(d, d$lngdp, d$snt),
+  LvG = olssmry(d, d$lngdp, d$lfx),
+  LvS = olssmry(d, d$snt, d$lfx)
+))
+
+row.names(olstab) = c(
+  "*Sanitation vs. ln(GDP)*",
+  "*Life Exp. vs. ln(GDP)*",
+  "*Life Exp. vs. Sanitation*"
+)
+
+kable(
+  olstab,
+  digit = 5,
+  col.names=c(
+  "$\\hat{a}$",
+  "$\\hat{b}$",
+  "$R^2$"
+  )
+)
+```
+
+::: aside
+$R^2$: Coefficient of Determination
+:::
+
+## Least Absolute Deviation
+
+*Least absolute Deviation method* reduces $e_i$ by minimizing the *sum of absolute deviations* $\sum{|e_i|}$.
+
+```{r echo=TRUE}
+ladsmry = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  model = rq(formula=y_map~x_map)
+  smry = summary(model)
+  
+  smryvec = c(
+    as.numeric(model$coefficients[1]),
+    as.numeric(model$coefficients[2])
+  )
+  
+  return(smryvec)
+}
+
+olstab = t(data.frame(
+  SvG = ladsmry(d, d$lngdp, d$snt),
+  LvG = ladsmry(d, d$lngdp, d$lfx),
+  LvS = ladsmry(d, d$snt, d$lfx)
+))
+
+row.names(olstab) = c(
+  "*Sanitation vs. ln(GDP)*",
+  "*Life Exp. vs. ln(GDP)*",
+  "*Life Exp. vs. Sanitation*"
+)
+
+kable(
+  olstab,
+  digit = 5,
+  col.names=c(
+  "$\\hat{a}$",
+  "$\\hat{b}$"
+  )
+)
+```
+
+## Line fitting
+
+Plotting the estimated *Linear Model* on the Scatter Plot.
+
+```{r echo=TRUE}
+linearplot = function(
+    d, x_map, y_map,
+    x_lab=waiver(), y_lab=waiver(),
+    title=waiver()
+){
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+    geom_point(
+      alpha=0.6
+    )+
+    mytheme+
+    labs(
+      x=x_lab,
+      y=y_lab,
+      title=title
+    )+
+    geom_smooth(
+      method="lm",
+      formula=y~x,
+      se=FALSE,
+      aes(color = "Ordinary Least Squares")
+    )+
+    geom_smooth(
+      method="rq",
+      formula=y~x,
+      se=FALSE,
+      aes(color = "Least Absolute Deviation")
+    )+
+    labs(
+      color="Linear Model"
+    )+
+    mycolor
+  
+  return(plot1)
+}
+```
+
+## Sanitation vs. GDP per Capita
+
+```{r}
+linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
+```
+
+## Life Expectancy vs. GDP per Capita
+
+```{r}
+linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
+```
+
+## Life Expectancy vs. Sanitation
+
+```{r}
+linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
+```
+
+## Inferences
+
+# Conclusion
