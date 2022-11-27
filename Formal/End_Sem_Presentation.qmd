@@ -109,7 +109,19 @@ kable(head(d, 6L))
 $$
 \begin{align}
 \bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}} &&
-\operatorname{GM}(x) = \left(\prod_{i=1}^n a_i\right)^\frac{1}{n}
+\operatorname{GM}(x) = \left(\prod_{i=1}^n a_i\right)^\frac{1}{n} &&
+\operatorname{HM}(x)=\frac{n}{\frac1{x_1} + \frac1{x_2} + \cdots + \frac1{x_n}} = \frac{n}{\sum\limits_{i=1}^n \frac1{x_i}} = \left(\frac{\sum\limits_{i=1}^n x_i^{-1}}{n}\right)^{-1} 
+\end{align}
+$$
+$$
+\begin{align}
+\operatorname{Median}:
+\quad if\quad n\quad is\quad odd,\quad\mathrm{median}(x) = x_{(n + 1)/ 2}\quad
+\end{align}
+$$
+$$
+\begin{align}
+if \quad n \quad is \quad even,\mathrm{median}(x) = \frac{x_{(n/2)} + x_{((n/2)+1)}}{2}
 \end{align}
 $$
 
@@ -175,11 +187,32 @@ Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$.
 
 ## Measures of Dispersion {.smaller}
 
-Range range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
+Range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
 
 $$
 \begin{align}
-s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
+\operatorname{Range}(x)=|\operatorname{Maximum}(x)-\operatorname{Minimum}(x)|
+\end{align}
+$$
+$$
+\begin{align}
+\ first \quad quartile \quad Q_1 = median \quad of \quad the \quad n \quad smallest \quad values
+\end{align}
+$$
+$$
+\begin{align}
+\ third \quad quartile \quad Q_1 = median \quad of \quad the \quad n \quad largest \quad values
+\end{align}
+$$
+$$
+\begin{align}
+\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2}
+\end{align}
+$$
+$$
+\begin{align}
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &&
+s^2_x=\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}
 \end{align}
 $$
 
