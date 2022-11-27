@@ -37,6 +37,7 @@ library(ggplot2)
 library(quantreg)
 library(ppcor)
 library(psych)
+# library(kableExtra)
 
 mytheme=theme_minimal()+
 theme(
@@ -107,21 +108,21 @@ kable(head(d, 6L))
 *Mean or Arithmetic Mean* $\bar{x}$, *Geometric Mean* $\operatorname{GM}(x)$, *Harmonic Mean* $\operatorname{HM}(x)$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
 
 $$
+\small
 \begin{align}
-\bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}} &&
-\operatorname{GM}(x) = \left(\prod_{i=1}^n a_i\right)^\frac{1}{n} &&
-\operatorname{HM}(x)=\frac{n}{\frac1{x_1} + \frac1{x_2} + \cdots + \frac1{x_n}} = \frac{n}{\sum\limits_{i=1}^n \frac1{x_i}} = \left(\frac{\sum\limits_{i=1}^n x_i^{-1}}{n}\right)^{-1} 
+\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &&
+\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &&
+\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
 \end{align}
 $$
 $$
+\small
 \begin{align}
-\operatorname{Median}:
-\quad if\quad n\quad is\quad odd,\quad\mathrm{median}(x) = x_{(n + 1)/ 2}\quad
-\end{align}
-$$
-$$
-\begin{align}
-if \quad n \quad is \quad even,\mathrm{median}(x) = \frac{x_{(n/2)} + x_{((n/2)+1)}}{2}
+\operatorname{median}(x)=\begin{cases}
+x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
+\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &:n = 0 \mod{2}
+\end{cases} &&
+\operatorname{mode}(x) = x_{(n)}
 \end{align}
 $$
 
@@ -182,7 +183,7 @@ kable(
 ```
 
 ::: aside
-Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$.
+Note: $x_i$ is the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest observation.
 :::
 
 ## Measures of Dispersion {.smaller}
@@ -190,29 +191,20 @@ Note: $x_i$ is the i<sup>th</sup> observation of the random variable $x$.
 Range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
 
 $$
+\small
 \begin{align}
-\operatorname{Range}(x)=|\operatorname{Maximum}(x)-\operatorname{Minimum}(x)|
+\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
+\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &&
+\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
 \end{align}
 $$
 $$
+\small
 \begin{align}
-\ first \quad quartile \quad Q_1 = median \quad of \quad the \quad n \quad smallest \quad values
-\end{align}
-$$
-$$
-\begin{align}
-\ third \quad quartile \quad Q_1 = median \quad of \quad the \quad n \quad largest \quad values
-\end{align}
-$$
-$$
-\begin{align}
-\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2}
-\end{align}
-$$
-$$
-\begin{align}
+\operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &&
+\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2} &&
 s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &&
-s^2_x=\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}
+s^2_x= (s_x)^2
 \end{align}
 $$
 
@@ -262,11 +254,11 @@ d_disp = data.frame(
 kable(
   d_disp,
   col.names = c(
-    "Range",
-    "SIR",
-    "Mean Deviation",
-    "s_x^2",
-    "$s_x$"
+    "$\\operatorname{Range}(x)$",
+    "$\\operatorname{SIR}(x)$",
+    "$\\operatorname{MD}_{(\\bar{x})}(x)$",
+    "$\\quad s_x^2$",
+    "$\\quad s_x$"
   ),
   digits=5
 )
@@ -300,7 +292,7 @@ scale_color_manual(
 facet_wrap(~ind, scales="free", labeller = labelfunction)+
   theme(axis.text.x=element_blank(),
         legend.position="none",
-        strip.text.x = element_text(size = 12))
+        strip.text.x = element_text(size = 14))
   
   
 ```
@@ -439,7 +431,7 @@ kable(
 )
 ```
 
-# Partial Correlation
+## Partial Correlation
 
 *Partial* 
 
@@ -466,6 +458,7 @@ kable(pcortab,
       ))
 ```
 
+## Inferences
 
 # Linear Regression
 
@@ -627,3 +620,5 @@ linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```{r}
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
+
+## Inferences

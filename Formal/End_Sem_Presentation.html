@@ -512,9 +512,20 @@
 <h2>Measures of Central Tendency</h2>
 <p><em>Mean or Arithmetic Mean</em> <span class="math inline">\(\bar{x}\)</span>, <em>Geometric Mean</em> <span class="math inline">\(\operatorname{GM}(x)\)</span>, <em>Harmonic Mean</em> <span class="math inline">\(\operatorname{HM}(x)\)</span>, <em>Median</em> <span class="math inline">\(\operatorname{median}(x)\)</span> and <em>Mode</em> <span class="math inline">\(\operatorname{mode}(x)\)</span> are some measures of <em>central tendency</em> in the sample.</p>
 <p><span class="math display">\[
+\small
 \begin{align}
-\bar{x} = {\frac{\sum _{i=1}^{n}(x_{i})}{n}} &amp;&amp;
-\operatorname{GM}(x) = \left(\prod_{i=1}^n a_i\right)^\frac{1}{n}
+\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &amp;&amp;
+\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &amp;&amp;
+\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
+\end{align}
+\]</span> <span class="math display">\[
+\small
+\begin{align}
+\operatorname{median}(x)=\begin{cases}
+x_{(n + 1)/ 2} &amp;: n = 1 \mod{2} \\
+\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &amp;:n = 0 \mod{2}
+\end{cases} &amp;&amp;
+\operatorname{mode}(x) = x_{(n)}
 \end{align}
 \]</span></p>
 <div class="cell">
@@ -625,14 +636,25 @@
 </div>
 
 <aside><div>
-<p>Note: <span class="math inline">\(x_i\)</span> is the i<sup>th</sup> observation of the random variable <span class="math inline">\(x\)</span>.</p>
+<p>Note: <span class="math inline">\(x_i\)</span> is the i<sup>th</sup> observation. <span class="math inline">\(x_{(i)}\)</span> is the i<sup>th</sup> largest observation.</p>
 </div></aside></section>
 <section id="measures-of-dispersion" class="slide level2 smaller">
 <h2>Measures of Dispersion</h2>
-<p>Range range(x), Semi-int<code>..</code> SIR(x), Mean Deviation about x’ <span class="math inline">\(\operatorname{MD}_{(x')}(x)\)</span>, Variance <span class="math inline">\(s_x^2\)</span>, Standard Deviation <span class="math inline">\(s_x\)</span> <code>...</code></p>
+<p>Range(x), Semi-int<code>..</code> SIR(x), Mean Deviation about x’ <span class="math inline">\(\operatorname{MD}_{(x')}(x)\)</span>, Variance <span class="math inline">\(s_x^2\)</span>, Standard Deviation <span class="math inline">\(s_x\)</span> <code>...</code></p>
 <p><span class="math display">\[
+\small
 \begin{align}
-s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
+\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &amp;&amp;
+\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &amp;&amp;
+\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
+\end{align}
+\]</span> <span class="math display">\[
+\small
+\begin{align}
+\operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &amp;&amp;
+\operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2} &amp;&amp;
+s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &amp;&amp;
+s^2_x= (s_x)^2
 \end{align}
 \]</span></p>
 <div class="cell">
@@ -683,25 +705,33 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 <span id="cb3-43"><a href="#cb3-43"></a><span class="fu">kable</span>(</span>
 <span id="cb3-44"><a href="#cb3-44"></a>  d_disp,</span>
 <span id="cb3-45"><a href="#cb3-45"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(</span>
-<span id="cb3-46"><a href="#cb3-46"></a>    <span class="st">"Range"</span>,</span>
-<span id="cb3-47"><a href="#cb3-47"></a>    <span class="st">"SIR"</span>,</span>
-<span id="cb3-48"><a href="#cb3-48"></a>    <span class="st">"Mean Deviation"</span>,</span>
-<span id="cb3-49"><a href="#cb3-49"></a>    <span class="st">"s_x^2"</span>,</span>
-<span id="cb3-50"><a href="#cb3-50"></a>    <span class="st">"$s_x$"</span></span>
+<span id="cb3-46"><a href="#cb3-46"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{Range}(x)$"</span>,</span>
+<span id="cb3-47"><a href="#cb3-47"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{SIR}(x)$"</span>,</span>
+<span id="cb3-48"><a href="#cb3-48"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">operatorname{MD}_{(</span><span class="sc">\\</span><span class="st">bar{x})}(x)$"</span>,</span>
+<span id="cb3-49"><a href="#cb3-49"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">quad s_x^2$"</span>,</span>
+<span id="cb3-50"><a href="#cb3-50"></a>    <span class="st">"$</span><span class="sc">\\</span><span class="st">quad s_x$"</span></span>
 <span id="cb3-51"><a href="#cb3-51"></a>  ),</span>
 <span id="cb3-52"><a href="#cb3-52"></a>  <span class="at">digits=</span><span class="dv">5</span></span>
 <span id="cb3-53"><a href="#cb3-53"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 11%">
+<col style="width: 9%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: right;">Range</th>
-<th style="text-align: right;">SIR</th>
-<th style="text-align: right;">Mean Deviation</th>
-<th style="text-align: right;">s_x^2</th>
-<th style="text-align: right;"><span class="math inline">\(s_x\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\operatorname{Range}(x)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\operatorname{SIR}(x)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\operatorname{MD}_{(\bar{x})}(x)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\quad s_x^2\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\quad s_x\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -762,7 +792,7 @@ s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}}
 <span id="cb4-20"><a href="#cb4-20"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>ind, <span class="at">scales=</span><span class="st">"free"</span>, <span class="at">labeller =</span> labelfunction)<span class="sc">+</span></span>
 <span id="cb4-21"><a href="#cb4-21"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
 <span id="cb4-22"><a href="#cb4-22"></a>        <span class="at">legend.position=</span><span class="st">"none"</span>,</span>
-<span id="cb4-23"><a href="#cb4-23"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-23"><a href="#cb4-23"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
@@ -1003,9 +1033,9 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 </table>
 </div>
 </div>
-</section></section>
-<section id="partial-correlation" class="title-slide slide level1 center">
-<h1>Partial Correlation</h1>
+</section>
+<section id="partial-correlation" class="slide level2">
+<h2>Partial Correlation</h2>
 <p><em>Partial</em></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1034,7 +1064,9 @@ r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
 </div>
 </div>
 </section>
-
+<section id="inferences-2" class="slide level2">
+<h2>Inferences</h2>
+</section></section>
 <section>
 <section id="linear-regression" class="title-slide slide level1 center">
 <h1>Linear Regression</h1>
@@ -1253,7 +1285,10 @@ y_i = \hat{a} + \hat{b} x_i + e_i.
 <section id="life-expectation-vs.-sanitation-1" class="slide level2">
 <h2>Life Expectation vs.&nbsp;Sanitation</h2>
 
-<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<img data-src="End_Sem_Presentation_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<section id="inferences-3" class="slide level2">
+<h2>Inferences</h2>
+<div class="footer footer-default">
 
 </div>
 </section></section>
