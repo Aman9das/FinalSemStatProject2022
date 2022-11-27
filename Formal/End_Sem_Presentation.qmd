@@ -65,7 +65,7 @@ This presentation demonstrates the capabilities of *Bivariate Analysis* on datas
 ## Data
 
 ```{r echo=TRUE, collapse=TRUE}
-script.dir = "~/Documents/Indian_Statistical_Institute/Sem_1/Statistical_Methods_1/Projects/Final_Sem/Formal"
+script.dir <- getSrcDirectory(function(x) {x})
 setwd(script.dir)
 
 numerise = function(x){
@@ -114,8 +114,7 @@ $$
 \operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &&
 \operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
 \end{align}
-$$
-$$
+$$ $$
 \small
 \begin{align}
 \operatorname{median}(x)=\begin{cases}
@@ -197,8 +196,7 @@ $$
 \ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &&
 \ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
 \end{align}
-$$
-$$
+$$ $$
 \small
 \begin{align}
 \operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &&
@@ -208,7 +206,7 @@ s^2_x= (s_x)^2
 \end{align}
 $$
 
-``` {r echo=TRUE}
+```{r echo=TRUE}
 getmd = function(x, center = mean(x)){
   md = mean(
     abs(
@@ -268,7 +266,7 @@ kable(
 
 About?
 
-``` {r echo=TRUE}
+```{r echo=TRUE}
 #| fig-align: center
 labelfunction = function(val1){
   return(list(c(
@@ -391,9 +389,7 @@ $$A_{i,j} = r_{x_i, x_j}$$
 
 ## Other Correlation Coefficients
 
-*Pearson*,
-*Spearman*,
-*Kendall* #TODO
+*Pearson*, *Spearman*, *Kendall* #TODO
 
 ```{r echo=TRUE}
 d_cor = data.frame(
@@ -433,7 +429,7 @@ kable(
 
 ## Partial Correlation
 
-*Partial* 
+*Partial*
 
 ```{r}
 partcor = pcor(d[, 2:4])$estimate
