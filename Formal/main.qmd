@@ -23,7 +23,7 @@ format:
     scrollable: true
     history: true
   html:
-    output-file: WEBPAGE_html.html
+    output-file: DOC_html.html
     toc: true
     html-math-method: katex
     highlight-style: gruvbox-dark
@@ -33,6 +33,15 @@ format:
   pptx:
     output-file: PPT_powerpoint.pptx
     reference-doc: ./Templates/template1.pptx
+  pdf:
+    documentclass: article
+    margin-left: 40pt
+    margin-right: 80pt
+    echo: false
+    output-file: DOC_pdf.pdf
+    toc: true
+    number-sections: true
+    code-fold: true
 execute:
   cache: false
 ---
@@ -115,20 +124,19 @@ kable(head(d, 6L))
 
 $$
 \small
-\begin{align}
+\begin{aligned}
 \bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &&
 \operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &&
 \operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
-\end{align}
+\end{aligned}
 $$ $$
-\small
-\begin{align}
+\begin{aligned}
 \operatorname{median}(x)=\begin{cases}
 x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
 \frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &:n = 0 \mod{2}
 \end{cases} &&
 \operatorname{mode}(x) = x_{(n)}
-\end{align}
+\end{aligned}
 $$
 
 ```{r echo=TRUE}
@@ -193,23 +201,23 @@ Note: $x_i$ is the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> l
 
 ## Measures of Dispersion {.smaller}
 
-Range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ `...`
+Range(x), Semi-int`..` SIR(x), Mean Deviation about x' $\operatorname{MD}_{(x')}(x)$, Variance $s_x^2$, Standard Deviation $s_x$ are some measures of *dispersion* in the sample.
 
 $$
 \small
-\begin{align}
+\begin{aligned}
 \operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
 \ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &&
 \ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
-\end{align}
+\end{aligned}
 $$ $$
 \small
-\begin{align}
+\begin{aligned}
 \operatorname{MD}_{(x')}(x) = \frac{\sum_{i=1}^n |x_i-x'|}{n} &&
 \operatorname{SIR}(x)=\frac{|Q_1-Q_3|}{2} &&
 s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &&
 s^2_x= (s_x)^2
-\end{align}
+\end{aligned}
 $$
 
 ```{r echo=TRUE}
@@ -296,7 +304,8 @@ scale_color_manual(
 facet_wrap(~ind, scales="free", labeller = labelfunction)+
   theme(axis.text.x=element_blank(),
         legend.position="none",
-        strip.text.x = element_text(size = 14))
+        strip.text.x = element_text(size = 36 / .pt)
+  )
   
   
 ```
@@ -363,11 +372,11 @@ seems like Linear correlation
 *Correlation* $r_{x,y}$ is any relationship, causal or spurious, between two random variables $x$, $y$. *Pearson's* $r$ correlation coefficient is considered here.
 
 $$
-\begin{align}
+\begin{aligned}
 \operatorname {cov} (x,y)={\frac {\sum _{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n}}
 &&
 r_{x,y}= \frac{\operatorname{cov}(x,y)}{s_x s_x}
-\end{align}
+\end{aligned}
 $$
 
 ::: columns
