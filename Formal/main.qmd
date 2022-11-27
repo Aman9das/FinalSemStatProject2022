@@ -24,6 +24,7 @@ format:
     history: true
   html:
     output-file: DOC_html.html
+    embed-resources: true
     toc: true
     html-math-method: katex
     highlight-style: gruvbox-dark
