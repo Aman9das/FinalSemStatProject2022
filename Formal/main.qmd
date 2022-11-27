@@ -64,7 +64,10 @@ theme(
 mycolor=scale_color_manual(
       values=c(
         "#cc241d80",
-        "#45858880")
+        "#45858880",
+        "#d65d0e80",
+        "#689d6a80"
+        )
       )
 ```
 
@@ -130,7 +133,9 @@ $$
 \operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} a_i &&
 \operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
 \end{aligned}
+\normalsize
 $$ $$
+\small
 \begin{aligned}
 \operatorname{median}(x)=\begin{cases}
 x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
@@ -138,6 +143,7 @@ x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
 \end{cases} &&
 \operatorname{mode}(x) = x_{(n)}
 \end{aligned}
+\normalsize
 $$
 
 ```{r echo=TRUE}
@@ -208,9 +214,10 @@ $$
 \small
 \begin{aligned}
 \operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
-\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n}{2} \rfloor)}) &&
-\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n}{2} \rfloor + 1)}, \ldots , x_{(n)})
+\ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n+1}{2} \rfloor)}) &&
+\ Q_3 = \operatorname{median}(x_{(\lfloor \frac{n+2}{2} \rfloor)}, \ldots , x_{(n)})
 \end{aligned}
+\normalsize
 $$ $$
 \small
 \begin{aligned}
@@ -219,6 +226,7 @@ $$ $$
 s_x = \sqrt{\frac{\sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}{n}} &&
 s^2_x= (s_x)^2
 \end{aligned}
+\normalsize
 $$
 
 ```{r echo=TRUE}
@@ -270,8 +278,8 @@ kable(
     "$\\operatorname{Range}(x)$",
     "$\\operatorname{SIR}(x)$",
     "$\\operatorname{MD}_{(\\bar{x})}(x)$",
-    "$\\quad s_x^2$",
-    "$\\quad s_x$"
+    "$\\quad \\quad \\quad \\quad s_x^2$",
+    "$\\quad \\quad \\quad \\quad s_x$"
   ),
   digits=5
 )
@@ -291,21 +299,19 @@ labelfunction = function(val1){
   )))
 }
 ggplot(stack(d[2:4]), mapping = aes(y = values))+
-geom_boxplot(aes(fill=ind), alpha=0.8)+
+geom_boxplot(aes(fill=ind), alpha=0.8, outlier.color = "orange")+
 labs(
   x=NULL,
   y=NULL
   )+
 mytheme+
-scale_color_manual(
-  values=c(
-    "#cc241d80",
-    "#45858880")
-  )+
+mycolor+
 facet_wrap(~ind, scales="free", labeller = labelfunction)+
   theme(axis.text.x=element_blank(),
         legend.position="none",
-        strip.text.x = element_text(size = 36 / .pt)
+        strip.text.x = element_text(size = rel(1.5)),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()
   )
   
   
