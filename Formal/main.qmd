@@ -69,7 +69,11 @@ mycolor=scale_color_manual(
         "#45858880",
         "#d65d0e80",
         "#689d6a80"
-        )
+        ),
+      aesthetics=c(
+        "fill",
+        "colour"
+      )
       )
 ```
 
@@ -287,7 +291,7 @@ kable(
 )
 ```
 
-## Measures of Shape
+## Measures of Shape {.smaller}
 
 Coefficients of *Skewness* $g_1$ and *Kurtosis* $g_2$ describe the symmetry and extremity of tails of the sample distribution.
 
@@ -370,7 +374,7 @@ labelfunction = function(val1){
   )))
 }
 ggplot(stack(d[2:4]), mapping = aes(y = values))+
-geom_boxplot(aes(fill=ind, outlier.color = ind), alpha=0.8)+
+geom_boxplot(aes(fill=ind, outlier.color = ind), alpha=0.6)+
 labs(
   x=NULL,
   y=NULL
