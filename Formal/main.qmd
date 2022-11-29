@@ -22,6 +22,7 @@ format:
     menu: false
     scrollable: true
     history: true
+    preview-links: true
   html:
     output-file: DOC_html.html
     embed-resources: true
@@ -44,7 +45,7 @@ format:
     number-sections: true
     code-fold: true
 execute:
-  cache: true
+  cache: false
 ---
 
 ```{r include=FALSE}
@@ -54,6 +55,7 @@ library(quantreg)
 library(ppcor)
 library(psych)
 library(moments)
+library(latex2exp)
 
 mytheme=theme_minimal()+
 theme(
@@ -287,7 +289,7 @@ kable(
 
 ## Measures of Shape
 
-Coefficients of *Skewness* $g_1$, *Kurtosis* $g_2$ describe the symmetry and extremity of tails of the distribution.
+Coefficients of *Skewness* $g_1$ and *Kurtosis* $g_2$ describe the symmetry and extremity of tails of the sample distribution.
 
 $$
 \begin{aligned}
@@ -341,7 +343,7 @@ labelfunction = function(val1){
   )))
 }
 ggplot(stack(d[2:4]), mapping = aes(x = values))+
-geom_density(aes(fill=ind), alpha=0.8)+
+geom_density(aes(color=ind), size=rel(1.5))+
 labs(
   x=NULL,
   y=NULL
@@ -388,11 +390,7 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
 
 # Scatter Plot
 
-A *Scatter plot* is a type of Plot using Cartesian coordinate system to display values for two variables for a set of data. It helps us:
-
--   take a short glance at effect of two variables.
--   estimate kinds of correlations between variables.
--   infer the direction of correlation (if any).
+A *Scatter plot* helps us estimate the type of relationship between variables.
 
 ```{r echo=TRUE}
 sctrplot = function(
@@ -522,7 +520,9 @@ kable(
 
 Good linear correlation lets try to observe line of best fit.
 
-# Linear Regression
+# Regression
+
+## Simple Linear Regression
 
 *Simple Univariate Linear Regression* is a method for estimating the relationship $y_i=f(x_i)$ of a *response* variable $y$ with a *predictor* variable $x$, as a line that closely fits the $y$ vs. $x$ *scatter plot*.
 
@@ -624,16 +624,22 @@ kable(
 )
 ```
 
-## Line fitting
+# Line Fitting
 
-Plotting the estimated *Linear Model* on the Scatter Plot.
+Plotting the estimated *Linear Models* on the Scatter Plots.
 
 ```{r echo=TRUE}
+
 linearplot = function(
     d, x_map, y_map,
     x_lab=waiver(), y_lab=waiver(),
     title=waiver()
 ){
+  olsvec = round(olssmry(d, x_map, y_map), digit=5)
+  ladvec = round(ladsmry(d, x_map, y_map), digit=5)
+  capstr = TeX(paste("$y_i =", olsvec[1], "+", olsvec[2], "~x_i + e_i$", "\t\t",
+                     "$y_i' =", ladvec[1], "+", ladvec[2], "~x_i + e_i'$"))
+  
   plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
     geom_point(
       alpha=0.6
@@ -642,7 +648,9 @@ linearplot = function(
     labs(
       x=x_lab,
       y=y_lab,
-      title=title
+      title=title,
+      caption=capstr,
+      parse=TRUE
     )+
     geom_smooth(
       method="lm",
@@ -659,7 +667,10 @@ linearplot = function(
     labs(
       color="Linear Model"
     )+
-    mycolor
+    mycolor+
+    theme(
+      plot.caption = element_text(hjust=0.5, color="#504945")
+    )
   
   return(plot1)
 }
@@ -668,18 +679,21 @@ linearplot = function(
 ## Sanitation vs. GDP per Capita
 
 ```{r}
+#| fig-align: center
 linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
 ## Life Expectancy vs. GDP per Capita
 
 ```{r}
+#| fig-align: center
 linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
 ## Life Expectancy vs. Sanitation
 
 ```{r}
+#| fig-align: center
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
@@ -687,20 +701,18 @@ linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 
 # Partial Correlation
 
-*Partial*
+*Partial Correlation* is the relationship between two variables $x$, $y$ of interest, after removing effect of some other related variable $z$.
 
 $$
 \begin{aligned}
-x_i = \hat{a_x} + \hat{b_x} z_i + e_{x,i} &&
+&x_i = \hat{a_x} + \hat{b_x} z_i + e_{x,i} &&
 y_i = \hat{a_y} + \hat{b_y} z_i + e_{y,i}
-\end{aligned}
 \\
-\begin{aligned}
-r_{x,y;z} = r_{e_{x}, e_{y}}
+&\Rightarrow r_{x,y;z} = r_{e_{x}, e_{y}}
 \end{aligned}
 $$
 
-```{r}
+```{r echo=TRUE}
 partcor = pcor(d[, 2:4])$estimate
 
 pcortab = data.frame(
@@ -723,4 +735,15 @@ kable(pcortab,
       ))
 ```
 
+## Inferences
+
 # Conclusion
+
+# Credits
+
+- Dr. Kiranmoy Das
+- Srijan Saha
+- [Wikipedia](https://wikipedia.org)
+- [Statology](https://statology.org)
+- [Quarto](https://quarto.org)
+- [RStudio](https://posit.co/products/open-source/rstudio/)
