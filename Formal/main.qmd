@@ -1,6 +1,6 @@
 ---
 title: End-Semester Project
-subtitle: Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010
+subtitle: Bivariate Analysis between GDP per capita, Sanitation and Life Expectancy across Nations in 2010
 author:
   - Aman Das [BS2206]
   - Raj Pratap Singh [BS2219]
@@ -70,6 +70,7 @@ mycolor=scale_color_manual(
       values=c(
         "#cc241d80",
         "#45858880",
+        "#689d6a80",
         "#d65d0e80",
         "#689d6a80"
         ),
@@ -84,10 +85,44 @@ mycolor=scale_color_manual(
 
 ## Overview {.smaller}
 
-Our *Aim* is to determine which features more directly affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
+Our *Aim* is to determine which features more directly affect the *Life Expectation* of the citizens.
 
 ```{r message=FALSE, warning=FALSE}
 #| fig-align: center
+
+plotmap = function(d3, legendname, yearnamelabel, color1, color2){
+  
+  world=map_data("world")
+
+  w3<-data.frame(world,data=sample(10,length(unique(world$group)),T)[world$group])
+  
+  d3[d3 == "United States"] = "USA"
+  d3[d3 == "Congo, Dem. Rep."] = "Democratic Republic of the Congo"
+  d3[d3 == "Congo, Rep."] = "Republic of Congo"
+  d3[d3 == "Kyrgyz Republic"] = "Kyrgyzstan"
+  d3[d3 == "Cote d'Ivoire"] = "Ivory Coast"
+  d3[d3 == "United Kingdom"] = "UK"
+  
+  dt_d3 = as.data.table(d3)
+  setkey(dt_d3, country)
+  dt_w = as.data.table(world)
+  setkey(dt_w, region)
+  
+  new_w = as.data.frame(dt_w[dt_d3])
+  
+  ggplot(new_w,aes(long,lat,group=group,fill=data))+
+      geom_polygon(color="#282828", linewidth=rel(0.5))+
+      scale_fill_gradient(low=color1,high=color2)+
+      mytheme+
+    theme(
+      axis.text=element_blank(),
+      axis.title = element_blank(),
+      axis.line=element_blank(),
+      plot.caption = element_text(hjust = 0.5, color="#504945") 
+    )+
+    labs(fill=legendname,
+         caption = yearnamelabel)
+}
 
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
@@ -97,39 +132,44 @@ numerise = function(x){
 
 yearname = "X2010"
 
+d1_raw = read.csv(file.path(".","Data","gdp.csv"), fileEncoding = 'UTF-8-BOM')
+d2_raw = read.csv(file.path(".","Data","sanitation.csv"), fileEncoding = 'UTF-8-BOM')
 d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
+
+yearname = "X2010"
+
+d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
+colnames(d1)[2] = "lngdp"
+d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
+colnames(d2)[2] = "snt"
 d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
 colnames(d3)[2] = "lfx"
-
-world=map_data("world")
-
-w3<-data.frame(world,data=sample(10,length(unique(world$group)),T)[world$group])
-
-d3[d3 == "United States"] = "USA"
-d3[d3 == "Congo, Dem. Rep."] = "Democratic Republic of the Congo"
-d3[d3 == "Congo, Rep."] = "Republic of Congo"
-d3[d3 == "Kyrgyz Republic"] = "Kyrgyzstan"
-d3[d3 == "Cote d'Ivoire"] = "Ivory Coast"
-d3[d3 == "United Kingdom"] = "UK"
-
-dt_d3 = as.data.table(d3)
-setkey(dt_d3, country)
-dt_w = as.data.table(world)
-setkey(dt_w, region)
-
-new_w = as.data.frame(dt_w[dt_d3])
-
-ggplot(new_w,aes(long,lat,group=group,fill=lfx))+
-    geom_polygon(color="#282828", linewidth=rel(0.5))+
-    scale_fill_gradient(low="#fabd2f",high="#cc241d")+
-    mytheme+
-  theme(
-    axis.text=element_blank(),
-    axis.title = element_blank(),
-    axis.line=element_blank()
-  )+
-  labs(fill="Linear Model")
 ```
+
+:::: {.columns}
+
+::: {.column width="33%"}
+
+```{r fig.width=5, fig.height=2.5, fig.align='left'}
+d1$data = log(numerise(d1$lngdp))
+plotmap(d1, "ln(GDP)", "2010", "#504945", "#cc241d")
+```
+```{r fig.width=5, fig.height=2.5, fig.align='left'}
+d2$data = d2$snt
+plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
+```
+:::
+
+::: {.column width="66%"}
+
+$~$ \n
+```{r fig.width=10, fig.height=5, fig.align='left'}
+d3$data = d3$lfx
+plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
+```
+:::
+
+::::
 
 ## Data Points
 
@@ -141,7 +181,7 @@ This presentation demonstrates the capabilities of *Bivariate Analysis* on datas
 
 ## Data
 
-```{r echo=TRUE, collapse=TRUE}
+```{r echo=TRUE}
 script.dir <- getSrcDirectory(function(x) {x})
 setwd(script.dir)
 
