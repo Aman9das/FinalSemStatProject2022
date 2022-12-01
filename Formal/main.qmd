@@ -806,7 +806,14 @@ linearplot = function(
     labs(
       color="Linear Model"
     )+
-    mycolor+
+    scale_color_manual(
+      values=c(
+        "#cc241d80",
+        "#45858880",
+        "#689d6a80",
+        "#d65d0e80"
+        )
+      )+
     theme(
       plot.caption = element_text(hjust=0.5, color="#504945")
     )
@@ -890,7 +897,7 @@ kable(pcortab,
   
   Thus Life Expection is more directly improved by better Sanitaion access, than increase in wealth.
 
--   We also note that there is high partial correlation between Sanitation and ln(GDP).
+-   We also note that there is fairly high partial correlation between Sanitation and ln(GDP).
   
   This indicates that wealthier countries tend to improve their sanitation infrastructure.
 :::
