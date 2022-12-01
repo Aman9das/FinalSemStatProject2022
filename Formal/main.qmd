@@ -68,11 +68,10 @@ theme(
   )
 mycolor=scale_color_manual(
       values=c(
-        "#cc241d80",
-        "#45858880",
-        "#689d6a80",
-        "#d65d0e80",
-        "#689d6a80"
+        "#cc241d",
+        "#458588",
+        "#689d6a",
+        "#d65d0e"
         ),
       aesthetics=c(
         "fill",
@@ -118,10 +117,12 @@ plotmap = function(d3, legendname, yearnamelabel, color1, color2){
       axis.text=element_blank(),
       axis.title = element_blank(),
       axis.line=element_blank(),
-      plot.caption = element_text(hjust = 0.5, color="#504945") 
+      plot.caption = element_text(hjust = 0, color="#504945"),
+      legend.position = "bottom",
+      legend.justification = "right",
+      legend.title = element_text(size=rel(1.5), vjust=0.9)
     )+
-    labs(fill=legendname,
-         caption = yearnamelabel)
+    labs(fill=legendname)
 }
 
 numerise = function(x){
@@ -146,15 +147,15 @@ d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
 colnames(d3)[2] = "lfx"
 ```
 
-:::: {.columns}
+:::: columns
 
 ::: {.column width="33%"}
-
-```{r fig.width=5, fig.height=2.5, fig.align='left'}
+```{r fig.width=5, fig.height=3, fig.align='left'}
 d1$data = log(numerise(d1$lngdp))
 plotmap(d1, "ln(GDP)", "2010", "#504945", "#cc241d")
 ```
-```{r fig.width=5, fig.height=2.5, fig.align='left'}
+
+```{r fig.width=5, fig.height=3, fig.align='left'}
 d2$data = d2$snt
 plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
 ```
@@ -162,7 +163,8 @@ plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
 
 ::: {.column width="66%"}
 
-$~$ \n
+$~$ \n $~$ \n
+
 ```{r fig.width=10, fig.height=5, fig.align='left'}
 d3$data = d3$lfx
 plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
@@ -183,7 +185,7 @@ This presentation demonstrates the capabilities of *Bivariate Analysis* on datas
 
 ```{r echo=TRUE}
 script.dir <- getSrcDirectory(function(x) {x})
-setwd(script.dir)
+# setwd(script.dir)
 
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
@@ -222,7 +224,7 @@ kable(head(d, 6L))
 
 ## Measures of Central Tendency {.smaller}
 
-*Mean or Arithmetic Mean* $\bar{x}$, *Geometric Mean* $\operatorname{GM}(x)$, *Harmonic Mean* $\operatorname{HM}(x)$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
+*Mean or Arithmetic Mean* $\bar{x}$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
 
 <details>
 
@@ -230,22 +232,17 @@ kable(head(d, 6L))
 
 $$
 \begin{aligned}
-\operatorname{mean}(x)=\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &&
-\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} x_i
+x = \{x_1, x_2, \ldots,x_{n-1}, x_n\} &&
+\operatorname{mean}(x)=\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i})
 \end{aligned}
-$$ $$
-\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
-$$ $$
+$$$$
 \begin{aligned}
-\operatorname{median}(x)=\begin{cases}
-x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
-\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &:n = 0 \mod{2}
-\end{cases} &&
-\operatorname{mode}(x) = x_{(n)}
+\operatorname{median}(x)= \frac{x_{\lfloor\frac{n+1}{2}\rfloor}+x_{\lfloor\frac{n+2}{2}\rfloor}}{2} &&
+\operatorname{mode}(x) = x_i \text{ s.t. } \operatorname{Pr}(x_i) = \operatorname{sup}(\operatorname{Pr}(x))  
 \end{aligned}
 $$
 
-Note: $x_i$ is the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest observation.
+Note: $f_i$ is the frequency of the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest observation.
 
 </details>
 
@@ -270,16 +267,6 @@ d_central = data.frame(
     mean(d$snt),
     mean(d$lfx)
   ),
-  GM = c(
-    geometric.mean(d$lngdp),
-    geometric.mean(d$snt),
-    geometric.mean(d$lfx)
-  ),
-  HM = c(
-    harmonic.mean(d$lngdp),
-    harmonic.mean(d$snt),
-    harmonic.mean(d$lfx)
-  ),
   Median = c(
     median(d$lngdp),
     median(d$snt),
@@ -295,15 +282,17 @@ d_central = data.frame(
 kable(
   d_central,
   col.names = c(
-    "$\\bar{x}$",
-    "$\\operatorname{GM}(x)$",
-    "$\\operatorname{HM}(x)$",
+    "$\\quad \\quad \\bar{x}$",
     "$\\operatorname{median}(x)$",
     "$\\operatorname{mode}(x)$"
   ),
   digits=5
 )
 ```
+
+$~$
+
+- Notice that mode of Sanitation is 100. Thus a large number of countries have universal access to basic sanitation infrastructure.
 
 ## Measures of Dispersion {.smaller}
 
@@ -315,7 +304,7 @@ kable(
 
 $$
 \begin{aligned}
-\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
+\operatorname{range}(x)=|x_{(n)} - x_{(1)}| &&
 \ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n+1}{2} \rfloor)}) &&
 \end{aligned}
 $$ $$
@@ -379,7 +368,7 @@ d_disp = data.frame(
 kable(
   d_disp,
   col.names = c(
-    "$\\operatorname{Range}(x)$",
+    "$\\operatorname{range}(x)$",
     "$\\operatorname{SIR}(x)$",
     "$\\operatorname{MD}_{(\\bar{x})}(x)$",
     "$\\quad \\quad \\quad \\quad s_x^2$",
@@ -388,6 +377,11 @@ kable(
   digits=5
 )
 ```
+
+$~$
+
+- We can compare $s_x$ to $\bar{x}$ and observe that there is a high variation in Sanitation amongst countries.
+- GDP per capita varies drastically across the $e$<sup>`r max(d$lngdp) - min(d$lngdp)`</sup> range.
 
 ## Measures of Shape
 
@@ -407,6 +401,8 @@ $$
 
 </details>
 
+::: columns
+::: {.column width="50%"}
 ```{r echo=TRUE}
 d_shape = data.frame(
   row.names = "Variable",
@@ -436,6 +432,14 @@ kable(
   digits=5
 )
 ```
+:::
+
+::: {.column width="50%"}
+-   <p style="font-size:25pt;">ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.</p>
+<p style="font-size:25pt;">This indicates majority of countries have good sanitation system, and citizen health.</p>
+-   <p style="font-size:25pt;">ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.</p>
+:::
+:::
 
 ## Density Plot {.smaller}
 
@@ -463,6 +467,8 @@ facet_wrap(~ind, scales="free", labeller = labelfunction, ncol=1)+
         strip.text.x = element_text(size = rel(1.5))
   )
 ```
+
+- These plots confirm our previous inferences.
 
 ## Box Plot {.smaller scrollable="false"}
 
@@ -492,6 +498,12 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank()
   )
+```
+
+- We observe one potential outlier in the Life Expectancy dataset. It is Haiti at 32.5 years. We observe the yearwise dataset and conclude that it is a Typing Error. We decide to discard Haiti from out analysis.
+
+```{r}
+d = subset(d, country!="Haiti")
 ```
 
 ## Inferences
@@ -545,11 +557,52 @@ seems like Linear correlation
 
 # Bivariate Statistics
 
+## Correlation Coefficients {.smaller}
+
+*Correlation* is any relationship, causal or spurious, between two random variables $x$, $y$.
+
+*Pearson's* $r$, *Spearman's* $r_s$, and *Kendall's* $\tau$ are some correlation coefficients. These estimate the linear correlation between two variables.
+
+```{r echo=TRUE}
+d_cor = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  Pearson = c(
+    cor(d$snt, d$lngdp, method="pearson"),
+    cor(d$lfx, d$lngdp, method="pearson"),
+    cor(d$lfx, d$snt, method="pearson")
+  ),
+  Spearman = c(
+    cor(d$snt, d$lngdp, method="spearman"),
+    cor(d$lfx, d$lngdp, method="spearman"),
+    cor(d$lfx, d$snt, method="spearman")
+  ),
+  Kendall = c(
+    cor(d$snt, d$lngdp, method="kendall"),
+    cor(d$lfx, d$lngdp, method="kendall"),
+    cor(d$lfx, d$snt, method="kendall")
+  )
+)
+
+kable(
+  d_cor,
+  digit = 5,
+  col.names = c(
+    "*Pearson's* $r$",
+    "*Spearman's* $r_s$",
+    "*Kendall's* $\\tau$"
+  )
+)
+```
+
+
 ## Covariance and Correlation Matrices {.smaller}
 
 *Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
-
-*Correlation* is any relationship, causal or spurious, between two random variables $x$, $y$. *Pearson's correlation coefficient* $r$ estimates the linear correlation.
 
 <details>
 
@@ -589,46 +642,6 @@ kable(cor_mat, digits=5)
 $$A_{i,j} = r_{x_i, x_j}$$
 :::
 :::
-
-## Other Correlation Coefficients
-
-*Spearman's* $r_s$, and *Kendall's* $\tau$ are some other correlation coefficients besides *Pearson's* $r$
-
-```{r echo=TRUE}
-d_cor = data.frame(
-  row.names = "Variable",
-  Variable = c(
-    "*Sanitation vs. ln(GDP)*",
-    "*Life Exp. vs. ln(GDP)*",
-    "*Life Exp. vs. Sanitation*"
-  ),
-  Pearson = c(
-    cor(d$snt, d$lngdp, method="pearson"),
-    cor(d$lfx, d$lngdp, method="pearson"),
-    cor(d$lfx, d$snt, method="pearson")
-  ),
-  Spearman = c(
-    cor(d$snt, d$lngdp, method="spearman"),
-    cor(d$lfx, d$lngdp, method="spearman"),
-    cor(d$lfx, d$snt, method="spearman")
-  ),
-  Kendall = c(
-    cor(d$snt, d$lngdp, method="kendall"),
-    cor(d$lfx, d$lngdp, method="kendall"),
-    cor(d$lfx, d$snt, method="kendall")
-  )
-)
-
-kable(
-  d_cor,
-  digit = 5,
-  col.names = c(
-    "*Pearson's* $r$",
-    "*Spearman's* $r_s$",
-    "*Kendall's* $\\tau$"
-  )
-)
-```
 
 ## Inferences
 
@@ -829,6 +842,10 @@ linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 
 *Partial Correlation* is the relationship between two variables $x$, $y$ of interest, after removing effect of some other related variable $z$.
 
+<details>
+
+<summary>Formulae</summary>
+
 $$
 \begin{aligned}
 &x_i = \hat{a_x} + \hat{b_x} z_i + e_{x,i} &&
@@ -838,6 +855,10 @@ y_i = \hat{a_y} + \hat{b_y} z_i + e_{y,i}
 \end{aligned}
 $$
 
+</details>
+
+:::: columns
+::: {.column width="40%"}
 ```{r echo=TRUE}
 partcor = pcor(d[, 2:4])$estimate
 
@@ -845,7 +866,7 @@ pcortab = data.frame(
   row.names = "Variable",
   Variable = c(
     "*Sanitation vs. ln(GDP)*",
-    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp.$\\quad$ vs. ln(GDP)*",
     "*Life Exp. vs. Sanitation*"
   ),
   PCor = c(
@@ -860,6 +881,20 @@ kable(pcortab,
         "Partial Correlation"
       ))
 ```
+:::
+::: {.column width="5%"}
+
+:::
+::: {.column width="55%"}
+-   We observe that the partial correlation between Life Exp. and Sanitation is higher than that of Life. Exp and ln(GDP).
+  
+  Thus Life Expection is more directly improved by better Sanitaion access, than increase in wealth.
+
+-   We also note that there is high partial correlation between Sanitation and ln(GDP).
+  
+  This indicates that wealthier countries tend to improve their sanitation infrastructure.
+:::
+::::
 
 ## Inferences
 
