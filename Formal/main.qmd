@@ -84,7 +84,15 @@ mycolor=scale_color_manual(
 
 ## Overview {.smaller}
 
-Our *Aim* is to determine which features more directly affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
+Sanitation of oneself is one of the basic duties of a human being. We know poor sanitation is linked to transmission of diarhoeal diseases such as cholera and dysentery, as well as typhoid, intestinal worm infections and polio which directly affect the health of an individual. Moreover, we also know that the Gross Domestic Product per capita of a country basically tells about the wealth of a country. So, in this project Our *Aim* is to determine how these features affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
+
+::: notes
+Everybody is taught to keep a good hygiene since childhood. Because poor sanitation can be the cause for various diseases. Sanitation has therefore become an important part of life for most of us. However, even in today's times there are countries where sanitation is not considered important.
+
+The GDP per capita tells us about how people live, and thus it can tell us about the health of the people also.
+
+In this project we aim to conduct a data analysis on how these factors affect the life expectancy.
+:::
 
 ```{r message=FALSE, warning=FALSE}
 #| fig-align: center
@@ -133,9 +141,9 @@ ggplot(new_w,aes(long,lat,group=group,fill=lfx))+
 
 ## Data Points
 
-This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
+This presentation demonstrates the capabilities of *Bivariate Analysis* on data-sets, to infer relationship between various features of Nations. The co-variates taken in consideration are as follows:
 
--   **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in \$) per citizen. Adjusted for Inflation. \[*lngdp*\]
+-   **log of GDP per capita**: Logarithm ( base $e$) of Gross Domestic Product (in \$) per citizen, adjusted for Inflation. \[*lngdp*\]
 -   **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. \[*snt*\]
 -   **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
 
