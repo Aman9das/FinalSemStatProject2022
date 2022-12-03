@@ -84,7 +84,9 @@ mycolor=scale_color_manual(
 
 ## Overview {.smaller}
 
-Sanitation of oneself is one of the basic duties of a human being. We know poor sanitation is linked to transmission of diarhoeal diseases such as cholera and dysentery, as well as typhoid, intestinal worm infections and polio which directly affect the health of an individual. Moreover, we also know that the Gross Domestic Product per capita of a country basically tells about the wealth of a country. So, in this project Our *Aim* is to determine how these features affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
+Sanitation of oneself is one of the basic duties of a human being. We know poor sanitation is linked to transmission of diarrhoeal diseases such as cholera and dysentery, as well as typhoid, intestinal worm infections and polio which directly affect the health of an individual.
+
+Also know that the Gross Domestic Product per capita of a country basically tells about the wealth of a country. So, in this project Our *Aim* is to determine how these features affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
 
 ::: notes
 Everybody is taught to keep a good hygiene since childhood. Because poor sanitation can be the cause for various diseases. Sanitation has therefore become an important part of life for most of us. However, even in today's times there are countries where sanitation is not considered important.
@@ -103,7 +105,7 @@ numerise = function(x){
   return(x)
 }
 
-yearname = "X2010"
+yearname = "X2000"
 
 d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
 d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
@@ -463,6 +465,16 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
 ```
 
 ## Inferences
+
+From the density plots, we can infer the following:
+
+The density of the log of GDP per capita is symmetric as supported by the fact that the skewness was close to 0.
+
+The other two density plots appear left skewed as supported by negative skewness.
+
+From the box plots we can infer the following:
+
+The median seems to be in
 
 # Scatter Plot
 
