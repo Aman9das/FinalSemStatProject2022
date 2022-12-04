@@ -86,7 +86,7 @@ mycolor=scale_color_manual(
 
 Our *Aim* is to determine which features more directly affect the *Life Expectation* of the citizens.
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, cache=TRUE}
 #| fig-align: center
 
 plotmap = function(d3, legendname, yearnamelabel, color1, color2){
@@ -147,8 +147,7 @@ d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
 colnames(d3)[2] = "lfx"
 ```
 
-:::: columns
-
+::: columns
 ::: {.column width="33%"}
 ```{r fig.width=5, fig.height=3, fig.align='left'}
 d1$data = log(numerise(d1$lngdp))
@@ -162,7 +161,6 @@ plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
 :::
 
 ::: {.column width="66%"}
-
 $~$ \n $~$ \n
 
 ```{r fig.width=10, fig.height=5, fig.align='left'}
@@ -170,8 +168,7 @@ d3$data = d3$lfx
 plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
 ```
 :::
-
-::::
+:::
 
 ## Data Points
 
@@ -292,7 +289,7 @@ kable(
 
 $~$
 
-- Notice that mode of Sanitation is 100. Thus a large number of countries have universal access to basic sanitation infrastructure.
+-   Notice that mode of Sanitation is 100. Thus a large number of countries have universal access to basic sanitation infrastructure.
 
 ## Measures of Dispersion {.smaller}
 
@@ -380,8 +377,8 @@ kable(
 
 $~$
 
-- We can compare $s_x$ to $\bar{x}$ and observe that there is a high variation in Sanitation amongst countries.
-- GDP per capita varies drastically across the $e$<sup>`r max(d$lngdp) - min(d$lngdp)`</sup> range.
+-   We can compare $s_x$ to $\bar{x}$ and observe that there is a high variation in Sanitation amongst countries.
+-   GDP per capita varies drastically across the $e$<sup>`r max(d$lngdp) - min(d$lngdp)`</sup> range.
 
 ## Measures of Shape
 
@@ -435,9 +432,23 @@ kable(
 :::
 
 ::: {.column width="50%"}
--   <p style="font-size:25pt;">ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.</p>
-<p style="font-size:25pt;">This indicates majority of countries have good sanitation system, and citizen health.</p>
--   <p style="font-size:25pt;">ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.</p>
+-   <p style="font-size:25pt;">
+
+    ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.
+
+    </p>
+
+    <p style="font-size:25pt;">
+
+    This indicates majority of countries have good sanitation system, and citizen health.
+
+    </p>
+
+-   <p style="font-size:25pt;">
+
+    ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.
+
+    </p>
 :::
 :::
 
@@ -468,7 +479,7 @@ facet_wrap(~ind, scales="free", labeller = labelfunction, ncol=1)+
   )
 ```
 
-- These plots confirm our previous inferences.
+-   These plots confirm our previous inferences.
 
 ## Box Plot {.smaller scrollable="false"}
 
@@ -500,13 +511,15 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
   )
 ```
 
-- We observe one potential outlier in the Life Expectancy dataset. It is Haiti at 32.5 years. We observe the yearwise dataset and conclude that it is a Typing Error. We decide to discard Haiti from out analysis.
+-   We observe one potential outlier in the Life Expectancy dataset. It is Haiti at `r subset(d, country=="Haiti")[4]` years. It is due to a cholera outbreak and an earthquake increasing the mortality rate in the nation in 2010.
 
-```{r}
-d = subset(d, country!="Haiti")
-```
+---
 
-## Inferences
+### Inferences
+
+We observe and understand the general distribution of the three features in the Univariate Analysis.
+
+Let us try to visualize their Bivariate relationship in the Scatter Plot.
 
 # Scatter Plot
 
@@ -533,13 +546,13 @@ sctrplot = function(
 }
 ```
 
-## Sanitation vs. GDP per Capita
+## Sanitation vs. log of GDP
 
 ```{r}
 sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
-## Life Expectancy vs. GDP per Capita
+## Life Expectancy vs. log of GDP
 
 ```{r}
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
@@ -551,9 +564,13 @@ sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
-## Inferences
+---
 
-seems like Linear correlation
+### Inferences
+
+We observe a fairly strong positive Linear Correlation between the three features in the Scatter Plot.
+
+We subsequently compute the Correlation Coefficients to quantify the Linear Correlation.
 
 # Bivariate Statistics
 
@@ -588,6 +605,8 @@ d_cor = data.frame(
   )
 )
 
+avg_cor = round(mean(d_cor[, 1]), digits=2)
+
 kable(
   d_cor,
   digit = 5,
@@ -598,7 +617,6 @@ kable(
   )
 )
 ```
-
 
 ## Covariance and Correlation Matrices {.smaller}
 
@@ -643,9 +661,13 @@ $$A_{i,j} = r_{x_i, x_j}$$
 :::
 :::
 
-## Inferences
+---
 
-Good linear correlation lets try to observe line of best fit.
+### Inferences
+
+We observe fairly good Linear Correlation of around `r avg_cor` between all three variables. Thus a slight increase in ln(GDP), Sanitation or Life expectancy tends to accompany rise in the other two features increasing too.
+
+Let us try to create a Linear Model to best estimate the relationship between the three variables.
 
 # Regression
 
@@ -709,6 +731,8 @@ row.names(olstab) = c(
   "*Life Exp. vs. Sanitation*"
 )
 
+avg_r2 = round(mean(olstab[, 3]), digits = 1)
+
 kable(
   olstab,
   digit = 5,
@@ -719,6 +743,8 @@ kable(
   )
 )
 ```
+
+- The $R^2$ values of all three models are all near `r avg_r2` . Thus the models explain the variation in the response $y_i$ fairly well.
 
 ## Least Absolute Deviation
 
@@ -822,14 +848,14 @@ linearplot = function(
 }
 ```
 
-## Sanitation vs. GDP per Capita
-
+## Sanitation vs. log of GDP
 ```{r}
 #| fig-align: center
-linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
+linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")+
+  ylim(0, 100)
 ```
 
-## Life Expectancy vs. GDP per Capita
+## Life Expectancy vs. log of GDP
 
 ```{r}
 #| fig-align: center
@@ -843,7 +869,13 @@ linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
-## Inferences
+---
+
+### Inferences
+
+Both OLS and LAD models fit the scatter plots very well. The OLS model is affected in the Life Expectancy plots due to the existence of Haiti as an outlier.
+
+Our aim is to deduce which features more directly affect the Life Expectancy. Thus we should remove the effect of the other features using Partial Correlation.
 
 # Partial Correlation {.smaller}
 
@@ -864,7 +896,7 @@ $$
 
 </details>
 
-:::: columns
+::: columns
 ::: {.column width="40%"}
 ```{r echo=TRUE}
 partcor = pcor(d[, 2:4])$estimate
@@ -889,21 +921,175 @@ kable(pcortab,
       ))
 ```
 :::
-::: {.column width="5%"}
 
+::: {.column width="5%"}
 :::
+
 ::: {.column width="55%"}
 -   We observe that the partial correlation between Life Exp. and Sanitation is higher than that of Life. Exp and ln(GDP).
-  
-  Thus Life Expection is more directly improved by better Sanitaion access, than increase in wealth.
+
+Thus Life Expection is more directly improved by better Sanitaion access, than increase in wealth.
 
 -   We also note that there is fairly high partial correlation between Sanitation and ln(GDP).
-  
-  This indicates that wealthier countries tend to improve their sanitation infrastructure.
-:::
-::::
 
-## Inferences
+This indicates that wealthier countries tend to improve their sanitation infrastructure.
+:::
+:::
+
+# Considerations {.smaller}
+
+## Time
+
+```{r echo=TRUE, fig.width=20}
+
+library(knitr)
+library(ggplot2)
+library(quantreg)
+library(ppcor)
+library(psych)
+library(moments)
+library(latex2exp)
+library(maps)
+library(dplyr)
+
+numerise = function(x){
+  x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
+  x <- as.numeric(x)
+  return(x)
+}
+
+d1_raw = read.csv(file.path(".","Data","gdp.csv"), fileEncoding = 'UTF-8-BOM')
+d2_raw = read.csv(file.path(".","Data","sanitation.csv"), fileEncoding = 'UTF-8-BOM')
+d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
+
+years = 2000:2019
+yearnames = paste0("X", years)
+
+makedata = function(yearname){
+  d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
+  colnames(d1)[2] = "lngdp"
+  d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
+  colnames(d2)[2] = "snt"
+  d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
+  colnames(d3)[2] = "lfx"
+  
+  dtemp = merge(x = d1, y = d2, by = "country")
+  d = merge(x = dtemp, y = d3, by = "country")
+  
+  d$lngdp = log(numerise(d$lngdp))
+  
+  return(d)
+}
+```
+
+<details>
+
+<summary>How the years' life expectancies an year's GDP correlate with.</summary>
+
+```{r echo=FALSE, cache=TRUE}
+par(mfcol=c(1,2), bg="#f9f5d7")
+for (yearname0 in yearnames) {
+  r2vector = c()
+  d0 = makedata(yearname0)
+  for (yearname1 in yearnames) {
+  d1 = makedata(yearname1)
+    countrynames = intersect(d0$country, d1$country)
+    d1 = d1 %>% filter(country %in% countrynames)
+    d0 = d0 %>% filter(country %in% countrynames)
+    r2vector = append(r2vector, cor(d1$lfx, d0$lngdp))
+  }
+  plot(years, r2vector, xlab=paste(yearname0, "ln(GDP)"), ylab="Corr. of Life Exp.")
+}
+```
+
+</details>
+
+<details>
+
+<summary>How the years' life expectancies an year's Sanitation correlate with.</summary>
+
+```{r echo=FALSE, cache=TRUE}
+par(mfcol=c(1,2), bg="#f9f5d7")
+for (yearname0 in yearnames) {
+  r2vector = c()
+  d0 = makedata(yearname0)
+  for (yearname1 in yearnames) {
+  d1 = makedata(yearname1)
+    countrynames = intersect(d0$country, d1$country)
+    d1 = d1 %>% filter(country %in% countrynames)
+    d0 = d0 %>% filter(country %in% countrynames)
+    r2vector = append(r2vector, cor(d1$lfx, d0$snt))
+  }
+  plot(years, r2vector, xlab=paste(yearname0, "Sanitation"), ylab="Corr. of Life Exp.")
+}
+```
+
+</details>
+
+<details>
+
+<summary>How an year's life expectancies correlate with the years' GDP.</summary>
+
+```{r echo=FALSE, cache=TRUE}
+par(mfcol=c(1,2), bg="#f9f5d7")
+for (yearname0 in yearnames) {
+  r2vector = c()
+  d0 = makedata(yearname0)
+  for (yearname1 in yearnames) {
+  d1 = makedata(yearname1)
+    countrynames = intersect(d0$country, d1$country)
+    d1 = d1 %>% filter(country %in% countrynames)
+    d0 = d0 %>% filter(country %in% countrynames)
+    r2vector = append(r2vector, cor(d0$lfx, d1$lngdp))
+  }
+  plot(years, r2vector, xlab=paste(yearname0, "Life Exp."), ylab="Corr. of ln(GDP)")
+}
+```
+
+</details>
+
+<details>
+
+<summary>How an year's life expectancies correlate with the years' Sanitation.</summary>
+
+```{r echo=FALSE, cache=TRUE}
+par(mfcol=c(1,2), bg="#f9f5d7")
+for (yearname0 in yearnames) {
+  r2vector = c()
+  d0 = makedata(yearname0)
+  for (yearname1 in yearnames) {
+  d1 = makedata(yearname1)
+    countrynames = intersect(d0$country, d1$country)
+    d1 = d1 %>% filter(country %in% countrynames)
+    d0 = d0 %>% filter(country %in% countrynames)
+    r2vector = append(r2vector, cor(d0$lfx, d1$lngdp))
+  }
+  
+  plot(years, r2vector, xlab=paste(yearname0, "Life Exp."), ylab="Corr. of Sanitation")
+}
+```
+
+</details>
+
+Thus our analysis is fairly robust with respect to variation in Time. Thus we only perform the analysis on the year 2010.
+
+## Raw GDP per capita
+
+<details> <summary> Sanitation vs GDP per capita</summary>
+
+```{r}
+sctrplot(d, exp(d$lngdp), d$snt, "GDP per capita", "Sanitation Access %")
+```
+</details>
+
+<details> <summary> Life Expectancy vs GDP per capita </summary>
+```{r}
+sctrplot(d, exp(d$lngdp), d$lfx, "GDP per capita", "Sanitation Access %")
+```
+</details>
+
+
+Scatter Plots of Sanitation or Life Exp. with respect to raw GDP are not linearly correlated. As this was beyond our scope of knowledge, we instead considered the log (base $e$) of GDP.
 
 # Conclusion
 
