@@ -29,6 +29,7 @@ format:
     toc: true
     html-math-method: katex
     highlight-style: gruvbox-dark
+    code-fold: true
     theme:
       light: sandstone
       dark: slate
@@ -44,8 +45,9 @@ format:
     toc: true
     number-sections: true
     code-fold: true
+    highlight-style: gruvbox
 execute:
-  cache: false
+  cache: true
 ---
 
 ```{r include=FALSE}
@@ -161,7 +163,9 @@ plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
 :::
 
 ::: {.column width="66%"}
-$~$ \n $~$ \n
+$$
+~
+$$
 
 ```{r fig.width=10, fig.height=5, fig.align='left'}
 d3$data = d3$lfx
@@ -183,7 +187,7 @@ This presentation used various methods of *Bivariate Analysis* to infer relation
 
 - **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
 
-  Life expectancy is calculated based on the assumption that probability of death at a certain age stays constant into the future. Hence we can use Life Expectation as a measurable proxy for health in the current year.
+  Life expectancy is calculated based on the assumption that probability of death at a certain age stays constant in future. Hence we Life Expectation as a measurable proxy for Health.
 
 ## Data
 
@@ -435,7 +439,9 @@ kable(
 )
 ```
 
-$~$ \n $~$ \n
+$$
+~
+$$
 
 - ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.
 
@@ -838,7 +844,7 @@ linearplot = function(
 ```
 
 ## Sanitation vs. log of GDP
-```{r}
+```{r warning=FALSE}
 #| fig-align: center
 linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")+
   ylim(0, 100)
@@ -846,14 +852,14 @@ linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")+
 
 ## Life Expectancy vs. log of GDP
 
-```{r}
+```{r warning=FALSE}
 #| fig-align: center
 linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
 ## Life Expectancy vs. Sanitation
 
-```{r}
+```{r warning=FALSE}
 #| fig-align: center
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
@@ -973,7 +979,7 @@ makedata = function(yearname){
 
 <details>
 
-<summary>How the years' life expectancies an year's GDP correlate with.</summary>
+<summary>How the years' life expectancies and an year's GDP correlate with.</summary>
 
 ```{r echo=FALSE, cache=TRUE}
 par(mfcol=c(1,2), bg="#f9f5d7")
@@ -995,7 +1001,7 @@ for (yearname0 in yearnames) {
 
 <details>
 
-<summary>How the years' life expectancies an year's Sanitation correlate with.</summary>
+<summary>How the years' life expectancies and an year's Sanitation correlate with.</summary>
 
 ```{r echo=FALSE, cache=TRUE}
 par(mfcol=c(1,2), bg="#f9f5d7")
@@ -1084,7 +1090,7 @@ Thus in reality, rise in GDP provides diminishing returns in citizen health the 
 
 # Conclusion {.scrollable}
 
-Thus we have observed that Life expectancy is increases with rise in log of GDP per capita and Sanitation facility access. Life Expectancy is also more directly affected by increase in basic Sanitation access than with rise in log of GDP per capita.
+Thus we have observed that Life expectancy increases with rise in log of GDP per capita and Sanitation facility access. Life Expectancy is also more directly affected by increase in basic Sanitation access than with rise in log of GDP per capita.
 
 ## Suggestions
 

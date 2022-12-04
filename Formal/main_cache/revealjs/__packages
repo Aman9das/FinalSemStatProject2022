@@ -6,3 +6,7 @@ MASS
 ppcor
 psych
 moments
+latex2exp
+maps
+data.table
+dplyr
