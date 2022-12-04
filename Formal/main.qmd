@@ -1,6 +1,6 @@
 ---
 title: End-Semester Project
-subtitle: Bivariate Analysis on GDP per capita, Sanitation and Life Expectancy across Nations in 2010
+subtitle: Bivariate Analysis between GDP per capita, Sanitation and Life Expectancy across Nations in 2010
 author:
   - Aman Das [BS2206]
   - Raj Pratap Singh [BS2219]
@@ -68,10 +68,10 @@ theme(
   )
 mycolor=scale_color_manual(
       values=c(
-        "#cc241d80",
-        "#45858880",
-        "#d65d0e80",
-        "#689d6a80"
+        "#cc241d",
+        "#458588",
+        "#689d6a",
+        "#d65d0e"
         ),
       aesthetics=c(
         "fill",
@@ -86,7 +86,8 @@ mycolor=scale_color_manual(
 
 Sanitation of oneself is one of the basic duties of a human being. We know poor sanitation is linked to transmission of diarrhoeal diseases such as cholera and dysentery, as well as typhoid, intestinal worm infections and polio which directly affect the health of an individual.
 
-Also know that the Gross Domestic Product per capita of a country basically tells about the wealth of a country. So, in this project Our *Aim* is to determine how these features affect the *Health* of the citizens. We use *Life Expectation* as a measurable proxy for health.
+Also know that the Gross Domestic Product per capita of a country basically tells about the wealth of a country. So, in this project Our *Aim* is to determine how these features affect the *Health* of the citizens. out 
+Life expectancy calculated for the year is based on the ages at the time of death of all the people who have deceased in that particular year. Also, in most cases it can tell about the current health condition of the country. Suppose the country is being hit by an epidemic, we can see that the people who might have lived longer if they had been unaffected by the epidemic. Hence we can use *Life Expectation* as a measurable proxy for health.
 
 ::: notes
 Everybody is taught to keep a good hygiene since childhood. Because poor sanitation can be the cause for various diseases. Sanitation has therefore become an important part of life for most of us. However, even in today's times there are countries where sanitation is not considered important.
@@ -96,8 +97,47 @@ The GDP per capita tells us about how people live, and thus it can tell us about
 In this project we aim to conduct a data analysis on how these factors affect the life expectancy.
 :::
 
+Our *Aim* is to determine which features more directly affect the *Life Expectation* of the citizens.
+
+
 ```{r message=FALSE, warning=FALSE}
 #| fig-align: center
+
+plotmap = function(d3, legendname, yearnamelabel, color1, color2){
+  
+  world=map_data("world")
+
+  w3<-data.frame(world,data=sample(10,length(unique(world$group)),T)[world$group])
+  
+  d3[d3 == "United States"] = "USA"
+  d3[d3 == "Congo, Dem. Rep."] = "Democratic Republic of the Congo"
+  d3[d3 == "Congo, Rep."] = "Republic of Congo"
+  d3[d3 == "Kyrgyz Republic"] = "Kyrgyzstan"
+  d3[d3 == "Cote d'Ivoire"] = "Ivory Coast"
+  d3[d3 == "United Kingdom"] = "UK"
+  
+  dt_d3 = as.data.table(d3)
+  setkey(dt_d3, country)
+  dt_w = as.data.table(world)
+  setkey(dt_w, region)
+  
+  new_w = as.data.frame(dt_w[dt_d3])
+  
+  ggplot(new_w,aes(long,lat,group=group,fill=data))+
+      geom_polygon(color="#282828", linewidth=rel(0.5))+
+      scale_fill_gradient(low=color1,high=color2)+
+      mytheme+
+    theme(
+      axis.text=element_blank(),
+      axis.title = element_blank(),
+      axis.line=element_blank(),
+      plot.caption = element_text(hjust = 0, color="#504945"),
+      legend.position = "bottom",
+      legend.justification = "right",
+      legend.title = element_text(size=rel(1.5), vjust=0.9)
+    )+
+    labs(fill=legendname)
+}
 
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
@@ -107,39 +147,45 @@ numerise = function(x){
 
 yearname = "X2000"
 
+d1_raw = read.csv(file.path(".","Data","gdp.csv"), fileEncoding = 'UTF-8-BOM')
+d2_raw = read.csv(file.path(".","Data","sanitation.csv"), fileEncoding = 'UTF-8-BOM')
 d3_raw = read.csv(file.path(".","Data","life_expectancy.csv"), fileEncoding = 'UTF-8-BOM')
+
+yearname = "X2010"
+
+d1 = d1_raw[!is.na(numerise(d1_raw[, yearname])),][,c("country", yearname)]
+colnames(d1)[2] = "lngdp"
+d2 = d2_raw[!is.na(numerise(d2_raw[, yearname])),][,c("country", yearname)]
+colnames(d2)[2] = "snt"
 d3 = d3_raw[!is.na(numerise(d3_raw[, yearname])),][,c("country", yearname)]
 colnames(d3)[2] = "lfx"
-
-world=map_data("world")
-
-w3<-data.frame(world,data=sample(10,length(unique(world$group)),T)[world$group])
-
-d3[d3 == "United States"] = "USA"
-d3[d3 == "Congo, Dem. Rep."] = "Democratic Republic of the Congo"
-d3[d3 == "Congo, Rep."] = "Republic of Congo"
-d3[d3 == "Kyrgyz Republic"] = "Kyrgyzstan"
-d3[d3 == "Cote d'Ivoire"] = "Ivory Coast"
-d3[d3 == "United Kingdom"] = "UK"
-
-dt_d3 = as.data.table(d3)
-setkey(dt_d3, country)
-dt_w = as.data.table(world)
-setkey(dt_w, region)
-
-new_w = as.data.frame(dt_w[dt_d3])
-
-ggplot(new_w,aes(long,lat,group=group,fill=lfx))+
-    geom_polygon(color="#282828", linewidth=rel(0.5))+
-    scale_fill_gradient(low="#fabd2f",high="#cc241d")+
-    mytheme+
-  theme(
-    axis.text=element_blank(),
-    axis.title = element_blank(),
-    axis.line=element_blank()
-  )+
-  labs(fill="Linear Model")
 ```
+
+:::: columns
+
+::: {.column width="33%"}
+```{r fig.width=5, fig.height=3, fig.align='left'}
+d1$data = log(numerise(d1$lngdp))
+plotmap(d1, "ln(GDP)", "2010", "#504945", "#cc241d")
+```
+
+```{r fig.width=5, fig.height=3, fig.align='left'}
+d2$data = d2$snt
+plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
+```
+:::
+
+::: {.column width="66%"}
+
+$~$ \n $~$ \n
+
+```{r fig.width=10, fig.height=5, fig.align='left'}
+d3$data = d3$lfx
+plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
+```
+:::
+
+::::
 
 ## Data Points
 
@@ -151,9 +197,9 @@ This presentation demonstrates the capabilities of *Bivariate Analysis* on data-
 
 ## Data
 
-```{r echo=TRUE, collapse=TRUE}
+```{r echo=TRUE}
 script.dir <- getSrcDirectory(function(x) {x})
-setwd(script.dir)
+# setwd(script.dir)
 
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
@@ -192,7 +238,7 @@ kable(head(d, 6L))
 
 ## Measures of Central Tendency {.smaller}
 
-*Mean or Arithmetic Mean* $\bar{x}$, *Geometric Mean* $\operatorname{GM}(x)$, *Harmonic Mean* $\operatorname{HM}(x)$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
+*Mean or Arithmetic Mean* $\bar{x}$, *Median* $\operatorname{median}(x)$ and *Mode* $\operatorname{mode}(x)$ are some measures of *central tendency* in the sample.
 
 <details>
 
@@ -200,22 +246,17 @@ kable(head(d, 6L))
 
 $$
 \begin{aligned}
-\operatorname{mean}(x)=\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i}) &&
-\operatorname{GM}(x) = \sqrt[n]{\prod_{i=1}^n} x_i
+x = \{x_1, x_2, \ldots,x_{n-1}, x_n\} &&
+\operatorname{mean}(x)=\bar{x} = \frac{1}{n} \sum _{i=1}^{n}(x_{i})
 \end{aligned}
-$$ $$
-\operatorname{HM}(x)= n\sum_{i=1}^n x_i^{-1}
-$$ $$
+$$$$
 \begin{aligned}
-\operatorname{median}(x)=\begin{cases}
-x_{(n + 1)/ 2} &: n = 1 \mod{2} \\
-\frac{x_{(n/2)} + x_{((n/2)+1)}}{2} &:n = 0 \mod{2}
-\end{cases} &&
-\operatorname{mode}(x) = x_{(n)}
+\operatorname{median}(x)= \frac{x_{\lfloor\frac{n+1}{2}\rfloor}+x_{\lfloor\frac{n+2}{2}\rfloor}}{2} &&
+\operatorname{mode}(x) = x_i \text{ s.t. } \operatorname{Pr}(x_i) = \operatorname{sup}(\operatorname{Pr}(x))  
 \end{aligned}
 $$
 
-Note: $x_i$ is the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest observation.
+Note: $f_i$ is the frequency of the i<sup>th</sup> observation. $x_{(i)}$ is the i<sup>th</sup> largest  observation.
 
 </details>
 
@@ -240,16 +281,6 @@ d_central = data.frame(
     mean(d$snt),
     mean(d$lfx)
   ),
-  GM = c(
-    geometric.mean(d$lngdp),
-    geometric.mean(d$snt),
-    geometric.mean(d$lfx)
-  ),
-  HM = c(
-    harmonic.mean(d$lngdp),
-    harmonic.mean(d$snt),
-    harmonic.mean(d$lfx)
-  ),
   Median = c(
     median(d$lngdp),
     median(d$snt),
@@ -265,15 +296,17 @@ d_central = data.frame(
 kable(
   d_central,
   col.names = c(
-    "$\\bar{x}$",
-    "$\\operatorname{GM}(x)$",
-    "$\\operatorname{HM}(x)$",
+    "$\\quad \\quad \\bar{x}$",
     "$\\operatorname{median}(x)$",
     "$\\operatorname{mode}(x)$"
   ),
   digits=5
 )
 ```
+
+$~$
+
+- Notice that mode of Sanitation is 100. Thus a large number of countries have universal access to basic sanitation infrastructure.
 
 ## Measures of Dispersion {.smaller}
 
@@ -285,7 +318,7 @@ kable(
 
 $$
 \begin{aligned}
-\operatorname{Range}(x)=|x_{(n)} - x_{(1)}| &&
+\operatorname{range}(x)=|x_{(n)} - x_{(1)}| &&
 \ Q_1 = \operatorname{median}(x_{(1)}, \ldots ,x_{(\lfloor \frac{n+1}{2} \rfloor)}) &&
 \end{aligned}
 $$ $$
@@ -349,7 +382,7 @@ d_disp = data.frame(
 kable(
   d_disp,
   col.names = c(
-    "$\\operatorname{Range}(x)$",
+    "$\\operatorname{range}(x)$",
     "$\\operatorname{SIR}(x)$",
     "$\\operatorname{MD}_{(\\bar{x})}(x)$",
     "$\\quad \\quad \\quad \\quad s_x^2$",
@@ -358,6 +391,11 @@ kable(
   digits=5
 )
 ```
+
+$~$
+
+- We can compare $s_x$ to $\bar{x}$ and observe that there is a high variation in Sanitation amongst countries.
+- GDP per capita varies drastically across the $e$<sup>`r max(d$lngdp) - min(d$lngdp)`</sup> range.
 
 ## Measures of Shape
 
@@ -377,6 +415,8 @@ $$
 
 </details>
 
+::: columns
+::: {.column width="50%"}
 ```{r echo=TRUE}
 d_shape = data.frame(
   row.names = "Variable",
@@ -406,6 +446,14 @@ kable(
   digits=5
 )
 ```
+:::
+
+::: {.column width="50%"}
+-   <p style="font-size:25pt;">ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.</p>
+-   <p style="font-size:25pt;">This indicates majority of countries have good sanitation system, and citizen health.</p>
+-   <p style="font-size:25pt;">ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.</p>
+:::
+:::
 
 ## Density Plot {.smaller}
 
@@ -433,6 +481,12 @@ facet_wrap(~ind, scales="free", labeller = labelfunction, ncol=1)+
         strip.text.x = element_text(size = rel(1.5))
   )
 ```
+ From the density plots, we can infer the following:
+
+- The density of the log of GDP per capita is symmetric as supported by the fact that the skewness was close to 0.
+
+- The other two density plots appear left skewed as supported by negative skewness.
+- Therefore, these plots confirm our previous inferences.
 
 ## Box Plot {.smaller scrollable="false"}
 
@@ -464,21 +518,19 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
   )
 ```
 
-## Inferences
-
-From the density plots, we can infer the following:
-
-The density of the log of GDP per capita is symmetric as supported by the fact that the skewness was close to 0.
-
-The other two density plots appear left skewed as supported by negative skewness.
-
 From the box plots we can infer the following:
 
-The median seems to be in
+- The median seems to be in the centre of the quartiles for the ln(gdp) distribution, and it's closer to the 2nd quartile for the other two distributions.
+- So, we can say that the distributions of the sanitation access and life expectancies are left skewed which further confirms the previous inferences.
+- We observe one outlier in the Life Expectancy dataset. It is Haiti at 32.5 years. This is due to the cholera epidemic that broke out in the year 2010. Moreover this confirms our assumption that life expectancy is a very good proxy for health.
+
+```{r}
+d = subset(d, country!="Haiti")
+```
 
 # Scatter Plot
 
-A *Scatter plot* helps us estimate the type of relationship between variables.
+*Scatter plots* help us estimate the type of relationship between variables. They give a good intuition whether the variales are related or not.
 
 ```{r echo=TRUE}
 sctrplot = function(
@@ -506,30 +558,73 @@ sctrplot = function(
 ```{r}
 sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
+- We observe from the scatter plot that the correlation between ln(gdp) and sanitation access appears to be mostly linear for countries with ln(gdp) less than 10. 
+- Also, we see that the sanitation access is quite high for the countries with ln(gdp) above 10 for the countries with and is very close to 100% for countries with ln(gdp) above 11. 
 
 ## Life Expectancy vs. GDP per Capita
 
 ```{r}
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
+- We can see that except for some countries with very low life expectancies, the correlation between the variables is appearing to be linear.
+- The countries like the Central African Republic, Zambia, Zimbabwe have very low life expectancies due to endemic poverty and weak governance, contributing to a dire health situation
 
 ## Life Expectation vs. Sanitation
 
 ```{r}
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
+- In this plot too, we can see that the correlation appears to be linear between life expectation and sanitation. We also observe that there is clustering around the top right side of the plot, which is supported by the box plots of both the distributions.
 
-## Inferences
-
-seems like Linear correlation
 
 # Bivariate Statistics
+
+## Correlation Coefficients {.smaller}
+
+*Correlation* is any relationship, causal or spurious, between two random variables $x$, $y$.
+
+*Pearson's* $r$, *Spearman's* $r_s$, and *Kendall's* $\tau$ are some correlation coefficients. These estimate the linear correlation between two variables.
+
+```{r echo=TRUE}
+d_cor = data.frame(
+  row.names = "Variable",
+  Variable = c(
+    "*Sanitation vs. ln(GDP)*",
+    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp. vs. Sanitation*"
+  ),
+  Pearson = c(
+    cor(d$snt, d$lngdp, method="pearson"),
+    cor(d$lfx, d$lngdp, method="pearson"),
+    cor(d$lfx, d$snt, method="pearson")
+  ),
+  Spearman = c(
+    cor(d$snt, d$lngdp, method="spearman"),
+    cor(d$lfx, d$lngdp, method="spearman"),
+    cor(d$lfx, d$snt, method="spearman")
+  ),
+  Kendall = c(
+    cor(d$snt, d$lngdp, method="kendall"),
+    cor(d$lfx, d$lngdp, method="kendall"),
+    cor(d$lfx, d$snt, method="kendall")
+  )
+)
+
+kable(
+  d_cor,
+  digit = 5,
+  col.names = c(
+    "*Pearson's* $r$",
+    "*Spearman's* $r_s$",
+    "*Kendall's* $\\tau$"
+  )
+)
+```
+
 
 ## Covariance and Correlation Matrices {.smaller}
 
 *Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
-
-*Correlation* is any relationship, causal or spurious, between two random variables $x$, $y$. *Pearson's correlation coefficient* $r$ estimates the linear correlation.
 
 <details>
 
@@ -570,49 +665,11 @@ $$A_{i,j} = r_{x_i, x_j}$$
 :::
 :::
 
-## Other Correlation Coefficients
-
-*Spearman's* $r_s$, and *Kendall's* $\tau$ are some other correlation coefficients besides *Pearson's* $r$
-
-```{r echo=TRUE}
-d_cor = data.frame(
-  row.names = "Variable",
-  Variable = c(
-    "*Sanitation vs. ln(GDP)*",
-    "*Life Exp. vs. ln(GDP)*",
-    "*Life Exp. vs. Sanitation*"
-  ),
-  Pearson = c(
-    cor(d$snt, d$lngdp, method="pearson"),
-    cor(d$lfx, d$lngdp, method="pearson"),
-    cor(d$lfx, d$snt, method="pearson")
-  ),
-  Spearman = c(
-    cor(d$snt, d$lngdp, method="spearman"),
-    cor(d$lfx, d$lngdp, method="spearman"),
-    cor(d$lfx, d$snt, method="spearman")
-  ),
-  Kendall = c(
-    cor(d$snt, d$lngdp, method="kendall"),
-    cor(d$lfx, d$lngdp, method="kendall"),
-    cor(d$lfx, d$snt, method="kendall")
-  )
-)
-
-kable(
-  d_cor,
-  digit = 5,
-  col.names = c(
-    "*Pearson's* $r$",
-    "*Spearman's* $r_s$",
-    "*Kendall's* $\\tau$"
-  )
-)
-```
-
 ## Inferences
 
-Good linear correlation lets try to observe line of best fit.
+
+From the previous plots we get a strong intuition for a linear correlation between the variables.
+This suggests us to perform linear regression over the plots in order to obtain the line of best fit.
 
 # Regression
 
@@ -773,7 +830,14 @@ linearplot = function(
     labs(
       color="Linear Model"
     )+
-    mycolor+
+    scale_color_manual(
+      values=c(
+        "#cc241d80",
+        "#45858880",
+        "#689d6a80",
+        "#d65d0e80"
+        )
+      )+
     theme(
       plot.caption = element_text(hjust=0.5, color="#504945")
     )
@@ -809,6 +873,10 @@ linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 
 *Partial Correlation* is the relationship between two variables $x$, $y$ of interest, after removing effect of some other related variable $z$.
 
+<details>
+
+<summary>Formulae</summary>
+
 $$
 \begin{aligned}
 &x_i = \hat{a_x} + \hat{b_x} z_i + e_{x,i} &&
@@ -818,6 +886,10 @@ y_i = \hat{a_y} + \hat{b_y} z_i + e_{y,i}
 \end{aligned}
 $$
 
+</details>
+
+:::: columns
+::: {.column width="40%"}
 ```{r echo=TRUE}
 partcor = pcor(d[, 2:4])$estimate
 
@@ -825,7 +897,7 @@ pcortab = data.frame(
   row.names = "Variable",
   Variable = c(
     "*Sanitation vs. ln(GDP)*",
-    "*Life Exp. vs. ln(GDP)*",
+    "*Life Exp.$\\quad$ vs. ln(GDP)*",
     "*Life Exp. vs. Sanitation*"
   ),
   PCor = c(
@@ -840,6 +912,20 @@ kable(pcortab,
         "Partial Correlation"
       ))
 ```
+:::
+::: {.column width="5%"}
+
+:::
+::: {.column width="55%"}
+-   We observe that the partial correlation between Life Exp. and Sanitation is higher than that of Life. Exp and ln(GDP).
+  
+  Thus Life Expection is more directly improved by better Sanitaion access, than increase in wealth.
+
+-   We also note that there is fairly high partial correlation between Sanitation and ln(GDP).
+  
+  This indicates that wealthier countries tend to improve their sanitation infrastructure.
+:::
+::::
 
 ## Inferences
 
