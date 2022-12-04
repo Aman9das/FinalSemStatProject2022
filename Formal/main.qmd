@@ -170,19 +170,26 @@ plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
 :::
 :::
 
-## Data Points
+## Variables {.smaller}
 
-This presentation demonstrates the capabilities of *Bivariate Analysis* on datasets, to infer relationship between various features of Nations.
+This presentation used various methods of *Bivariate Analysis* to infer relationship between various features of Nations.
 
--   **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in \$) per citizen. Adjusted for Inflation. \[*lngdp*\]
--   **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. \[*snt*\]
--   **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
+- **log of GDP per capita**: Logarithm (base $e$) of Gross Domestic Product (in \$) per citizen. Adjusted for Inflation. \[*lngdp*\]
+
+  The Gross Domestic Product per capita of a country basically tells about the wealth of the citizens of the country.
+- **Sanitation Access %**: Percentage of people using at least basic Sanitation facilities, not shared with other households. \[*snt*\]
+
+  Sanitation of oneself is one of the basic tasks of a human being. We know poor sanitation is linked to transmission of diarrheal diseases such as cholera and dysentery, as well as typhoid, intestinal worm infections and polio which directly affect the health of an individual.
+
+- **Life Expectancy**: The average number of years a newly born child would live, provided current mortality patterns hold. \[*lfx*\]
+
+  Life expectancy is calculated based on the assumption that probability of death at a certain age stays constant into the future. Hence we can use Life Expectation as a measurable proxy for health in the current year.
 
 ## Data
 
 ```{r echo=TRUE}
 script.dir <- getSrcDirectory(function(x) {x})
-# setwd(script.dir)
+setwd(script.dir)
 
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
@@ -380,7 +387,7 @@ $~$
 -   We can compare $s_x$ to $\bar{x}$ and observe that there is a high variation in Sanitation amongst countries.
 -   GDP per capita varies drastically across the $e$<sup>`r max(d$lngdp) - min(d$lngdp)`</sup> range.
 
-## Measures of Shape
+## Measures of Shape {.smaller}
 
 Coefficients of *Skewness* $g_1$ and *Kurtosis* $g_2$ describe the symmetry and extremity of tails of the sample distribution.
 
@@ -398,8 +405,6 @@ $$
 
 </details>
 
-::: columns
-::: {.column width="50%"}
 ```{r echo=TRUE}
 d_shape = data.frame(
   row.names = "Variable",
@@ -423,38 +428,23 @@ d_shape = data.frame(
 kable(
   d_shape,
   col.names = c(
-    "$g_1$",
-    "$g_2$"
+    "Skewness $g_1$",
+    "Kurtosis $g_2$"
   ),
   digits=5
 )
 ```
-:::
 
-::: {.column width="50%"}
--   <p style="font-size:25pt;">
+$~$ \n $~$ \n
 
-    ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.
+- ln(GDP) is nearly symmetrical, while Sanitation and Life Exp. are highly left-skewed.
 
-    </p>
+  This indicates majority of countries have good sanitation system and citizen health.
+  
+- ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.
 
-    <p style="font-size:25pt;">
-
-    This indicates majority of countries have good sanitation system, and citizen health.
-
-    </p>
-
--   <p style="font-size:25pt;">
-
-    ln(GDP) and Sanitation are platykurtic, while Life Exp. is leptokurtic.
-
-    </p>
-:::
-:::
 
 ## Density Plot {.smaller}
-
-*Density plots* help us in estimating the form, location and spread of the distribution.
 
 ```{r echo=TRUE}
 #| fig-align: center
@@ -479,7 +469,7 @@ facet_wrap(~ind, scales="free", labeller = labelfunction, ncol=1)+
   )
 ```
 
--   These plots confirm our previous inferences.
+- The density of the log of GDP per capita is symmetric as inferred previously. The other two density plots appear left skewed as supported by the negative skewness.
 
 ## Box Plot {.smaller scrollable="false"}
 
@@ -513,14 +503,6 @@ facet_wrap(~ind, scales="free", labeller = labelfunction)+
 
 -   We observe one potential outlier in the Life Expectancy dataset. It is Haiti at `r subset(d, country=="Haiti")[4]` years. It is due to a cholera outbreak and an earthquake increasing the mortality rate in the nation in 2010.
 
----
-
-### Inferences
-
-We observe and understand the general distribution of the three features in the Univariate Analysis.
-
-Let us try to visualize their Bivariate relationship in the Scatter Plot.
-
 # Scatter Plot
 
 A *Scatter plot* helps us estimate the type of relationship between variables.
@@ -546,23 +528,30 @@ sctrplot = function(
 }
 ```
 
-## Sanitation vs. log of GDP
+## Sanitation vs. log of GDP {.smaller}
 
 ```{r}
 sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
-## Life Expectancy vs. log of GDP
+- We observe from the scatter plot that the correlation between ln(GDP) and sanitation access appears to be mostly Linear for countries with low ln(GDP).
+- Also, the sanitation access is very close to 100% for countries with high ln(GDP).
+
+## Life Expectancy vs. log of GDP {.smaller}
 
 ```{r}
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
-## Life Expectation vs. Sanitation
+- We can see that except for some countries with very low life expectancies, the correlation between the variables is appearing to be linear.
+
+## Life Expectation vs. Sanitation {.smaller}
 
 ```{r}
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
+
+- We can see that the correlation appears to be linear between life expectation and sanitation. We also observe that there is clustering around the top right side of the plot, which is supported by the box plots of both the distributions.
 
 ---
 
@@ -875,7 +864,7 @@ linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 
 Both OLS and LAD models fit the scatter plots very well. The OLS model is affected in the Life Expectancy plots due to the existence of Haiti as an outlier.
 
-Our aim is to deduce which features more directly affect the Life Expectancy. Thus we should remove the effect of the other features using Partial Correlation.
+Our aim is to deduce which features more directly affect the Life Expectancy. Thus we should remove the effect of the other features when computing correlation.
 
 # Partial Correlation {.smaller}
 
@@ -1091,7 +1080,35 @@ sctrplot(d, exp(d$lngdp), d$lfx, "GDP per capita", "Sanitation Access %")
 
 Scatter Plots of Sanitation or Life Exp. with respect to raw GDP are not linearly correlated. As this was beyond our scope of knowledge, we instead considered the log (base $e$) of GDP.
 
-# Conclusion
+Thus in reality, rise in GDP provides diminishing returns in citizen health the wealthier a country is.
+
+# Conclusion {.scrollable}
+
+Thus we have observed that Life expectancy is increases with rise in log of GDP per capita and Sanitation facility access. Life Expectancy is also more directly affected by increase in basic Sanitation access than with rise in log of GDP per capita.
+
+## Suggestions
+
+Governments should consider that:
+
+- Focusing on better sanitation services leads to visibly better lifespan of the citizens.
+
+- Improvements in GDP per capita make practical improvements in sanitation and life expectancy only for poorer countries, due diminishing returns in the log scale.
+
+- Improvements to life expectancies once made, are fairly stable.
+
+## Notable Countries
+Some countries had alarmingly low Life Expectancies:
+
+- The countries like the Central African Republic, Zambia, Zimbabwe have very low life expectancies due to endemic poverty and weak governance, contributing to a dire health situation.
+
+- Haiti had a high child mortality rate in 2010 due to natural disasters and cholera outbreaks. This caused low Life expectancy for that year.
+
+<details> <summary> Time Series Plot </summary>
+```{r}
+par(bg="#f9f5d7")
+plot(2000:2019, t(subset(d3_raw,country == "Haiti"))[202:221], xlab = "Years", ylab = "Life Expectancy")
+```
+</details>
 
 # Credits
 
@@ -1101,3 +1118,5 @@ Scatter Plots of Sanitation or Life Exp. with respect to raw GDP are not linearl
 -   [Statology](https://statology.org)
 -   [Quarto](https://quarto.org)
 -   [RStudio](https://posit.co/products/open-source/rstudio/)
+
+# Thank You {visibility="uncounted"}
