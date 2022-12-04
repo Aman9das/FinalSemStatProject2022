@@ -683,6 +683,8 @@ Where $\hat{a}$ is the *intercept*, $\hat{b}$ is the *slope*, and $e_i$ is the i
 
 *Coefficient of Determination* $R^2$ is the proportion of the variation in $y$ predictable by the model.
 
+*p-value* of an estimated coefficient denotes the reliability of the estimate.
+
 <details>
 
 <summary>Formulae</summary>
@@ -705,11 +707,17 @@ olssmry = function(
 ){
   model = lm(formula=y_map~x_map)
   smry = summary(model, signif.stars=TRUE)
+  star = symnum(smry$coefficients[2, 4],
+      corr = FALSE, na = FALSE,
+      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
+      symbols = c("***", "**", "*", ".", " ")
+    )
   
   smryvec = c(
-    as.numeric(model$coefficients["(Intercept)"]),
-    as.numeric(model$coefficients["x_map"]),
-    smry$r.squared
+    round(as.numeric(model$coefficients["(Intercept)"]), digits = 5),
+    round(as.numeric(model$coefficients["x_map"]), digits = 5),
+    round(smry$r.squared, digits = 5),
+    paste(signif(smry$coefficients[2, 4], digits = 5), star)
   )
   
   return(smryvec)
@@ -727,7 +735,7 @@ row.names(olstab) = c(
   "*Life Exp. vs. Sanitation*"
 )
 
-avg_r2 = round(mean(olstab[, 3]), digits = 1)
+avg_r2 = round(mean(as.numeric(olstab[, 3])),digits = 1)
 
 kable(
   olstab,
@@ -735,7 +743,8 @@ kable(
   col.names=c(
   "$\\hat{a}$",
   "$\\hat{b}$",
-  "$R^2$"
+  "$R^2$",
+  "*p-value* of $\\hat{b}$"
   )
 )
 ```
