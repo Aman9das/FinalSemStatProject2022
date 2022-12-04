@@ -5,6 +5,7 @@ author:
   - Aman Das [BS2206]
   - Raj Pratap Singh [BS2219]
   - Shreyansh Mukhopadhyay [BS2147]
+date: Guided by Dr. Kiranmoy Das
 format:
   revealjs:
     width: 1200
@@ -1105,7 +1106,7 @@ Governments should consider that:
 ## Notable Countries {.smaller}
 Some countries had alarmingly low Life Expectancies:
 
-- The countries like the Central African Republic, Zambia, Zimbabwe have very low life expectancies due to endemic poverty and weak governance, contributing to a dire health situation.
+- The countries like the Central African Republic, Zimbabwe have very low life expectancies due to endemic poverty and weak governance, contributing to a dire health situation.
 
 - Haiti had a high child mortality rate in 2010 due to natural disasters and cholera outbreaks. This caused low Life expectancy for that year.
 
@@ -1114,7 +1115,8 @@ par(bg="#f9f5d7", fin=c(6, 3))
 plot(2000:2019, t(subset(d3_raw,country == "Haiti"))[202:221], xlab = "Years", ylab = "Life Expectancy")
 ```
 
-- Lesotho is experiencing an increasing double burden of diseases characterized by an increase in the burden of non-communicable diseases as well as a high burden of communicable diseases.
+- Countries like Mozambique, Lesotho are experiencing increasing double burden of diseases characterized by an increase in the burden of non-communicable diseases as well as a high burden of communicable diseases.
+- Also countries like Eswatini, Zambia also have a low life expectancy due to the outbreak of HIV.
 
 # Credits
 
