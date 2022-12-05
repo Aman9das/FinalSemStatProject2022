@@ -6,6 +6,6 @@
 
 ## Files: 
 
-- ./Formal/End_Sem_Presentation is prototypic Quarto Document that outputs to End_Sem_Presentation.html
+- ./Formal/main.qmd is Quarto Document that outputs to PPT_Reveal.html
 
 - ./Test_Interest contains initial analysis..
