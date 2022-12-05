@@ -48,7 +48,9 @@ format:
     code-fold: true
     highlight-style: gruvbox
 execute:
-  cache: true
+  cache: false
+  warning: false
+  error: false
 ---
 
 ```{r include=FALSE}
@@ -614,11 +616,18 @@ kable(
 )
 ```
 
+$$
+~
+$$
+
+- We observe a positive correlation between all the three variables.
+- The correlation coefficients are close to +1, thus the correlation is strong.
+
 ## Covariance and Correlation Matrices {.smaller}
 
 *Covariance* $\operatorname{cov}(x, y)$ is a measure of the joint variability of two random variables $x$, $y$.
 
-<details>
+<details open>
 
 <summary>Formulae</summary>
 
@@ -750,6 +759,7 @@ kable(
 ```
 
 - The $R^2$ values of all three models are all near `r avg_r2` . Thus the models explain the variation in the response $y_i$ fairly well.
+- The positive $\hat{b}$ estimates indicate positive correlation in all three cases.
 
 ## Least Absolute Deviation
 
@@ -805,7 +815,7 @@ linearplot = function(
     x_lab=waiver(), y_lab=waiver(),
     title=waiver()
 ){
-  olsvec = round(olssmry(d, x_map, y_map), digit=5)
+  olsvec = round(as.numeric(olssmry(d, x_map, y_map)[1:3]), digit=5)
   ladvec = round(ladsmry(d, x_map, y_map), digit=5)
   capstr = TeX(paste("$y_i =", olsvec[1], "+", olsvec[2], "~x_i + e_i$", "\t\t",
                      "$y_i' =", ladvec[1], "+", ladvec[2], "~x_i + e_i'$"))
@@ -991,8 +1001,8 @@ makedata = function(yearname){
 
 <summary>How the years' life expectancies and an year's GDP correlate with.</summary>
 
-```{r echo=FALSE, cache=TRUE}
-par(mfcol=c(1,2), bg="#f9f5d7")
+```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
   d0 = makedata(yearname0)
@@ -1003,7 +1013,7 @@ for (yearname0 in yearnames) {
     d0 = d0 %>% filter(country %in% countrynames)
     r2vector = append(r2vector, cor(d1$lfx, d0$lngdp))
   }
-  plot(years, r2vector, xlab=paste(yearname0, "ln(GDP)"), ylab="Corr. of Life Exp.")
+  plot(years, r2vector, xlab = "Years", sub=paste(yearname0, "ln(GDP)"), ylab="Corr. of Life Exp.")
 }
 ```
 
@@ -1013,8 +1023,8 @@ for (yearname0 in yearnames) {
 
 <summary>How the years' life expectancies and an year's Sanitation correlate with.</summary>
 
-```{r echo=FALSE, cache=TRUE}
-par(mfcol=c(1,2), bg="#f9f5d7")
+```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
   d0 = makedata(yearname0)
@@ -1025,7 +1035,7 @@ for (yearname0 in yearnames) {
     d0 = d0 %>% filter(country %in% countrynames)
     r2vector = append(r2vector, cor(d1$lfx, d0$snt))
   }
-  plot(years, r2vector, xlab=paste(yearname0, "Sanitation"), ylab="Corr. of Life Exp.")
+  plot(years, r2vector, xlab="Years", sub=paste(yearname0, "Sanitation"), ylab="Corr. of Life Exp.")
 }
 ```
 
@@ -1035,8 +1045,8 @@ for (yearname0 in yearnames) {
 
 <summary>How an year's life expectancies correlate with the years' GDP.</summary>
 
-```{r echo=FALSE, cache=TRUE}
-par(mfcol=c(1,2), bg="#f9f5d7")
+```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
   d0 = makedata(yearname0)
@@ -1047,7 +1057,7 @@ for (yearname0 in yearnames) {
     d0 = d0 %>% filter(country %in% countrynames)
     r2vector = append(r2vector, cor(d0$lfx, d1$lngdp))
   }
-  plot(years, r2vector, xlab=paste(yearname0, "Life Exp."), ylab="Corr. of ln(GDP)")
+  plot(years, r2vector, xlab="Years", sub=paste(yearname0, "Life Exp."), ylab="Corr. of ln(GDP)")
 }
 ```
 
@@ -1057,8 +1067,8 @@ for (yearname0 in yearnames) {
 
 <summary>How an year's life expectancies correlate with the years' Sanitation.</summary>
 
-```{r echo=FALSE, cache=TRUE}
-par(mfcol=c(1,2), bg="#f9f5d7")
+```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
   d0 = makedata(yearname0)
@@ -1070,7 +1080,7 @@ for (yearname0 in yearnames) {
     r2vector = append(r2vector, cor(d0$lfx, d1$lngdp))
   }
   
-  plot(years, r2vector, xlab=paste(yearname0, "Life Exp."), ylab="Corr. of Sanitation")
+  plot(years, r2vector, xlab="Years", sub=paste(yearname0, "Life Exp."), ylab="Corr. of Sanitation")
 }
 ```
 
