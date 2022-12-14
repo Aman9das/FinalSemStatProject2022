@@ -24,6 +24,7 @@ format:
     history: true
     preview-links: true
     controls: true
+    auto-stretch: false
   html:
     output-file: DOC_html.html
     embed-resources: true
@@ -48,9 +49,9 @@ format:
     code-fold: true
     highlight-style: gruvbox
 execute:
-  cache: false
   warning: false
   error: false
+  cache: true
 ---
 
 ```{r include=FALSE}
@@ -62,12 +63,14 @@ library(psych)
 library(moments)
 library(latex2exp)
 library(maps)
+library(plotly)
 
 require(data.table)
 
 mytheme=theme_minimal()+
 theme(
   plot.background = element_rect(fill = "#f9f5d7", color = NA),
+  panel.background = element_rect(fill = "#f9f5d7", color = NA),
   panel.grid = element_line(colour = "#d5c4a1"),
   axis.line = element_line(colour = "#928374"),
   )
@@ -154,12 +157,18 @@ colnames(d3)[2] = "lfx"
 
 ::: columns
 ::: {.column width="33%"}
-```{r fig.width=5, fig.height=3, fig.align='left'}
+```{r}
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: left
 d1$data = log(numerise(d1$lngdp))
 plotmap(d1, "ln(GDP)", "2010", "#504945", "#cc241d")
 ```
 
-```{r fig.width=5, fig.height=3, fig.align='left'}
+```{r}
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: left
 d2$data = d2$snt
 plotmap(d2, "Sanitation", "2010", "#504945", "#458588")
 ```
@@ -170,7 +179,10 @@ $$
 ~
 $$
 
-```{r fig.width=10, fig.height=5, fig.align='left'}
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: left
 d3$data = d3$lfx
 plotmap(d3, "Life Exp.", "2010", "#504945", "#689d6a")
 ```
@@ -457,13 +469,14 @@ $$
 
 ```{r echo=TRUE}
 #| fig-align: center
-labelfunction = function(val1){
-  return(list(c(
-    "log of GDP per capita",
-    "Sanitation Access %",
-    "Life Expectancy"
-  )))
-}
+#| fig-height: 4.25
+labelfunction = as_labeller(c(
+    `lngdp` = "log of GDP per capita",
+    `snt` = "Sanitation Access %",
+    `lfx` = "Life Expectancy"
+    )
+)
+
 ggplot(stack(d[2:4]), mapping = aes(x = values))+
 geom_density(aes(color=ind), linewidth=rel(1.5))+
 labs(
@@ -486,28 +499,34 @@ facet_wrap(~ind, scales="free", labeller = labelfunction, ncol=1)+
 
 ```{r echo=TRUE}
 #| fig-align: center
-labelfunction = function(val1){
-  return(list(c(
-    "log of GDP per capita",
-    "Sanitation Access %",
-    "Life Expectancy"
-  )))
-}
-ggplot(stack(d[2:4]), mapping = aes(y = values))+
+#| fig-height: 4.2
+
+plot1 = ggplot(stack(d[2:4]), mapping = aes(y = values, x = ind))+
 geom_boxplot(aes(fill=ind), alpha=0.6)+
 labs(
   x=NULL,
   y=NULL
   )+
 mytheme+
-mycolor+
-facet_wrap(~ind, scales="free", labeller = labelfunction)+
+facet_wrap(vars(ind), scales="free", labeller = labelfunction)+
   theme(axis.text.x=element_blank(),
         legend.position="none",
         strip.text.x = element_text(size = rel(1.5)),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank()
-  )
+  )+
+  scale_color_manual(
+      values=c(
+        "#cc241d",
+        "#458588",
+        "#689d6a",
+        "#d65d0e"
+        ),
+      aesthetics="fill"
+      )
+
+
+ggplotly(plot1)
 ```
 
 -   We observe one potential outlier in the Life Expectancy dataset. It is Haiti at `r subset(d, country=="Haiti")[4]` years. It is due to a cholera outbreak and an earthquake increasing the mortality rate in the nation in 2010.
@@ -522,7 +541,7 @@ sctrplot = function(
     x_lab=waiver(), y_lab=waiver(),
     title=waiver()
 ){
-  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
+  plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map, text = country))+
     geom_point(
       alpha=0.6
     )+
@@ -533,13 +552,17 @@ sctrplot = function(
       title=title
     )
   
-  return(plot1)
+  plot2 = ggplotly(plot1,
+                   tooltip = "text")
+  return(plot2)
 }
 ```
 
 ## Sanitation vs. log of GDP {.smaller}
 
 ```{r}
+#| fig-height: 5.25
+#| fig-width: 12
 sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
@@ -549,6 +572,8 @@ sctrplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ## Life Expectancy vs. log of GDP {.smaller}
 
 ```{r}
+#| fig-height: 5.25
+#| fig-width: 12
 sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
@@ -557,6 +582,8 @@ sctrplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ## Life Expectation vs. Sanitation {.smaller}
 
 ```{r}
+#| fig-height: 5.25
+#| fig-width: 12
 sctrplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
@@ -817,32 +844,35 @@ linearplot = function(
 ){
   olsvec = round(as.numeric(olssmry(d, x_map, y_map)[1:3]), digit=5)
   ladvec = round(ladsmry(d, x_map, y_map), digit=5)
-  capstr = TeX(paste("$y_i =", olsvec[1], "+", olsvec[2], "~x_i + e_i$", "\t\t",
-                     "$y_i' =", ladvec[1], "+", ladvec[2], "~x_i + e_i'$"))
+  
+  ols_str = paste("Ordinary Least Squares", "<br>",
+                        "y =", olsvec[1], "+", olsvec[2], "x")
+  lad_str = paste("Least Absolute Deviation", "<br>",
+                        "y =", ladvec[1], "+", ladvec[2], "x")
   
   plot1 = ggplot(d, mapping = aes(x = x_map, y = y_map))+
     geom_point(
-      alpha=0.6
+      alpha=0.6,
+      aes(text = country)
     )+
     mytheme+
     labs(
-      x=x_lab,
+      x= x_lab,
       y=y_lab,
       title=title,
-      caption=capstr,
       parse=TRUE
     )+
     geom_smooth(
       method="lm",
       formula=y~x,
       se=FALSE,
-      aes(color = "Ordinary Least Squares")
+      aes(color = ols_str, text = ols_str)
     )+
     geom_smooth(
       method="rq",
       formula=y~x,
       se=FALSE,
-      aes(color = "Least Absolute Deviation")
+      aes(color = lad_str, text = lad_str)
     )+
     labs(
       color="Linear Model"
@@ -854,26 +884,27 @@ linearplot = function(
         "#689d6a80",
         "#d65d0e80"
         )
-      )+
-    theme(
-      plot.caption = element_text(hjust=0.5, color="#504945")
     )
   
-  return(plot1)
+  plot2 = ggplotly(plot1, tooltip = "text")
+  return(plot2)
 }
 ```
 
 ## Sanitation vs. log of GDP
 ```{r warning=FALSE}
 #| fig-align: center
-linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")+
-  ylim(0, 100)
+#| fig-height: 6.5
+#| fig-width: 12
+linearplot(d, d$lngdp, d$snt, "log of GDP per capita", "Sanitation Access %")
 ```
 
 ## Life Expectancy vs. log of GDP
 
 ```{r warning=FALSE}
 #| fig-align: center
+#| fig-height: 6.5
+#| fig-width: 12
 linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 ```
 
@@ -881,6 +912,8 @@ linearplot(d, d$lngdp, d$lfx, "log of GDP per capita", "Life Expectancy")
 
 ```{r warning=FALSE}
 #| fig-align: center
+#| fig-height: 6.5
+#| fig-width: 12
 linearplot(d, d$snt, d$lfx, "Sanitation Access %", "Life Expectancy")
 ```
 
@@ -956,17 +989,6 @@ This indicates that wealthier countries tend to improve their sanitation infrast
 ## Time
 
 ```{r echo=TRUE, fig.width=20}
-
-library(knitr)
-library(ggplot2)
-library(quantreg)
-library(ppcor)
-library(psych)
-library(moments)
-library(latex2exp)
-library(maps)
-library(dplyr)
-
 numerise = function(x){
   x[grepl("k$", x)] <- as.numeric(sub("k$", "", x[grepl("k$", x)]))*10^3
   x <- as.numeric(x)
@@ -1001,7 +1023,8 @@ makedata = function(yearname){
 
 <summary>How the years' life expectancies and an year's GDP correlate with.</summary>
 
-```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+```{r echo=FALSE, cache=TRUE}
+#| fig-height: 2.5
 par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
@@ -1023,7 +1046,8 @@ for (yearname0 in yearnames) {
 
 <summary>How the years' life expectancies and an year's Sanitation correlate with.</summary>
 
-```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+```{r echo=FALSE, cache=TRUE}
+#| fig-height: 2.5
 par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
@@ -1045,7 +1069,9 @@ for (yearname0 in yearnames) {
 
 <summary>How an year's life expectancies correlate with the years' GDP.</summary>
 
-```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+```{r echo=FALSE, cache=TRUE}
+#| fig-height: 2.5
+
 par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
@@ -1067,7 +1093,8 @@ for (yearname0 in yearnames) {
 
 <summary>How an year's life expectancies correlate with the years' Sanitation.</summary>
 
-```{r echo=FALSE, cache=TRUE, fig.height=2.5}
+```{r echo=FALSE, cache=TRUE}
+#| fig-height: 2.5
 par(mfcol=c(1,4), bg="#f9f5d7")
 for (yearname0 in yearnames) {
   r2vector = c()
@@ -1129,8 +1156,10 @@ Some countries had alarmingly low Life Expectancies:
 
 - Haiti had a high child mortality rate in 2010 due to natural disasters and cholera outbreaks. This caused low Life expectancy for that year.
 
-```{r fig.height=3}
-par(bg="#f9f5d7", fin=c(6, 3))
+```{r}
+#| fig-height: 2
+#| fig-width: 6
+par(bg="#f9f5d7", mar = c(3, 3, 1, 1))
 plot(2000:2019, t(subset(d3_raw,country == "Haiti"))[202:221], xlab = "Years", ylab = "Life Expectancy")
 ```
 
